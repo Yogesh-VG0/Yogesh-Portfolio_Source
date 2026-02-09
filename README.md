@@ -1,73 +1,109 @@
-# Welcome to your Lovable project
+# Yogesh Vadivel - Portfolio
 
-## Project info
+A modern, responsive personal portfolio website built with React, TypeScript, and Tailwind CSS.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+🌐 **Live Site:** [yogeshv.me](https://yogeshv.me)
 
-## How can I edit this code?
+![Portfolio Preview](https://img.shields.io/badge/Status-Live-brightgreen)
 
-There are several ways of editing your application.
+## ✨ Features
 
-**Use Lovable**
+- **Modern UI** - Clean, minimalist design with glassmorphism effects
+- **Dark/Light Mode** - Theme toggle with smooth transitions
+- **Animations** - Typewriter effect, scroll progress, 3D tilt cards
+- **Responsive** - Fully responsive design for all devices
+- **Contact Form** - Working contact form with EmailJS integration
+- **Form Validation** - Real-time validation with error messages
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+## 🛠️ Tech Stack
 
-Changes made via Lovable will be committed automatically to this repo.
+- **Framework:** React 18
+- **Language:** TypeScript
+- **Styling:** Tailwind CSS
+- **UI Components:** shadcn/ui
+- **Animations:** Framer Motion
+- **Build Tool:** Vite
+- **Email Service:** EmailJS
 
-**Use your preferred IDE**
+## 🚀 Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+- Node.js (v18 or higher)
+- npm or yarn
 
-Follow these steps:
+### Installation
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+```bash
+# Clone the repository
+git clone https://github.com/Yogesh-VG0/Yogesh-Portfolio_Source.git
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+# Navigate to project directory
+cd Yogesh-Portfolio_Source
 
-# Step 3: Install the necessary dependencies.
-npm i
+# Install dependencies
+npm install
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+# Start development server
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+The app will be running at `http://localhost:8080`
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+## 📁 Project Structure
 
-**Use GitHub Codespaces**
+```
+src/
+├── components/          # React components
+│   ├── ui/             # shadcn/ui components
+│   ├── Hero.tsx        # Hero section with typewriter
+│   ├── About.tsx       # About section
+│   ├── Skills.tsx      # Skills with icons
+│   ├── Projects.tsx    # Project cards with tilt effect
+│   ├── Experience.tsx  # Work experience
+│   ├── Education.tsx   # Education & certifications
+│   ├── Contact.tsx     # Contact form with validation
+│   └── ...
+├── hooks/              # Custom React hooks
+├── lib/                # Utility functions
+├── pages/              # Page components
+└── index.css           # Global styles & CSS variables
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 🌐 Deployment
 
-## What technologies are used for this project?
+### Deploy to GitHub Pages
 
-This project is built with:
+```bash
+npm run deploy
+```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+This builds the project and pushes to the `Yogesh-VG0.github.io` repository.
 
-## How can I deploy this project?
+## 📧 Contact Form Setup
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
+The contact form uses EmailJS. To configure:
 
-## Can I connect a custom domain to my Lovable project?
+1. Create an account at [emailjs.com](https://www.emailjs.com/)
+2. Set up an email service and template
+3. Update credentials in `src/components/Contact.tsx`:
 
-Yes, you can!
+```typescript
+const EMAILJS_SERVICE_ID = "your_service_id";
+const EMAILJS_TEMPLATE_ID = "your_template_id";
+const EMAILJS_PUBLIC_KEY = "your_public_key";
+```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 📝 License
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project is open source and available under the [MIT License](LICENSE).
+
+## 📬 Contact
+
+- **Email:** yogeshvadivel456@gmail.com
+- **LinkedIn:** [yogesh-vadivel](https://www.linkedin.com/in/yogesh-vadivel-a287a6269/)
+- **GitHub:** [Yogesh-VG0](https://github.com/Yogesh-VG0)
+
+---
+
+Made with ❤️ by Yogesh Vadivel

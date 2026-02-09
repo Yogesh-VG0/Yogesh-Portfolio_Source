@@ -108,8 +108,9 @@ const Skills = () => {
           <h2 className="text-sm font-mono text-primary mb-3 tracking-wider">Skills</h2>
           <h3 className="text-3xl md:text-4xl font-bold mb-10">Technologies I work with</h3>
 
+          {/* First row: 3 cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {skillGroups.map((group, groupIndex) => (
+            {skillGroups.slice(0, 3).map((group, groupIndex) => (
               <motion.div
                 key={group.title}
                 initial={{ opacity: 0, y: 30 }}
@@ -155,6 +156,59 @@ const Skills = () => {
                 </div>
               </motion.div>
             ))}
+          </div>
+
+          {/* Second row: 2 cards centered */}
+          <div className="flex flex-col sm:flex-row justify-center gap-6 mt-6">
+            {skillGroups.slice(3).map((group, idx) => {
+              const groupIndex = idx + 3;
+              return (
+                <motion.div
+                  key={group.title}
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={inView ? { opacity: 1, y: 0 } : {}}
+                  transition={{ 
+                    duration: 0.5, 
+                    delay: groupIndex * 0.1,
+                    type: "spring",
+                    stiffness: 100,
+                  }}
+                  className={`relative overflow-hidden rounded-xl p-6 bg-gradient-to-br ${categoryColors[group.title]} border backdrop-blur-sm hover:-translate-y-1 transition-transform duration-300 w-full sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]`}
+                >
+                  {/* Background glow effect */}
+                  <div className="absolute -top-12 -right-12 w-24 h-24 bg-primary/10 rounded-full blur-2xl" />
+                  
+                  {/* Header with icon */}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div 
+                      className={`w-10 h-10 rounded-lg bg-background/50 flex items-center justify-center ${categoryIconColors[group.title]} transition-transform duration-300 group-hover:scale-110`}
+                    >
+                      {categoryIcons[group.title]}
+                    </div>
+                    <h4 className="text-base font-semibold text-foreground">{group.title}</h4>
+                  </div>
+
+                  {/* Skills grid */}
+                  <div className="flex flex-wrap gap-2">
+                    {group.skills.map((skill, skillIndex) => (
+                      <motion.span
+                        key={skill}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={inView ? { opacity: 1, scale: 1 } : {}}
+                        transition={{ 
+                          duration: 0.3, 
+                          delay: groupIndex * 0.1 + skillIndex * 0.05 + 0.2 
+                        }}
+                        className="inline-flex items-center gap-1.5 text-xs font-mono px-3 py-2 rounded-lg bg-background/60 text-foreground border border-border/50 cursor-default transition-all duration-200 hover:scale-105 hover:border-primary/50 hover:bg-primary/10"
+                      >
+                        <span className="text-primary">{skillIcons[skill]}</span>
+                        {skill}
+                      </motion.span>
+                    ))}
+                  </div>
+                </motion.div>
+              );
+            })}
           </div>
         </motion.div>
       </div>

@@ -17,7 +17,7 @@ const projects = [
     ],
     tech: ["Next.js", "React", "TypeScript", "Node.js", "FastAPI", "MongoDB", "Tailwind"],
     // Update these URLs after deployment
-    liveUrl: "https://stockpredict.yogeshv.me", // Will be live after Vercel deployment
+    liveUrl: "https://stock-predict-ai-git-vercel-react-serv-c29af7-stockais-projects.vercel.app",
     githubUrl: "https://github.com/Yogesh-VG0/stockpredict-ai",
   },
   {

@@ -26,7 +26,7 @@ const paths = [
 
 const BackgroundBeams = () => {
   return (
-    <div className="absolute h-full w-full inset-0 overflow-hidden">
+    <div className="absolute h-full w-full inset-0 overflow-hidden pointer-events-none" style={{ maxWidth: '100vw' }}>
       <svg
         className="z-0 h-full w-full pointer-events-none absolute"
         width="100%"

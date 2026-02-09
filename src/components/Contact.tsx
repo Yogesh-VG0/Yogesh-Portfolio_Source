@@ -117,10 +117,10 @@ const Contact = () => {
                 href="mailto:yogeshvadivel456@gmail.com"
                 className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
               >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors flex-shrink-0">
                   <Mail size={16} className="text-primary" />
                 </div>
-                <span className="text-sm">yogeshvadivel456@gmail.com</span>
+                <span className="text-sm break-all">yogeshvadivel456@gmail.com</span>
               </a>
               <a
                 href="https://github.com/Yogesh-VG0"
@@ -128,10 +128,10 @@ const Contact = () => {
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
               >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors flex-shrink-0">
                   <Github size={16} className="text-primary" />
                 </div>
-                <span className="text-sm">github.com/Yogesh-VG0</span>
+                <span className="text-sm break-all">github.com/Yogesh-VG0</span>
               </a>
               <a
                 href="https://www.linkedin.com/in/yogesh-vadivel-a287a6269/"
@@ -139,10 +139,10 @@ const Contact = () => {
                 rel="noopener noreferrer"
                 className="flex items-center gap-3 text-muted-foreground hover:text-foreground transition-colors group"
               >
-                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+                <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors flex-shrink-0">
                   <Linkedin size={16} className="text-primary" />
                 </div>
-                <span className="text-sm">linkedin.com/in/yogesh-vadivel</span>
+                <span className="text-sm break-all">linkedin.com/in/yogesh-vadivel</span>
               </a>
             </div>
 

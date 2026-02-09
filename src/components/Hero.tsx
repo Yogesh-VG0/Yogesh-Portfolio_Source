@@ -5,12 +5,12 @@ import Typewriter from "./Typewriter";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center section-padding pt-28">
+    <section className="relative min-h-screen flex items-center justify-center section-padding pt-28 overflow-hidden">
       <BackgroundBeams />
-      {/* Subtle gradient orb */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+      {/* Subtle gradient orb - responsive sizing */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[600px] md:h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="container mx-auto max-w-4xl text-center relative z-10">
+      <div className="container mx-auto max-w-4xl text-center relative z-10 px-4">
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}

@@ -1,6 +1,6 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Star, Play } from "lucide-react";
+import { Star, Play, ExternalLink, Github } from "lucide-react";
 import TiltCard from "./TiltCard";
 
 const projects = [
@@ -16,8 +16,9 @@ const projects = [
       "Clean dashboard UI with animations",
     ],
     tech: ["Next.js", "React", "TypeScript", "Node.js", "FastAPI", "MongoDB", "Tailwind"],
-    // TODO: Add GitHub repo or live demo URL
-    // projectUrl: "https://github.com/Yogesh-VG0/stockpredict-ai",
+    // Update these URLs after deployment
+    liveUrl: "https://stockpredict.yogeshv.me", // Will be live after Vercel deployment
+    githubUrl: "https://github.com/Yogesh-VG0/stockpredict-ai",
   },
   {
     title: "ExpenseVision",
@@ -30,8 +31,7 @@ const projects = [
       "Expense analytics with charts",
     ],
     tech: ["Flask", "JavaScript", "HTML/CSS", "Chart.js", "Tesseract OCR"],
-    // TODO: Add GitHub repo or live demo URL
-    // projectUrl: "https://github.com/Yogesh-VG0/expense-vision",
+    githubUrl: "https://github.com/Yogesh-VG0/expense-vision",
   },
   {
     title: "WeatherWise",
@@ -92,18 +92,46 @@ const Projects = () => {
                         {project.title}
                       </h4>
                     </div>
-                    {project.videoUrl && (
-                      <a
-                        href={project.videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-muted-foreground hover:text-foreground transition-colors mt-1 inline-flex items-center gap-1"
-                        title="Watch Demo"
-                      >
-                        <Play size={16} />
-                        <span className="text-xs font-mono">Demo</span>
-                      </a>
-                    )}
+                    
+                    {/* Project Links */}
+                    <div className="flex items-center gap-3">
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-primary transition-colors inline-flex items-center gap-1"
+                          title="View Live Demo"
+                        >
+                          <ExternalLink size={16} />
+                          <span className="text-xs font-mono hidden sm:inline">Live</span>
+                        </a>
+                      )}
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+                          title="View Source Code"
+                        >
+                          <Github size={16} />
+                          <span className="text-xs font-mono hidden sm:inline">Code</span>
+                        </a>
+                      )}
+                      {project.videoUrl && (
+                        <a
+                          href={project.videoUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-muted-foreground hover:text-foreground transition-colors inline-flex items-center gap-1"
+                          title="Watch Demo"
+                        >
+                          <Play size={16} />
+                          <span className="text-xs font-mono hidden sm:inline">Demo</span>
+                        </a>
+                      )}
+                    </div>
                   </div>
 
                   <p className="text-muted-foreground mb-5 leading-relaxed">

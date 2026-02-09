@@ -16,9 +16,8 @@ const projects = [
       "Clean dashboard UI with animations",
     ],
     tech: ["Next.js", "React", "TypeScript", "Node.js", "FastAPI", "MongoDB", "Tailwind"],
-    // Update these URLs after deployment
-    liveUrl: "https://stock-predict-ai-git-vercel-react-serv-c29af7-stockais-projects.vercel.app",
-    githubUrl: "https://github.com/Yogesh-VG0/stockpredict-ai",
+    liveUrl: "https://stock-predict-ai.vercel.app",
+    githubUrl: "https://github.com/Yogesh-VG0/Stock_Predict_Ai",
   },
   {
     title: "ExpenseVision",
@@ -31,7 +30,7 @@ const projects = [
       "Expense analytics with charts",
     ],
     tech: ["Flask", "JavaScript", "HTML/CSS", "Chart.js", "Tesseract OCR"],
-    githubUrl: "https://github.com/Yogesh-VG0/expense-vision",
+    githubUrl: "https://github.com/Yogesh-VG0/ExpenseVision",
   },
   {
     title: "WeatherWise",
@@ -45,7 +44,7 @@ const projects = [
       "Testable code with unittest.mock",
     ],
     tech: ["Python", "OpenWeatherMap API", "HTML/CSS", "unittest"],
-    videoUrl: "https://youtu.be/Nr_Xahy8WAQ",
+    githubUrl: "https://github.com/Yogesh-VG0/weather-dashboard",
   },
 ];
 

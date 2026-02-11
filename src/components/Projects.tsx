@@ -30,6 +30,7 @@ const projects = [
       "Expense analytics with charts",
     ],
     tech: ["Flask", "JavaScript", "HTML/CSS", "Chart.js", "Tesseract OCR"],
+    liveUrl: "https://expensevision-ip5u.onrender.com",
     githubUrl: "https://github.com/Yogesh-VG0/ExpenseVision",
   },
   {

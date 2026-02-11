@@ -23,15 +23,13 @@ const projects = [
     title: "ExpenseVision",
     featured: false,
     description:
-      "Expense tracking web app with receipt OCR (Veryfi API), persistent Supabase DB, and responsive dashboards. Deployed on Render.",
+      "Expense tracking web app with OCR-based receipt scanning and analytics dashboards.",
     highlights: [
-      "Receipt OCR via Veryfi API (line items → description)",
-      "Supabase PostgreSQL for persistent storage",
-      "Secure auth, analytics with Chart.js",
-      "Responsive layout, AED currency, CSV export",
+      "OCR-based receipt extraction",
+      "Secure authentication",
+      "Expense analytics with charts",
     ],
-    tech: ["Flask", "JavaScript", "HTML/CSS", "Chart.js", "Supabase", "Veryfi API", "Render"],
-    liveUrl: "https://expensevision-jt5v.onrender.com",
+    tech: ["Flask", "JavaScript", "HTML/CSS", "Chart.js", "Tesseract OCR"],
     githubUrl: "https://github.com/Yogesh-VG0/ExpenseVision",
   },
   {

@@ -1,6 +1,5 @@
-import type { ReactNode } from "react";
 import { motion, useInView } from "framer-motion";
-import { useRef, useState, useId } from "react";
+import { useId, useRef, useState, type ReactNode } from "react";
 import {
   Star,
   Github,
@@ -52,7 +51,7 @@ const projects: Project[] = [
     role: "Full-stack + ML Engineer",
     year: "2024 – Present",
     description:
-      "An automated pipeline that retrains every day, predicts whether each stock may go up or down over the next 1, 7, and 30 days, shows a confidence level for every prediction, and explains which data signals drove each forecast — all viewable on a live interactive dashboard.",
+      "A daily retraining pipeline that forecasts short-term direction for 1, 7, and 30 days, shows confidence for each prediction, and explains which signals influenced the result — all inside a live interactive dashboard.",
     highlights: [
       "Fully automated: the system retrains and updates predictions every day without manual effort",
       "Pulls from 50+ data signals including price trends, economic indicators, insider activity, and news sentiment",
@@ -66,8 +65,8 @@ const projects: Project[] = [
     defaultHighlights: 4,
     metrics: [
       { icon: <BarChart3 size={14} />, label: "Stocks", value: "100" },
-      { icon: <Layers size={14} />, label: "Timeframes", value: "3" },
-      { icon: <Cpu size={14} />, label: "Data signals", value: "50+" },
+      { icon: <Layers size={14} />, label: "Windows", value: "3" },
+      { icon: <Cpu size={14} />, label: "Signals", value: "50+" },
       { icon: <Calendar size={14} />, label: "Updates", value: "Daily" },
       { icon: <Sparkles size={14} />, label: "Insights", value: "AI-powered" },
     ],
@@ -157,7 +156,7 @@ const ExpandableHighlights = ({
           onClick={() => setExpanded(!expanded)}
           aria-expanded={expanded}
           aria-controls={listId}
-          className="inline-flex items-center gap-1 text-xs font-mono text-primary/70 hover:text-primary transition-colors mt-1 py-1"
+          className="inline-flex items-center gap-1 text-xs font-mono text-primary/70 hover:text-primary transition-colors mt-1 py-1 px-2 -ml-2 rounded-lg hover:bg-primary/10"
         >
           <ChevronDown
             size={13}
@@ -228,9 +227,7 @@ const FeaturedCard = ({ project }: { project: Project }) => (
           >
             <span className="text-primary/70">{m.icon}</span>
             <span className="font-semibold text-foreground/80">{m.value}</span>
-            <span className="text-muted-foreground/40 hidden xs:inline">
-              {m.label}
-            </span>
+            <span className="text-muted-foreground/50">{m.label}</span>
           </div>
         ))}
       </div>

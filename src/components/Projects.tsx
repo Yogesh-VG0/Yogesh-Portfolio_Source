@@ -213,7 +213,7 @@ const FeaturedCard = ({ project }: { project: Project }) => (
     <p className="text-sm text-muted-foreground/60 font-medium mb-3">
       {project.tagline}
     </p>
-    <p className="text-sm md:text-[15px] text-muted-foreground/70 leading-relaxed mb-5 max-w-prose">
+    <p className="text-sm md:text-[15px] text-muted-foreground/70 leading-relaxed mb-5">
       {project.description}
     </p>
 
@@ -318,7 +318,7 @@ const ProjectCard = ({ project }: { project: Project }) => (
     <p className="text-[13px] text-muted-foreground/55 font-medium mb-2">
       {project.tagline}
     </p>
-    <p className="text-sm text-muted-foreground/70 leading-relaxed mb-4 max-w-prose">
+    <p className="text-sm text-muted-foreground/70 leading-relaxed mb-4">
       {project.description}
     </p>
 

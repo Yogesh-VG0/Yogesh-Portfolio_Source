@@ -1,85 +1,112 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Github, Linkedin } from "lucide-react";
+import { ArrowDown, Github, Linkedin, FileDown } from "lucide-react";
 import BackgroundBeams from "./BackgroundBeams";
 import Typewriter from "./Typewriter";
+import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center section-padding pt-28 overflow-hidden">
+    <section className="relative min-h-screen flex items-center justify-center section-padding pt-24 overflow-hidden">
       <BackgroundBeams />
-      {/* Subtle gradient orb - responsive sizing */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[300px] h-[300px] sm:w-[400px] sm:h-[400px] md:w-[600px] md:h-[600px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
 
-      <div className="container mx-auto max-w-4xl text-center relative z-10 px-4">
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-        >
-          <p className="text-primary font-mono text-sm mb-4 tracking-wider">
-            Full-Stack Developer · Dubai, UAE
-          </p>
+      {/* Dual gradient orbs for depth */}
+      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[420px] sm:h-[420px] md:w-[640px] md:h-[640px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute bottom-1/4 right-1/4 w-[200px] h-[200px] md:w-[400px] md:h-[400px] bg-cyan-500/5 rounded-full blur-3xl pointer-events-none" />
 
-          <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold leading-tight tracking-tight mb-6">
-            Hi, I'm{" "}
-            <span className="text-primary">Yogesh Vadivel</span>
-          </h1>
-
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed">
-            I build{" "}
-            <Typewriter
-              words={[
-                "scalable web apps",
-                "modern dashboards",
-                "AI-powered solutions",
-                "beautiful interfaces",
-              ]}
-              typingSpeed={80}
-              deletingSpeed={40}
-              delayBetweenWords={2000}
-            />{" "}
-            using React and modern technologies.
-          </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-3">
-            <a
-              href="#projects"
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-lg bg-primary text-primary-foreground font-medium text-sm hover:opacity-90 transition-opacity"
-            >
-              View Projects
-              <ArrowDown size={16} />
-            </a>
-            <a
-              href="https://github.com/Yogesh-VG0"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-secondary transition-colors"
-            >
-              <Github size={16} />
-              GitHub
-            </a>
-            <a
-              href="https://www.linkedin.com/in/yogesh-vadivel-a287a6269/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-secondary transition-colors"
-            >
-              <Linkedin size={16} />
-              LinkedIn
-            </a>
-            {/* TODO: Add your resume PDF to /public/resume.pdf and uncomment */}
-            {/* <a
-              href="/resume.pdf"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-5 py-3 rounded-lg border border-border text-foreground font-medium text-sm hover:bg-secondary transition-colors"
-            >
-              <FileDown size={16} />
-              Resume
-            </a> */}
-          </div>
+      <motion.div
+        className="container mx-auto max-w-4xl text-center relative z-10 px-4"
+        variants={staggerContainer(0.12)}
+        initial="hidden"
+        animate="visible"
+      >
+        {/* Status badge */}
+        <motion.div variants={fadeUp} className="mb-6">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/60 bg-card/40 backdrop-blur-md text-xs font-mono text-muted-foreground">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
+            </span>
+            Open to opportunities · Dubai, UAE
+          </span>
         </motion.div>
-      </div>
+
+        {/* Main heading */}
+        <motion.h1
+          variants={fadeUp}
+          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-6"
+        >
+          Hi, I'm{" "}
+          <span className="text-gradient">Yogesh Vadivel</span>
+        </motion.h1>
+
+        {/* Subtitle with typewriter */}
+        <motion.p
+          variants={fadeUp}
+          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
+        >
+          I build{" "}
+          <Typewriter
+            words={[
+              "scalable web apps",
+              "modern dashboards",
+              "AI-powered solutions",
+              "beautiful interfaces",
+            ]}
+            typingSpeed={80}
+            deletingSpeed={40}
+            delayBetweenWords={2000}
+          />{" "}
+          <br className="hidden sm:block" />
+          using React and modern technologies.
+        </motion.p>
+
+        {/* CTA buttons */}
+        <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-3">
+          <motion.a
+            href="#projects"
+            whileHover={{ scale: 1.04 }}
+            whileTap={tapScale}
+            className="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-shadow"
+          >
+            View Projects
+            <ArrowDown size={16} className="animate-float" />
+          </motion.a>
+          <motion.a
+            href="https://github.com/Yogesh-VG0"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.04 }}
+            whileTap={tapScale}
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
+          >
+            <Github size={16} />
+            GitHub
+          </motion.a>
+          <motion.a
+            href="https://www.linkedin.com/in/yogesh-vadivel-a287a6269/"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.04 }}
+            whileTap={tapScale}
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
+          >
+            <Linkedin size={16} />
+            LinkedIn
+          </motion.a>
+          {/* TODO: Add resume PDF to /public/resume.pdf and uncomment */}
+          {/* <motion.a
+            href="/resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale: 1.04 }}
+            whileTap={tapScale}
+            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
+          >
+            <FileDown size={16} />
+            Resume
+          </motion.a> */}
+        </motion.div>
+      </motion.div>
     </section>
   );
 };

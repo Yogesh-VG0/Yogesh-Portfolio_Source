@@ -30,7 +30,6 @@ interface Project {
   featured: boolean;
   status: "Production" | "In Progress" | "Open Source" | "Archived";
   statusColor: string;
-  role: string;
   year: string;
   description: string;
   highlights: string[];
@@ -49,7 +48,6 @@ const projects: Project[] = [
     featured: true,
     status: "Production",
     statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-    role: "Full-stack + ML Engineer",
     year: "2025 – Present",
     description:
       "A daily retraining pipeline that forecasts short-term direction for 1, 7, and 30 days, shows confidence for each prediction, and explains which signals influenced the result — all inside a live interactive dashboard.",
@@ -93,7 +91,6 @@ const projects: Project[] = [
     featured: false,
     status: "Production",
     statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
-    role: "Full-stack Developer",
     year: "2025",
     description:
       "Upload or photograph a receipt and the app reads it automatically, extracts the amount and vendor, sorts it into a category that gets smarter over time, and shows interactive spending charts.",
@@ -126,7 +123,6 @@ const projects: Project[] = [
     featured: false,
     status: "Open Source",
     statusColor: "text-sky-400 bg-sky-500/10 border-sky-500/20",
-    role: "Developer",
     year: "2025",
     description:
       "A command-line app that fetches live weather data and generates clean, styled HTML reports you can open in any browser.",
@@ -245,10 +241,6 @@ const ProjectCard = ({
           <CircleDot size={8} />
           {project.status}
         </span>
-        <span className="text-[11px] text-muted-foreground/50 font-mono">
-          {project.role}
-        </span>
-        <span className="text-[11px] text-muted-foreground/30">·</span>
         <span className="text-[11px] text-muted-foreground/50 font-mono">
           {project.year}
         </span>

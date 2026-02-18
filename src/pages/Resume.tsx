@@ -45,37 +45,34 @@ const Resume = () => {
       <main className="flex-1 flex flex-col">
         <div className="flex-1 container mx-auto max-w-5xl px-2 sm:px-4 py-4 sm:py-6 flex flex-col">
           <div className="flex-1 rounded-xl border border-border/30 bg-card/30 overflow-hidden shadow-lg min-h-[70vh] sm:min-h-[80vh]">
-            <object
-              data={RESUME_PATH}
-              type="application/pdf"
+            <iframe
+              src={RESUME_PATH}
+              title="Yogesh Vadivel Resume"
               className="w-full h-full min-h-[70vh] sm:min-h-[80vh]"
-            >
-              {/* Fallback for browsers / mobile that can't embed PDF */}
-              <div className="flex flex-col items-center justify-center gap-6 p-8 text-center min-h-[50vh]">
-                <p className="text-muted-foreground text-sm max-w-md">
-                  Your browser doesn't support embedded PDFs. Use the button
-                  below to view or download the resume.
-                </p>
-                <div className="flex flex-col sm:flex-row gap-3">
-                  <a
-                    href={RESUME_PATH}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-lg shadow-primary/15"
-                  >
-                    Open PDF
-                  </a>
-                  <a
-                    href={RESUME_PATH}
-                    download="Yogesh_Vadivel_Resume.pdf"
-                    className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-secondary/60 text-muted-foreground text-sm font-medium border border-border/30 hover:text-foreground hover:bg-secondary/80 transition-colors"
-                  >
-                    <Download size={14} />
-                    Download
-                  </a>
-                </div>
-              </div>
-            </object>
+            />
+          </div>
+          <div className="mt-4 flex flex-col items-center gap-3 text-center">
+            <p className="text-muted-foreground text-xs sm:text-sm max-w-md">
+              If the resume doesn&apos;t load above, you can open or download it using the buttons below.
+            </p>
+            <div className="flex flex-col sm:flex-row gap-3">
+              <a
+                href={RESUME_PATH}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-lg shadow-primary/15"
+              >
+                Open PDF
+              </a>
+              <a
+                href={RESUME_PATH}
+                download="Yogesh_Vadivel_Resume.pdf"
+                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-secondary/60 text-muted-foreground text-sm font-medium border border-border/30 hover:text-foreground hover:bg-secondary/80 transition-colors"
+              >
+                <Download size={14} />
+                Download
+              </a>
+            </div>
           </div>
         </div>
       </main>

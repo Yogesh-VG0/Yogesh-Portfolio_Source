@@ -1,5 +1,6 @@
 import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, FileDown } from "lucide-react";
+import { Link } from "react-router-dom";
 import BackgroundBeams from "./BackgroundBeams";
 import Typewriter from "./Typewriter";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
@@ -93,17 +94,16 @@ const Hero = () => {
             <Linkedin size={16} />
             LinkedIn
           </motion.a>
-          <motion.a
-            href="https://drive.google.com/file/d/1G4xA-t0PIzSj3F3uYti2kMp9NE7RuMfN/view?usp=sharing"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.04 }}
-            whileTap={tapScale}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
-          >
-            <FileDown size={16} />
-            Resume
-          </motion.a>
+          <Link to="/resume">
+            <motion.span
+              whileHover={{ scale: 1.04 }}
+              whileTap={tapScale}
+              className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
+            >
+              <FileDown size={16} />
+              Resume
+            </motion.span>
+          </Link>
         </motion.div>
       </motion.div>
     </section>

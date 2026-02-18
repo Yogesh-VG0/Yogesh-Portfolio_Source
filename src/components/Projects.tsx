@@ -1,10 +1,9 @@
 import { motion, useInView } from "framer-motion";
-import { useId, useRef, useState, type ReactNode } from "react";
+import { useRef, type ReactNode } from "react";
 import {
   Star,
   Github,
   ExternalLink,
-  ChevronDown,
   BarChart3,
   Cpu,
   Layers,
@@ -33,7 +32,6 @@ interface Project {
   year: string;
   description: string;
   highlights: string[];
-  defaultHighlights: number;
   metrics?: ProjectMetric[];
   tech: string[];
   liveUrl?: string;
@@ -44,29 +42,28 @@ const projects: Project[] = [
   {
     title: "StockPredict AI",
     tagline:
-      "Daily AI predictions for the top 100 US stocks — with confidence scores and clear explanations",
+      "Full-stack ML platform that predicts, explains, and tracks S&P 100 stocks daily",
     featured: true,
     status: "Production",
     statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
     year: "2025 – Present",
     description:
-      "A daily retraining pipeline that forecasts short-term direction for 1, 7, and 30 days, shows confidence for each prediction, and explains which signals influenced the result — all inside a live interactive dashboard.",
+      "An end-to-end stock prediction system that runs a fully automated daily pipeline — fetching market data, training LightGBM models, generating price forecasts for 1-day, 7-day, and 30-day horizons, and writing plain-English explanations powered by Google Gemini. Everything is served through a real-time Next.js dashboard with live WebSocket prices, TradingView charts, and interactive heatmaps.",
     highlights: [
-      "Fully automated: the system retrains and updates predictions every day without manual effort",
-      "Pulls from 50+ data signals including price trends, economic indicators, insider activity, and news sentiment",
-      "Analyzes news from multiple sources and scores how positive or negative the coverage is for each stock",
-      "Every prediction comes with a plain-English explanation of the key drivers behind it",
-      "AI-generated market summaries written by Google Gemini give a quick overview of each stock",
-      "Live price updates stream into the dashboard in real time via WebSocket",
-      "Interactive charts, heatmaps, and an economic calendar built with TradingView widgets",
-      "Tracks prediction history so you can see how accurate the model has been over time",
+      "Automated daily pipeline via GitHub Actions: data ingestion, model training, predictions, and AI explanations — zero manual intervention",
+      "50+ engineered features per stock including price technicals, macro indicators, insider trades, short interest, and multi-source sentiment",
+      "Sentiment analysis from 10+ sources (Finnhub, RSS, Reddit, Seeking Alpha) scored by FinBERT, RoBERTa, and VADER NLP models",
+      "SHAP-based explainability breaks down each prediction into the exact features that drove it, then Gemini writes a stock-specific briefing",
+      "Gemini model auto-fallback chain (Pro → Flash → Flash-Lite) with per-model rate tracking to maximize free-tier API usage",
+      "Real-time WebSocket price streaming, TradingView advanced charts, market heatmaps, and an economic calendar",
+      "Prediction history tracking with model evaluation and drift monitoring to measure accuracy over time",
+      "Data retention policy automatically cleans up old documents across all MongoDB collections",
     ],
-    defaultHighlights: 4,
     metrics: [
       { icon: <BarChart3 size={14} />, label: "Stocks", value: "100" },
-      { icon: <Layers size={14} />, label: "Windows", value: "3" },
-      { icon: <Cpu size={14} />, label: "Signals", value: "50+" },
-      { icon: <Calendar size={14} />, label: "Updates", value: "Daily" },
+      { icon: <Layers size={14} />, label: "Horizons", value: "3" },
+      { icon: <Cpu size={14} />, label: "Features", value: "50+" },
+      { icon: <Calendar size={14} />, label: "Pipeline", value: "Daily" },
       { icon: <Sparkles size={14} />, label: "Insights", value: "AI-powered" },
     ],
     tech: [
@@ -76,10 +73,12 @@ const projects: Project[] = [
       "Node.js",
       "FastAPI",
       "LightGBM",
+      "SHAP",
       "MongoDB",
       "Redis",
       "WebSocket",
       "Tailwind",
+      "GitHub Actions",
     ],
     liveUrl: "https://stock-predict-ai.vercel.app",
     githubUrl: "https://github.com/Yogesh-VG0/Stock_Predict_Ai",
@@ -87,22 +86,21 @@ const projects: Project[] = [
   {
     title: "ExpenseVision",
     tagline:
-      "Snap a receipt, auto-categorize, and visualize your spending instantly",
+      "AI-powered expense tracker with receipt scanning and spending insights",
     featured: false,
     status: "Production",
     statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
     year: "2025",
     description:
-      "Upload or photograph a receipt and the app reads it automatically, extracts the amount and vendor, sorts it into a category that gets smarter over time, and shows interactive spending charts.",
+      "A full-stack expense management app that lets you snap or upload a receipt, automatically reads it with OCR, extracts the amount and vendor using AI, and categorizes it with a classifier that learns from your habits. Interactive Chart.js dashboards break down spending by category, month, and day — plus an AI coach gives personalized tips on your budget.",
     highlights: [
-      "Two receipt-reading engines: a cloud API for speed plus a local fallback so it always works",
-      "Smart categorization that learns your habits — the more you use it, the better it gets",
-      "Visual dashboards: spending by category, monthly trends, and daily breakdowns",
-      "Drag-and-drop upload with auto-extracted amount, vendor, and date",
-      "Dark/light theme with a mobile-friendly sidebar for easy navigation",
-      "Export to CSV, filter by date or category, and secure login/signup",
+      "Dual OCR pipeline: Veryfi cloud API for production speed, Tesseract local fallback so receipt scanning always works offline",
+      "AI-powered receipt parsing via DeepSeek R1 extracts amount, vendor, date, and category from raw OCR text",
+      "ML keyword classifier trained on your data — auto-categorization gets smarter the more you use it",
+      "AI spending insights: a DeepSeek-powered finance coach analyzes your transactions and gives actionable advice",
+      "Interactive Chart.js dashboards: category breakdown, monthly trends, and daily spending patterns",
+      "Drag-and-drop upload, CSV export, date/category filters, dark/light theme, and mobile-friendly sidebar",
     ],
-    defaultHighlights: 4,
     tech: [
       "Flask",
       "Python",
@@ -112,6 +110,7 @@ const projects: Project[] = [
       "Chart.js",
       "Tesseract OCR",
       "Veryfi API",
+      "DeepSeek R1",
     ],
     liveUrl: "https://expensevision-ip5u.onrender.com",
     githubUrl: "https://github.com/Yogesh-VG0/ExpenseVision",
@@ -125,70 +124,17 @@ const projects: Project[] = [
     statusColor: "text-sky-400 bg-sky-500/10 border-sky-500/20",
     year: "2025",
     description:
-      "A command-line app that fetches live weather data and generates clean, styled HTML reports you can open in any browser.",
+      "A Python CLI app that fetches live weather data from OpenWeatherMap and generates a clean, styled HTML report you can open in any browser. Built as a CS50P final project with input validation and full test coverage.",
     highlights: [
-      "Live weather data from OpenWeatherMap with city search",
+      "Live weather data from OpenWeatherMap with city search and error handling",
       "Generates a styled HTML report you can save and share",
-      "Input validation so typos and bad queries are handled gracefully",
+      "Input validation for graceful handling of typos and bad queries",
       "Fully tested with automated unit tests",
     ],
-    defaultHighlights: 4,
     tech: ["Python", "OpenWeatherMap API", "HTML/CSS", "unittest"],
     githubUrl: "https://github.com/Yogesh-VG0/weather-dashboard",
   },
 ];
-
-/* ------------------------------------------------------------------ */
-/*  Expandable highlights (accessible)                                 */
-/* ------------------------------------------------------------------ */
-const ExpandableHighlights = ({
-  highlights,
-  defaultCount,
-}: {
-  highlights: string[];
-  defaultCount: number;
-}) => {
-  const [expanded, setExpanded] = useState(false);
-  const listId = useId();
-  const hasMore = highlights.length > defaultCount;
-  const visible = expanded ? highlights : highlights.slice(0, defaultCount);
-
-  return (
-    <div>
-      <ul
-        id={listId}
-        className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 mb-2"
-      >
-        {visible.map((h) => (
-          <li
-            key={h}
-            className="text-[13px] leading-relaxed text-muted-foreground/80 flex items-start gap-2.5"
-          >
-            <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-[6px] flex-shrink-0" />
-            {h}
-          </li>
-        ))}
-      </ul>
-      {hasMore && (
-        <button
-          type="button"
-          onClick={() => setExpanded(!expanded)}
-          aria-expanded={expanded}
-          aria-controls={listId}
-          className="inline-flex items-center gap-1 text-xs font-mono text-primary/70 hover:text-primary transition-colors mt-1 py-1 px-2 -ml-2 rounded-lg hover:bg-primary/10"
-        >
-          <ChevronDown
-            size={13}
-            className={`transition-transform duration-200 ${expanded ? "rotate-180" : ""}`}
-          />
-          {expanded
-            ? "Show less"
-            : `Show more (${highlights.length - defaultCount})`}
-        </button>
-      )}
-    </div>
-  );
-};
 
 /* ------------------------------------------------------------------ */
 /*  Unified project card                                               */
@@ -211,7 +157,7 @@ const ProjectCard = ({
           : "bg-card/40 border-border/30 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/3"
       }`}
     >
-      {/* Ambient glow — stronger for featured, subtle for standard */}
+      {/* Ambient glow */}
       <div
         className={`absolute -top-24 -right-24 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${
           isFeatured ? "w-48 h-48 bg-primary/5" : "w-32 h-32 bg-primary/4"
@@ -279,11 +225,18 @@ const ProjectCard = ({
         </div>
       )}
 
-      {/* Expandable highlights */}
-      <ExpandableHighlights
-        highlights={project.highlights}
-        defaultCount={project.defaultHighlights}
-      />
+      {/* Highlights — always fully visible */}
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 mb-2">
+        {project.highlights.map((h) => (
+          <li
+            key={h}
+            className="text-[13px] leading-relaxed text-muted-foreground/80 flex items-start gap-2.5"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-[6px] flex-shrink-0" />
+            {h}
+          </li>
+        ))}
+      </ul>
 
       {/* Tech chips */}
       <div className="flex flex-wrap gap-1.5 mt-5 mb-6">
@@ -297,7 +250,7 @@ const ProjectCard = ({
         ))}
       </div>
 
-      {/* CTA buttons — stack vertically on mobile */}
+      {/* CTA buttons */}
       <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
         {project.liveUrl && (
           <motion.a

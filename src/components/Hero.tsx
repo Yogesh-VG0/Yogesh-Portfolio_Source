@@ -93,9 +93,8 @@ const Hero = () => {
             <Linkedin size={16} />
             LinkedIn
           </motion.a>
-          {/* TODO: Add resume PDF to /public/resume.pdf and uncomment */}
-          {/* <motion.a
-            href="/resume.pdf"
+          <motion.a
+            href="https://drive.google.com/file/d/1G4xA-t0PIzSj3F3uYti2kMp9NE7RuMfN/view?usp=sharing"
             target="_blank"
             rel="noopener noreferrer"
             whileHover={{ scale: 1.04 }}
@@ -104,7 +103,7 @@ const Hero = () => {
           >
             <FileDown size={16} />
             Resume
-          </motion.a> */}
+          </motion.a>
         </motion.div>
       </motion.div>
     </section>

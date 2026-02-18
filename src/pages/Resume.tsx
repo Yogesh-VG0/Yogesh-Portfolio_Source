@@ -2,6 +2,8 @@ import { motion } from "framer-motion";
 import { Download, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
+import { Worker, Viewer } from "@react-pdf-viewer/core";
+import "@react-pdf-viewer/core/lib/styles/index.css";
 
 const RESUME_PATH = "/Yogesh_Resume.pdf";
 
@@ -45,34 +47,22 @@ const Resume = () => {
       <main className="flex-1 flex flex-col">
         <div className="flex-1 container mx-auto max-w-5xl px-2 sm:px-4 py-4 sm:py-6 flex flex-col">
           <div className="flex-1 rounded-xl border border-border/30 bg-card/30 overflow-hidden shadow-lg min-h-[70vh] sm:min-h-[80vh]">
-            <iframe
-              src={RESUME_PATH}
-              title="Yogesh Vadivel Resume"
-              className="w-full h-full min-h-[70vh] sm:min-h-[80vh]"
-            />
+            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
+              <Viewer fileUrl={RESUME_PATH} />
+            </Worker>
           </div>
           <div className="mt-4 flex flex-col items-center gap-3 text-center">
             <p className="text-muted-foreground text-xs sm:text-sm max-w-md">
-              If the resume doesn&apos;t load above, you can open or download it using the buttons below.
+              If the viewer doesn&apos;t load on your device, you can open the resume directly in a new tab.
             </p>
-            <div className="flex flex-col sm:flex-row gap-3">
-              <a
-                href={RESUME_PATH}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-lg shadow-primary/15"
-              >
-                Open PDF
-              </a>
-              <a
-                href={RESUME_PATH}
-                download="Yogesh_Vadivel_Resume.pdf"
-                className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-secondary/60 text-muted-foreground text-sm font-medium border border-border/30 hover:text-foreground hover:bg-secondary/80 transition-colors"
-              >
-                <Download size={14} />
-                Download
-              </a>
-            </div>
+            <a
+              href={RESUME_PATH}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-lg shadow-primary/15"
+            >
+              Open in New Tab
+            </a>
           </div>
         </div>
       </main>

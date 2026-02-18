@@ -51,19 +51,6 @@ const Resume = () => {
               <Viewer fileUrl={RESUME_PATH} />
             </Worker>
           </div>
-          <div className="mt-4 flex flex-col items-center gap-3 text-center">
-            <p className="text-muted-foreground text-xs sm:text-sm max-w-md">
-              If the viewer doesn&apos;t load on your device, you can open the resume directly in a new tab.
-            </p>
-            <a
-              href={RESUME_PATH}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex items-center justify-center gap-2 px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-lg shadow-primary/15"
-            >
-              Open in New Tab
-            </a>
-          </div>
         </div>
       </main>
     </div>

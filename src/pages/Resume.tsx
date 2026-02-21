@@ -1,20 +1,13 @@
 import { motion } from "framer-motion";
-import { Download, ArrowLeft, FileWarning } from "lucide-react";
+import { Download, ArrowLeft, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
-import { Worker, Viewer, SpecialZoomLevel } from "@react-pdf-viewer/core";
-import "@react-pdf-viewer/core/lib/styles/index.css";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 // PDF in public/ is served at root (or base URL when deployed)
 const BASE = (import.meta.env.BASE_URL || "/").replace(/\/$/, "") || "";
 const RESUME_PATH = `${BASE}/Yogesh_Resume.pdf`.replace(/\/+/g, "/");
 
 const Resume = () => {
-  const isMobile = useIsMobile();
-  // Desktop: slightly smaller default so it's not zoomed in too much. Mobile: PageFit so the resume fills the viewport and no big gap below.
-  const defaultScale = isMobile ? SpecialZoomLevel.PageFit : 0.9;
-
   return (
     <div className="resume-page min-h-screen w-full max-w-full overflow-x-hidden bg-background text-foreground flex flex-col">
       {/* Top bar */}
@@ -35,7 +28,18 @@ const Resume = () => {
             </Link>
           </motion.div>
 
-          <motion.div variants={fadeUp} className="shrink-0">
+          <motion.div variants={fadeUp} className="shrink-0 flex items-center gap-2">
+            <motion.a
+              href={RESUME_PATH}
+              target="_blank"
+              rel="noopener noreferrer"
+              whileHover={{ scale: 1.04 }}
+              whileTap={tapScale}
+              className="inline-flex items-center gap-2 px-3 py-2 sm:px-4 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
+            >
+              <ExternalLink size={15} />
+              <span className="hidden sm:inline">Open in new tab</span>
+            </motion.a>
             <motion.a
               href={RESUME_PATH}
               download="Yogesh_Vadivel_Resume.pdf"
@@ -50,32 +54,23 @@ const Resume = () => {
         </div>
       </motion.header>
 
-      {/* PDF viewer - full width, no horizontal scroll */}
-      <main className="flex-1 flex flex-col min-w-0 w-full">
-        <div className="flex-1 w-full max-w-full min-w-0 px-2 sm:px-3 md:px-4 py-3 sm:py-4 md:py-6">
-          <div className="resume-viewer-wrapper w-full max-w-full min-w-0 flex-1 rounded-none sm:rounded-xl border-0 sm:border border-border/30 bg-background overflow-hidden shadow-none sm:shadow-lg min-h-[calc(100vh-3.5rem)] sm:min-h-[calc(100vh-4rem)] md:min-h-[80vh]">
-            <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
-              <Viewer
-                fileUrl={RESUME_PATH}
-                defaultScale={defaultScale}
-                renderError={() => (
-                  <div className="flex flex-col items-center justify-center gap-4 min-h-[60vh] sm:min-h-[70vh] p-6 sm:p-8 text-center text-muted-foreground">
-                    <FileWarning size={40} className="opacity-60 sm:w-12 sm:h-12" />
-                    <p className="text-sm sm:text-base">Could not load the PDF. You can still download the resume.</p>
-                    <motion.a
-                      href={RESUME_PATH}
-                      download="Yogesh_Vadivel_Resume.pdf"
-                      whileHover={{ scale: 1.04 }}
-                      whileTap={tapScale}
-                      className="inline-flex items-center gap-2 px-5 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm"
-                    >
-                      <Download size={18} />
-                      Download Resume
-                    </motion.a>
-                  </div>
-                )}
-              />
-            </Worker>
+      {/* PDF via iframe - browser native, no resize loops, works on mobile */}
+      <main className="flex-1 flex flex-col min-w-0 w-full min-h-0">
+        <div className="flex-1 w-full max-w-full min-w-0 min-h-0 px-2 sm:px-3 md:px-4 py-3 sm:py-4 md:py-6 flex flex-col">
+          <div className="resume-viewer-wrapper flex-1 w-full max-w-full min-h-0 rounded-none sm:rounded-xl border-0 sm:border border-border/30 bg-muted/30 overflow-hidden shadow-none sm:shadow-lg flex flex-col">
+            <iframe
+              title="Yogesh Vadivel Resume"
+              src={RESUME_PATH}
+              className="w-full flex-1 min-h-[calc(100vh-6rem)] sm:min-h-[80vh] border-0"
+              style={{ minHeight: "calc(100vh - 6rem)" }}
+            />
+            <p className="sr-only">
+              If the resume does not display,{" "}
+              <a href={RESUME_PATH} target="_blank" rel="noopener noreferrer">
+                open the PDF in a new tab
+              </a>{" "}
+              or use the Download button above.
+            </p>
           </div>
         </div>
       </main>

@@ -166,6 +166,50 @@
   }
 }
 
+/* ================================================================== */
+/*  Resume page only: no white sides, full-width PDF viewer, no sidescroll */
+/* ================================================================== */
+.resume-page {
+  /* Override PDF viewer so left/right areas use theme background, not white */
+  --rpv-core__inner-page-background-color: hsl(var(--background));
+  --rpv-core__doc-loading-background-color: hsl(var(--background));
+  --rpv-core__doc-error-background-color: hsl(var(--background));
+}
+
+.resume-page .resume-viewer-wrapper {
+  /* Viewer fills wrapper; no overflow to the side */
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.resume-page .resume-viewer-wrapper .rpv-core__viewer {
+  width: 100% !important;
+  min-width: 0;
+  flex: 1;
+  min-height: 0;
+}
+
+.resume-page .resume-viewer-wrapper .rpv-core__inner-container {
+  width: 100%;
+  min-width: 0;
+}
+
+.resume-page .resume-viewer-wrapper .rpv-core__inner-pages {
+  width: 100%;
+  min-width: 0;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.resume-page .resume-viewer-wrapper .rpv-core__page-layer {
+  max-width: 100%;
+}
+
+.resume-page .resume-viewer-wrapper .rpv-core__inner-page {
+  background-color: hsl(var(--background));
+}
+
 /* Mobile-first responsive fixes */
 @media (max-width: 640px) {
   .container {

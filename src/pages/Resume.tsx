@@ -2,14 +2,19 @@ import { motion } from "framer-motion";
 import { Download, ArrowLeft, FileWarning } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
-import { Worker, Viewer } from "@react-pdf-viewer/core";
+import { Worker, Viewer, SpecialZoomLevel } from "@react-pdf-viewer/core";
 import "@react-pdf-viewer/core/lib/styles/index.css";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // PDF in public/ is served at root (or base URL when deployed)
 const BASE = (import.meta.env.BASE_URL || "/").replace(/\/$/, "") || "";
 const RESUME_PATH = `${BASE}/Yogesh_Resume.pdf`.replace(/\/+/g, "/");
 
 const Resume = () => {
+  const isMobile = useIsMobile();
+  // Desktop: slightly smaller default so it's not zoomed in too much. Mobile: PageFit so the resume fills the viewport and no big gap below.
+  const defaultScale = isMobile ? SpecialZoomLevel.PageFit : 0.9;
+
   return (
     <div className="resume-page min-h-screen w-full max-w-full overflow-x-hidden bg-background text-foreground flex flex-col">
       {/* Top bar */}
@@ -48,10 +53,11 @@ const Resume = () => {
       {/* PDF viewer - full width, no horizontal scroll */}
       <main className="flex-1 flex flex-col min-w-0 w-full">
         <div className="flex-1 w-full max-w-full min-w-0 px-2 sm:px-3 md:px-4 py-3 sm:py-4 md:py-6">
-          <div className="resume-viewer-wrapper w-full max-w-full min-w-0 flex-1 rounded-none sm:rounded-xl border-0 sm:border border-border/30 bg-background overflow-hidden shadow-none sm:shadow-lg min-h-[calc(100vh-5rem)] sm:min-h-[80vh]">
+          <div className="resume-viewer-wrapper w-full max-w-full min-w-0 flex-1 rounded-none sm:rounded-xl border-0 sm:border border-border/30 bg-background overflow-hidden shadow-none sm:shadow-lg min-h-[calc(100vh-3.5rem)] sm:min-h-[calc(100vh-4rem)] md:min-h-[80vh]">
             <Worker workerUrl="https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js">
               <Viewer
                 fileUrl={RESUME_PATH}
+                defaultScale={defaultScale}
                 renderError={() => (
                   <div className="flex flex-col items-center justify-center gap-4 min-h-[60vh] sm:min-h-[70vh] p-6 sm:p-8 text-center text-muted-foreground">
                     <FileWarning size={40} className="opacity-60 sm:w-12 sm:h-12" />

@@ -9,8 +9,6 @@ import { useIsMobile } from "@/hooks/use-mobile";
 const BASE = (import.meta.env.BASE_URL || "/").replace(/\/$/, "") || "";
 const RESUME_PATH = `${BASE}/Yogesh_Resume.pdf`.replace(/\/+/g, "/");
 
-const PDF_WORKER_URL = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
-
 const Resume = () => {
   const isMobile = useIsMobile();
 
@@ -35,7 +33,6 @@ const Resume = () => {
           </motion.div>
 
           <motion.div variants={fadeUp} className="shrink-0 flex items-center gap-2">
-            {/* Open in new tab: desktop only (mobile can't embed PDF; we show in-page viewer instead) */}
             <motion.a
               href={RESUME_PATH}
               target="_blank"
@@ -61,7 +58,7 @@ const Resume = () => {
         </div>
       </motion.header>
 
-      {/* Desktop: iframe. Mobile: PDF.js viewer (canvas) so PDF is viewable in-page */}
+      {/* Desktop: direct PDF iframe. Mobile: Google Docs viewer iframe (reliable on mobile, no glitches) */}
       <main className="flex-1 flex flex-col min-w-0 w-full min-h-0">
         <div className="flex-1 w-full max-w-full min-w-0 min-h-0 px-2 sm:px-3 md:px-4 py-3 sm:py-4 md:py-6 flex flex-col">
           <div className="resume-viewer-wrapper flex-1 w-full max-w-full min-h-0 rounded-none sm:rounded-xl border-0 sm:border border-border/30 bg-muted/30 overflow-hidden shadow-none sm:shadow-lg flex flex-col">
@@ -82,7 +79,7 @@ const Resume = () => {
                 </p>
               </>
             ) : (
-              <MobilePdfViewer />
+              <GooglePdfViewer />
             )}
           </div>
         </div>
@@ -91,39 +88,67 @@ const Resume = () => {
   );
 };
 
-/** Mobile-only PDF viewer using PDF.js (canvas). PageWidth = fit to container width so full page is visible left-to-right. */
-function MobilePdfViewer() {
-  const [Core, setCore] = React.useState<typeof import("@react-pdf-viewer/core") | null>(null);
+/** Mobile: Google Docs viewer iframe. If the doc shows blank (Google slow), reload iframe. */
+function GooglePdfViewer() {
+  const iframeRef = React.useRef<HTMLIFrameElement>(null);
+  const intervalRef = React.useRef<ReturnType<typeof setInterval> | null>(null);
+  const [viewerSrc, setViewerSrc] = React.useState<string>("");
 
   React.useEffect(() => {
-    let cancelled = false;
-    Promise.all([
-      import("@react-pdf-viewer/core"),
-      import("@react-pdf-viewer/core/lib/styles/index.css"),
-    ]).then(([core]) => {
-      if (cancelled) return;
-      setCore(core);
-    });
-    return () => {
-      cancelled = true;
-    };
+    const fullPdfUrl = `${window.location.origin}${RESUME_PATH}`;
+    setViewerSrc(
+      `https://docs.google.com/gview?url=${encodeURIComponent(fullPdfUrl)}&embedded=true`
+    );
   }, []);
 
-  if (!Core) {
+  const clearCheckingInterval = React.useCallback(() => {
+    if (intervalRef.current) {
+      clearInterval(intervalRef.current);
+      intervalRef.current = null;
+    }
+  }, []);
+
+  const onIframeLoad = React.useCallback(() => {
+    clearCheckingInterval();
+  }, [clearCheckingInterval]);
+
+  React.useEffect(() => {
+    if (!viewerSrc) return;
+
+    intervalRef.current = setInterval(() => {
+      try {
+        const iframe = iframeRef.current;
+        if (!iframe?.contentWindow?.document?.body) return;
+        // Google sometimes returns blank (204); reload iframe to retry
+        if (iframe.contentWindow.document.body.innerHTML === "") {
+          iframe.src = viewerSrc;
+        }
+      } catch {
+        // CORS: we can't read cross-origin content. Doc has loaded, stop checking.
+        clearCheckingInterval();
+      }
+    }, 4000);
+
+    return clearCheckingInterval;
+  }, [viewerSrc, clearCheckingInterval]);
+
+  if (!viewerSrc) {
     return (
-      <div className="flex flex-1 items-center justify-center min-h-[60vh] text-muted-foreground">
-        <p className="text-sm">Loading resume…</p>
+      <div className="flex flex-1 items-center justify-center min-h-[60vh] text-muted-foreground text-sm">
+        Loading…
       </div>
     );
   }
 
-  const { Worker, Viewer, SpecialZoomLevel } = Core;
   return (
-    <div className="flex-1 min-h-0 flex flex-col w-full overflow-hidden resume-mobile-pdf">
-      <Worker workerUrl={PDF_WORKER_URL}>
-        <Viewer fileUrl={RESUME_PATH} defaultScale={SpecialZoomLevel.PageWidth} />
-      </Worker>
-    </div>
+    <iframe
+      ref={iframeRef}
+      title="Yogesh Vadivel Resume"
+      src={viewerSrc}
+      className="w-full flex-1 min-h-[calc(100vh-6rem)] border-0"
+      style={{ minHeight: "calc(100vh - 6rem)" }}
+      onLoad={onIframeLoad}
+    />
   );
 }
 

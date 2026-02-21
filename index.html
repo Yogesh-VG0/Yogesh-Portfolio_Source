@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes" />
+    <title>Yogesh Vadivel — Junior Full-Stack Developer</title>
+    <meta name="description" content="Portfolio of Yogesh Vadivel, a Junior Full-Stack Developer in Dubai building scalable web apps with React, Node.js, and AI." />
+    <meta name="author" content="Yogesh Vadivel" />
+    <meta property="og:title" content="Yogesh Vadivel — Full-Stack Developer Portfolio" />
+    <meta property="og:description" content="Clean, scalable, data-driven web applications using React, modern backends, and AI." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://yogeshv.me" />
+    <meta property="og:image" content="/og-image.png" />
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/svg+xml" href="/yv-favicon-cyber-amoled.svg" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@YogeshVadivel" />
+    <meta name="twitter:image" content="/og-image.png" />
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <!-- GitHub Pages SPA redirect receiver -->
+    <script>
+      (function(l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search.slice(1).split('&').map(function(s) {
+            return s.replace(/~and~/g, '&')
+          }).join('?');
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+        }
+      }(window.location))
+    </script>
+    <script type="module" src="/src/main.tsx"></script>
+    <!-- Cloudflare Web Analytics -->
+    <script
+      defer
+      src="https://static.cloudflareinsights.com/beacon.min.js"
+      data-cf-beacon='{"token": "15c2e68104164135bd305d9716326bed"}'></script>
+    <!-- End Cloudflare Web Analytics -->
+  </body>
+</html>

@@ -173,6 +173,21 @@
   min-height: 0;
 }
 
+/* Mobile PDF viewer (PDF.js): theme background, no horizontal scroll */
+.resume-page .resume-mobile-pdf {
+  --rpv-core__inner-page-background-color: hsl(var(--background));
+  --rpv-core__doc-loading-background-color: hsl(var(--background));
+  --rpv-core__doc-error-background-color: hsl(var(--background));
+}
+.resume-page .resume-mobile-pdf .rpv-core__viewer {
+  width: 100% !important;
+  min-width: 0;
+}
+.resume-page .resume-mobile-pdf .rpv-core__inner-pages {
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
 /* Mobile-first responsive fixes */
 @media (max-width: 640px) {
   .container {

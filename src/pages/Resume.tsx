@@ -1,13 +1,19 @@
+import * as React from "react";
 import { motion } from "framer-motion";
 import { Download, ArrowLeft, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 // PDF in public/ is served at root (or base URL when deployed)
 const BASE = (import.meta.env.BASE_URL || "/").replace(/\/$/, "") || "";
 const RESUME_PATH = `${BASE}/Yogesh_Resume.pdf`.replace(/\/+/g, "/");
 
+const PDF_WORKER_URL = "https://unpkg.com/pdfjs-dist@3.11.174/build/pdf.worker.min.js";
+
 const Resume = () => {
+  const isMobile = useIsMobile();
+
   return (
     <div className="resume-page min-h-screen w-full max-w-full overflow-x-hidden bg-background text-foreground flex flex-col">
       {/* Top bar */}
@@ -29,13 +35,14 @@ const Resume = () => {
           </motion.div>
 
           <motion.div variants={fadeUp} className="shrink-0 flex items-center gap-2">
+            {/* Open in new tab: desktop only (mobile can't embed PDF; we show in-page viewer instead) */}
             <motion.a
               href={RESUME_PATH}
               target="_blank"
               rel="noopener noreferrer"
               whileHover={{ scale: 1.04 }}
               whileTap={tapScale}
-              className="inline-flex items-center gap-2 px-3 py-2 sm:px-4 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
+              className="hidden md:inline-flex items-center gap-2 px-3 py-2 sm:px-4 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
             >
               <ExternalLink size={15} />
               <span className="hidden sm:inline">Open in new tab</span>
@@ -54,28 +61,70 @@ const Resume = () => {
         </div>
       </motion.header>
 
-      {/* PDF via iframe - browser native, no resize loops, works on mobile */}
+      {/* Desktop: iframe. Mobile: PDF.js viewer (canvas) so PDF is viewable in-page */}
       <main className="flex-1 flex flex-col min-w-0 w-full min-h-0">
         <div className="flex-1 w-full max-w-full min-w-0 min-h-0 px-2 sm:px-3 md:px-4 py-3 sm:py-4 md:py-6 flex flex-col">
           <div className="resume-viewer-wrapper flex-1 w-full max-w-full min-h-0 rounded-none sm:rounded-xl border-0 sm:border border-border/30 bg-muted/30 overflow-hidden shadow-none sm:shadow-lg flex flex-col">
-            <iframe
-              title="Yogesh Vadivel Resume"
-              src={RESUME_PATH}
-              className="w-full flex-1 min-h-[calc(100vh-6rem)] sm:min-h-[80vh] border-0"
-              style={{ minHeight: "calc(100vh - 6rem)" }}
-            />
-            <p className="sr-only">
-              If the resume does not display,{" "}
-              <a href={RESUME_PATH} target="_blank" rel="noopener noreferrer">
-                open the PDF in a new tab
-              </a>{" "}
-              or use the Download button above.
-            </p>
+            {!isMobile ? (
+              <>
+                <iframe
+                  title="Yogesh Vadivel Resume"
+                  src={RESUME_PATH}
+                  className="w-full flex-1 min-h-[calc(100vh-6rem)] sm:min-h-[80vh] border-0"
+                  style={{ minHeight: "calc(100vh - 6rem)" }}
+                />
+                <p className="sr-only">
+                  If the resume does not display,{" "}
+                  <a href={RESUME_PATH} target="_blank" rel="noopener noreferrer">
+                    open the PDF in a new tab
+                  </a>{" "}
+                  or use the Download button above.
+                </p>
+              </>
+            ) : (
+              <MobilePdfViewer />
+            )}
           </div>
         </div>
       </main>
     </div>
   );
 };
+
+/** Mobile-only PDF viewer using PDF.js (canvas). Avoids iframe which forces download on iOS Safari / many mobile browsers. Fixed scale to avoid resize glitch. */
+function MobilePdfViewer() {
+  const [Core, setCore] = React.useState<typeof import("@react-pdf-viewer/core") | null>(null);
+
+  React.useEffect(() => {
+    let cancelled = false;
+    Promise.all([
+      import("@react-pdf-viewer/core"),
+      import("@react-pdf-viewer/core/lib/styles/index.css"),
+    ]).then(([core]) => {
+      if (cancelled) return;
+      setCore(core);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  if (!Core) {
+    return (
+      <div className="flex flex-1 items-center justify-center min-h-[60vh] text-muted-foreground">
+        <p className="text-sm">Loading resume…</p>
+      </div>
+    );
+  }
+
+  const { Worker, Viewer } = Core;
+  return (
+    <div className="flex-1 min-h-0 flex flex-col w-full overflow-hidden resume-mobile-pdf">
+      <Worker workerUrl={PDF_WORKER_URL}>
+        <Viewer fileUrl={RESUME_PATH} defaultScale={1} />
+      </Worker>
+    </div>
+  );
+}
 
 export default Resume;

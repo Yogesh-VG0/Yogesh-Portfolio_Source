@@ -91,7 +91,7 @@ const Resume = () => {
   );
 };
 
-/** Mobile-only PDF viewer using PDF.js (canvas). Avoids iframe which forces download on iOS Safari / many mobile browsers. Fixed scale to avoid resize glitch. */
+/** Mobile-only PDF viewer using PDF.js (canvas). PageWidth = fit to container width so full page is visible left-to-right. */
 function MobilePdfViewer() {
   const [Core, setCore] = React.useState<typeof import("@react-pdf-viewer/core") | null>(null);
 
@@ -117,11 +117,11 @@ function MobilePdfViewer() {
     );
   }
 
-  const { Worker, Viewer } = Core;
+  const { Worker, Viewer, SpecialZoomLevel } = Core;
   return (
     <div className="flex-1 min-h-0 flex flex-col w-full overflow-hidden resume-mobile-pdf">
       <Worker workerUrl={PDF_WORKER_URL}>
-        <Viewer fileUrl={RESUME_PATH} defaultScale={1} />
+        <Viewer fileUrl={RESUME_PATH} defaultScale={SpecialZoomLevel.PageWidth} />
       </Worker>
     </div>
   );

@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
@@ -106,40 +107,47 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu — full-screen overlay */}
-      <AnimatePresence>
-        {mobileOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="fixed inset-0 top-16 z-40 bg-background/95 backdrop-blur-2xl md:hidden"
-            id="mobile-menu"
-          >
-            <nav className="flex flex-col items-center justify-center gap-6 h-full -mt-16" role="navigation">
-              {navLinks.map((link, i) => (
-                <motion.a
-                  key={link.href}
-                  href={link.href}
-                  onClick={() => setMobileOpen(false)}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: 10 }}
-                  transition={{ delay: i * 0.05, duration: 0.3 }}
-                  className={`text-2xl font-semibold transition-colors ${
-                    activeSection === link.href.slice(1)
-                      ? "text-primary"
-                      : "text-foreground hover:text-primary"
-                  }`}
+      {/* Mobile menu — portal to body so it's never clipped by scroll/transform ancestors */}
+      {typeof document !== "undefined" &&
+        createPortal(
+          <AnimatePresence>
+            {mobileOpen && (
+              <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.2 }}
+                className="fixed inset-0 top-16 z-[100] bg-background/95 backdrop-blur-2xl md:hidden"
+                id="mobile-menu"
+              >
+                <nav
+                  className="flex flex-col items-center justify-center gap-6 h-full -mt-16"
+                  role="navigation"
                 >
-                  {link.label}
-                </motion.a>
-              ))}
-            </nav>
-          </motion.div>
+                  {navLinks.map((link, i) => (
+                    <motion.a
+                      key={link.href}
+                      href={link.href}
+                      onClick={() => setMobileOpen(false)}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      transition={{ delay: i * 0.05, duration: 0.3 }}
+                      className={`text-2xl font-semibold transition-colors ${
+                        activeSection === link.href.slice(1)
+                          ? "text-primary"
+                          : "text-foreground hover:text-primary"
+                      }`}
+                    >
+                      {link.label}
+                    </motion.a>
+                  ))}
+                </nav>
+              </motion.div>
+            )}
+          </AnimatePresence>,
+          document.body
         )}
-      </AnimatePresence>
     </nav>
   );
 };

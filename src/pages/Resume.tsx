@@ -58,9 +58,11 @@ const Resume = () => {
         </div>
       </motion.header>
 
-      {/* Desktop: direct PDF iframe. Mobile: Google Docs viewer iframe (reliable on mobile, no glitches) */}
+      {/* Desktop: direct PDF iframe. Mobile: Google Docs viewer iframe, larger area so resume appears bigger */}
       <main className="flex-1 flex flex-col min-w-0 w-full min-h-0">
-        <div className="flex-1 w-full max-w-full min-w-0 min-h-0 px-2 sm:px-3 md:px-4 py-3 sm:py-4 md:py-6 flex flex-col">
+        <div
+          className={`flex-1 w-full max-w-full min-w-0 min-h-0 flex flex-col ${isMobile ? "px-1 py-2" : "px-2 sm:px-3 md:px-4 py-3 sm:py-4 md:py-6"}`}
+        >
           <div className="resume-viewer-wrapper flex-1 w-full max-w-full min-h-0 rounded-none sm:rounded-xl border-0 sm:border border-border/30 bg-muted/30 overflow-hidden shadow-none sm:shadow-lg flex flex-col">
             {!isMobile ? (
               <>
@@ -145,8 +147,8 @@ function GooglePdfViewer() {
       ref={iframeRef}
       title="Yogesh Vadivel Resume"
       src={viewerSrc}
-      className="w-full flex-1 min-h-[calc(100vh-6rem)] border-0"
-      style={{ minHeight: "calc(100vh - 6rem)" }}
+      className="w-full flex-1 min-h-[calc(100vh-3.5rem)] border-0 md:min-h-[calc(100vh-6rem)]"
+      style={{ minHeight: "calc(100vh - 3.5rem)" }}
       onLoad={onIframeLoad}
     />
   );

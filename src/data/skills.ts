@@ -4,9 +4,10 @@ export interface SkillGroup {
 }
 
 export const skillGroups: SkillGroup[] = [
-  { title: "Frontend", skills: ["React.js", "Next.js", "TypeScript", "JavaScript", "HTML", "CSS", "Tailwind"] },
-  { title: "Backend", skills: ["Node.js", "Express.js", "Flask", "FastAPI"] },
-  { title: "Databases", skills: ["MongoDB", "SQL"] },
-  { title: "AI & Data", skills: ["Machine Learning", "OCR", "Real-time Data", "Analytics Dashboards"] },
-  { title: "Tools", skills: ["Git", "REST APIs", "WebSockets"] },
+  { title: "Languages", skills: ["TypeScript", "JavaScript", "Python"] },
+  { title: "Frontend", skills: ["React.js", "Next.js", "Tailwind", "HTML", "CSS"] },
+  { title: "Backend & APIs", skills: ["Node.js", "Express.js", "FastAPI", "Flask", "REST APIs", "WebSockets"] },
+  { title: "Databases", skills: ["PostgreSQL", "MongoDB", "SQL", "SQLite"] },
+  { title: "ML & AI", skills: ["Machine Learning", "LightGBM", "SHAP", "OCR", "LLM Integration"] },
+  { title: "DevOps & Tools", skills: ["Git", "Linux", "GitHub Actions", "Vercel", "Render"] },
 ];

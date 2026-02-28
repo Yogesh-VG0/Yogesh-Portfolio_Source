@@ -1,5 +1,5 @@
-import { motion, useInView, useMotionValue, useSpring, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
+import { useRef, useState, useCallback } from "react";
 import {
   Layout,
   Server,
@@ -12,11 +12,15 @@ import {
   Cpu,
   GitBranch,
   Zap,
-  BarChart3,
   ScanLine,
   Radio,
   FileCode,
-  Boxes,
+  Terminal,
+  Cloud,
+  Sparkles,
+  TrendingUp,
+  Search,
+  Workflow,
 } from "lucide-react";
 import { fadeUp, scaleUp, staggerContainer } from "@/lib/motion";
 import { skillGroups } from "@/data/skills";
@@ -27,26 +31,34 @@ import { useIsMobile } from "@/hooks/use-mobile";
 /*  Data                                                               */
 /* ------------------------------------------------------------------ */
 const skillIcons: Record<string, React.ReactNode> = {
-  "React.js": <Code2 size={15} />,
-  "Next.js": <Boxes size={15} />,
   "TypeScript": <FileCode size={15} />,
   "JavaScript": <FileJson size={15} />,
+  "Python": <Cpu size={15} />,
+  "React.js": <Code2 size={15} />,
+  "Next.js": <Globe size={15} />,
+  "Tailwind": <Zap size={15} />,
   "HTML": <Globe size={15} />,
   "CSS": <Layout size={15} />,
-  "Tailwind": <Zap size={15} />,
   "Node.js": <Server size={15} />,
-  "Express.js": <Server size={15} />,
-  "Flask": <Cpu size={15} />,
+  "Express.js": <FileCode size={15} />,
   "FastAPI": <Zap size={15} />,
-  "MongoDB": <Database size={15} />,
-  "SQL": <Database size={15} />,
-  "Machine Learning": <Brain size={15} />,
-  "OCR": <ScanLine size={15} />,
-  "Real-time Data": <Radio size={15} />,
-  "Analytics Dashboards": <BarChart3 size={15} />,
-  "Git": <GitBranch size={15} />,
+  "Flask": <Cpu size={15} />,
   "REST APIs": <Globe size={15} />,
   "WebSockets": <Radio size={15} />,
+  "PostgreSQL": <Database size={15} />,
+  "MongoDB": <Database size={15} />,
+  "SQL": <Database size={15} />,
+  "SQLite": <Database size={15} />,
+  "Machine Learning": <Brain size={15} />,
+  "LightGBM": <TrendingUp size={15} />,
+  "SHAP": <Search size={15} />,
+  "OCR": <ScanLine size={15} />,
+  "LLM Integration": <Sparkles size={15} />,
+  "Git": <GitBranch size={15} />,
+  "Linux": <Terminal size={15} />,
+  "GitHub Actions": <Workflow size={15} />,
+  "Vercel": <Cloud size={15} />,
+  "Render": <Cloud size={15} />,
 };
 
 const categoryMeta: Record<string, {
@@ -57,6 +69,14 @@ const categoryMeta: Record<string, {
   iconBg: string;
   borderGlow: string;
 }> = {
+  Languages: {
+    icon: <FileCode size={22} />,
+    color: "text-amber-400",
+    glowFrom: "from-amber-500/20",
+    glowTo: "to-yellow-500/20",
+    iconBg: "bg-amber-500/15 shadow-amber-500/20",
+    borderGlow: "hover:shadow-amber-500/15",
+  },
   Frontend: {
     icon: <Layout size={22} />,
     color: "text-blue-400",
@@ -65,7 +85,7 @@ const categoryMeta: Record<string, {
     iconBg: "bg-blue-500/15 shadow-blue-500/20",
     borderGlow: "hover:shadow-blue-500/15",
   },
-  Backend: {
+  "Backend & APIs": {
     icon: <Server size={22} />,
     color: "text-emerald-400",
     glowFrom: "from-emerald-500/20",
@@ -81,7 +101,7 @@ const categoryMeta: Record<string, {
     iconBg: "bg-orange-500/15 shadow-orange-500/20",
     borderGlow: "hover:shadow-orange-500/15",
   },
-  "AI & Data": {
+  "ML & AI": {
     icon: <Brain size={22} />,
     color: "text-purple-400",
     glowFrom: "from-purple-500/20",
@@ -89,7 +109,7 @@ const categoryMeta: Record<string, {
     iconBg: "bg-purple-500/15 shadow-purple-500/20",
     borderGlow: "hover:shadow-purple-500/15",
   },
-  Tools: {
+  "DevOps & Tools": {
     icon: <Wrench size={22} />,
     color: "text-sky-400",
     glowFrom: "from-sky-500/20",
@@ -100,97 +120,62 @@ const categoryMeta: Record<string, {
 };
 
 
-/* ------------------------------------------------------------------ */
-/*  3D Tilt Card (inline for Skills)                                   */
-/* ------------------------------------------------------------------ */
-interface TiltSkillCardProps {
-  children: React.ReactNode;
-  className?: string;
-}
-
-const TiltSkillCard = ({ children, className = "" }: TiltSkillCardProps) => {
-  const ref = useRef<HTMLDivElement>(null);
-
-  const x = useMotionValue(0);
-  const y = useMotionValue(0);
-
-  // Softer spring: lower stiffness + higher damping = no oscillation on leave
-  const springCfg = { stiffness: 150, damping: 20, mass: 0.5 };
-  const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [6, -6]), springCfg);
-  const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-6, 6]), springCfg);
-
-  // Smooth scale on hover via spring
-  const hoverScale = useSpring(1, springCfg);
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!ref.current) return;
-    const rect = ref.current.getBoundingClientRect();
-    x.set((e.clientX - rect.left) / rect.width - 0.5);
-    y.set((e.clientY - rect.top) / rect.height - 0.5);
-  };
-
-  const handleMouseEnter = () => {
-    hoverScale.set(1.02);
-  };
-
-  const handleMouseLeave = () => {
-    x.set(0);
-    y.set(0);
-    hoverScale.set(1);
-  };
-
-  return (
-    <motion.div
-      ref={ref}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        rotateX,
-        rotateY,
-        scale: hoverScale,
-        transformStyle: "preserve-3d",
-        perspective: 800,
-      }}
-      className={className}
-    >
-      <div style={{ transform: "translateZ(16px)", transformStyle: "preserve-3d" }}>
-        {children}
-      </div>
-    </motion.div>
-  );
-};
 
 /* ------------------------------------------------------------------ */
-/*  Skill Card                                                         */
+/*  Skill Card (spotlight effect like Projects)                         */
 /* ------------------------------------------------------------------ */
 interface SkillCardProps {
   group: { title: string; skills: string[] };
   meta: (typeof categoryMeta)[string];
   inView: boolean;
+  isMobile: boolean;
 }
 
-const SkillCard = ({ group, meta, inView }: SkillCardProps) => (
-  <motion.div variants={fadeUp} className="h-full">
-    <TiltSkillCard
-      className="group relative overflow-hidden rounded-2xl p-[1px] h-full"
+const SkillCard = ({ group, meta, inView, isMobile }: SkillCardProps) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [spotlight, setSpotlight] = useState({ x: 0, y: 0, visible: false });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setSpotlight({ x: e.clientX - rect.left, y: e.clientY - rect.top, visible: true });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setSpotlight((s) => ({ ...s, visible: false }));
+  }, []);
+
+  return (
+    <motion.div
+      ref={cardRef}
+      variants={fadeUp}
+      onMouseMove={isMobile ? undefined : handleMouseMove}
+      onMouseLeave={isMobile ? undefined : handleMouseLeave}
+      whileTap={isMobile ? { scale: 0.98 } : undefined}
+      className={`group relative overflow-hidden rounded-2xl border h-full transition-all duration-500
+        bg-card/60 border-border/30 hover:border-primary/20 hover:shadow-xl ${meta.borderGlow}`}
     >
-      {/* Animated gradient border */}
-      <div className={`absolute inset-0 rounded-2xl bg-gradient-to-br ${meta.glowFrom} ${meta.glowTo} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
-      <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-border/30 to-border/10" />
+      {/* Cursor-following spotlight (desktop only) */}
+      {!isMobile && (
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
+          style={{
+            opacity: spotlight.visible ? 1 : 0,
+            background: `radial-gradient(400px circle at ${spotlight.x}px ${spotlight.y}px, hsl(217 91% 60% / 0.06), transparent 40%)`,
+          }}
+        />
+      )}
 
-      {/* Card body — shadow on the visible card, not the 3D wrapper */}
-      <div className={`relative rounded-2xl bg-card/80 backdrop-blur-xl p-6 h-full flex flex-col min-h-[14rem] transition-shadow duration-500 group-hover:shadow-2xl ${meta.borderGlow}`}>
-        {/* Floating corner glow */}
-        <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-700 bg-gradient-to-br ${meta.glowFrom} ${meta.glowTo} pointer-events-none`} />
+      {/* Floating corner glow */}
+      <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-700 bg-gradient-to-br ${meta.glowFrom} ${meta.glowTo} pointer-events-none`} />
 
+      <div className="relative p-6 h-full flex flex-col min-h-[14rem]">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6 relative z-10">
           <motion.div
             className={`w-11 h-11 rounded-xl ${meta.iconBg} shadow-lg flex items-center justify-center ${meta.color}`}
-            whileHover={{ rotate: [0, -10, 10, 0], scale: 1.1 }}
+            whileHover={isMobile ? undefined : { rotate: [0, -10, 10, 0], scale: 1.1 }}
             transition={{ duration: 0.5 }}
-            style={{ transform: "translateZ(12px)" }}
           >
             {meta.icon}
           </motion.div>
@@ -213,7 +198,7 @@ const SkillCard = ({ group, meta, inView }: SkillCardProps) => (
             <motion.span
               key={skill}
               variants={scaleUp}
-              whileHover={{
+              whileHover={isMobile ? undefined : {
                 scale: 1.08,
                 y: -2,
                 transition: { type: "spring", stiffness: 400, damping: 15 },
@@ -223,9 +208,8 @@ const SkillCard = ({ group, meta, inView }: SkillCardProps) => (
                 bg-background/40 text-foreground border-border/30
                 hover:border-primary/40 hover:bg-primary/10 hover:shadow-md hover:shadow-primary/5
                 active:scale-95`}
-              style={{ transform: "translateZ(4px)" }}
             >
-              <span className={`${meta.color} transition-transform duration-200 group-hover:rotate-12`}>
+              <span className={`${meta.color}`}>
                 {skillIcons[skill]}
               </span>
               {skill}
@@ -233,9 +217,9 @@ const SkillCard = ({ group, meta, inView }: SkillCardProps) => (
           ))}
         </motion.div>
       </div>
-    </TiltSkillCard>
-  </motion.div>
-);
+    </motion.div>
+  );
+};
 
 /* ------------------------------------------------------------------ */
 /*  Component                                                          */
@@ -243,14 +227,15 @@ const SkillCard = ({ group, meta, inView }: SkillCardProps) => (
 const Skills = () => {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-60px" });
+  const isMobile = useIsMobile();
 
   return (
     <section id="skills" className="section-padding relative overflow-hidden">
       {/* Ambient background orbs */}
-      <div className="absolute top-1/4 -left-32 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl pointer-events-none" />
-      <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute top-1/4 -left-32 w-64 h-64 bg-blue-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
+      <div className="absolute bottom-1/4 -right-32 w-64 h-64 bg-purple-500/5 rounded-full blur-3xl pointer-events-none -z-10" />
 
-      <div className="container mx-auto max-w-6xl relative z-10">
+      <div className="container mx-auto max-w-6xl relative">
         <motion.div
           ref={ref}
           variants={staggerContainer(0.08)}
@@ -259,26 +244,18 @@ const Skills = () => {
         >
           <SectionHeader label="Skills" title="Technologies I work with" align="center" />
 
-          {/* Responsive grid — 6-col on lg for precise centering */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-5 lg:gap-6">
-            {skillGroups.map((group, idx) => {
+          {/* 3x2 grid on desktop, 2-col on tablet, 1-col on mobile */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+            {skillGroups.map((group) => {
               const meta = categoryMeta[group.title];
-              // lg: top 3 → span 2 each; bottom 2 → span 2, offset to center
-              const lgSpan =
-                idx < 3
-                  ? "lg:col-span-2"
-                  : idx === 3
-                    ? "lg:col-span-2 lg:col-start-2"
-                    : "lg:col-span-2 lg:col-start-4";
-              // sm: 5th card centers via spanning full width with constrained max-w
-              const smCenter =
-                idx === 4
-                  ? "sm:col-span-2 sm:max-w-[calc(50%-0.625rem)] sm:justify-self-center lg:col-span-2 lg:max-w-none"
-                  : "";
               return (
-                <div key={group.title} className={`${lgSpan} ${smCenter}`}>
-                  <SkillCard group={group} meta={meta} inView={inView} />
-                </div>
+                <SkillCard
+                  key={group.title}
+                  group={group}
+                  meta={meta}
+                  inView={inView}
+                  isMobile={isMobile}
+                />
               );
             })}
           </div>

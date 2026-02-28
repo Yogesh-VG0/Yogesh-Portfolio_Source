@@ -105,16 +105,14 @@ const About = () => {
           {/* Bio text */}
           <motion.div variants={fadeUp} className="space-y-4 text-muted-foreground leading-relaxed text-base md:text-lg">
             <p>
-              I'm a Full-Stack Developer who loves building things that work end-to-end —
-              from data pipelines that process 100 stocks daily to polished React
-              dashboards that make complex data feel simple. My sweet spot is where
-              engineering meets product thinking.
+              I'm a full-stack developer based in Dubai with a background in Computer Science from Manipal University Dubai.
+              I've built and deployed production applications using React, Python, and Node, including a machine learning
+              pipeline that processes 100+ S&P stocks daily and presents the results through an interactive dashboard.
             </p>
             <p>
-              With hands-on experience in remote, agile teams and a CS degree from
-              Manipal University Dubai, I've shipped production apps using React,
-              Python, Node.js, and machine learning. I'm always picking up new
-              tools — recently diving deeper into AI/ML and real-time systems.
+              My work spans the full stack: designing APIs with FastAPI and Express, working with PostgreSQL and MongoDB,
+              setting up CI/CD with GitHub Actions, and deploying apps to Vercel and Render.
+              I enjoy building systems that are reliable, explainable, and actually useful.
             </p>
           </motion.div>
 

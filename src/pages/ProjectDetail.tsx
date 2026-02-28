@@ -35,10 +35,10 @@ const ProjectDetail = () => {
 
   useEffect(() => {
     if (project) {
-      document.title = `${project.title} — Yogesh Vadivel`;
+      document.title = `${project.title} | Yogesh Vadivel`;
     }
     return () => {
-      document.title = "Yogesh Vadivel — Full-Stack Developer";
+      document.title = "Yogesh Vadivel | Full-Stack Developer";
     };
   }, [project]);
 
@@ -283,7 +283,7 @@ const ProjectDetail = () => {
             )}
           </motion.div>
 
-          {/* How It Works — Pipeline steps */}
+          {/* How It Works */}
           {cs.howItWorks && cs.howItWorks.length > 0 && (
             <motion.div variants={fadeUp} className="mb-10">
               <div className="flex items-center gap-2 mb-5">

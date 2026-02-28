@@ -71,11 +71,11 @@ const categoryMeta: Record<string, {
 }> = {
   Languages: {
     icon: <FileCode size={22} />,
-    color: "text-amber-400",
-    glowFrom: "from-amber-500/20",
-    glowTo: "to-yellow-500/20",
-    iconBg: "bg-amber-500/15 shadow-amber-500/20",
-    borderGlow: "hover:shadow-amber-500/15",
+    color: "text-rose-400",
+    glowFrom: "from-rose-500/20",
+    glowTo: "to-pink-500/20",
+    iconBg: "bg-rose-500/15 shadow-rose-500/20",
+    borderGlow: "hover:shadow-rose-500/15",
   },
   Frontend: {
     icon: <Layout size={22} />,
@@ -166,8 +166,8 @@ const SkillCard = ({ group, meta, inView, isMobile }: SkillCardProps) => {
         />
       )}
 
-      {/* Floating corner glow */}
-      <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl opacity-0 group-hover:opacity-60 transition-opacity duration-700 bg-gradient-to-br ${meta.glowFrom} ${meta.glowTo} pointer-events-none`} />
+      {/* Floating corner glow (always on for mobile, hover-only for desktop) */}
+      <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl transition-opacity duration-700 bg-gradient-to-br ${meta.glowFrom} ${meta.glowTo} pointer-events-none ${isMobile ? "opacity-60" : "opacity-0 group-hover:opacity-60"}`} />
 
       <div className="relative p-6 h-full flex flex-col min-h-[14rem]">
         {/* Header */}

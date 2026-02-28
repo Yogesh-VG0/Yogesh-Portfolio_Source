@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, FileDown } from "lucide-react";
 import Typewriter from "./Typewriter";
 import SplitText from "./SplitText";
+import { AuroraText } from "./AuroraText";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 
 const Hero = () => {
@@ -33,9 +34,9 @@ const Hero = () => {
           </span>
           <span className="relative">
             <SplitText text="Hi, I'm " delay={0.3} stagger={0.04} />
-            <span className="text-gradient">
+            <AuroraText colors={["#0070F3", "#38bdf8", "#7928CA", "#0070F3"]} speed={1}>
               <SplitText text="Yogesh Vadivel" delay={0.6} stagger={0.04} />
-            </span>
+            </AuroraText>
           </span>
         </h1>
 

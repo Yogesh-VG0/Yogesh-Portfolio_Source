@@ -108,10 +108,12 @@
 /* ================================================================== */
 @layer utilities {
   .text-gradient {
+    color: hsl(217 91% 60%);
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-400 to-cyan-400;
   }
 
   .dark .text-gradient {
+    color: hsl(199 89% 70%);
     @apply from-blue-400 via-cyan-300 to-blue-400;
   }
 
@@ -251,4 +253,28 @@ html:not(.dark) [class*="text-muted-foreground"] {
 }
 ::-webkit-scrollbar-thumb:hover {
   background: hsl(var(--muted-foreground) / 0.5);
+}
+
+/* Aurora text animation */
+@keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+  }
+  25% {
+    background-position: 50% 100%;
+    transform: rotate(5deg) scale(1.1);
+  }
+  50% {
+    background-position: 100% 50%;
+    transform: rotate(-3deg) scale(0.95);
+  }
+  75% {
+    background-position: 50% 0%;
+    transform: rotate(3deg) scale(1.05);
+  }
+  100% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+  }
 }

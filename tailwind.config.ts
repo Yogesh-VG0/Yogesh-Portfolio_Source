@@ -82,6 +82,13 @@ export default {
           "0%, 100%": { opacity: "1" },
           "50%": { opacity: "0" },
         },
+        "aurora": {
+          "0%": { backgroundPosition: "0% 50%", transform: "rotate(-5deg) scale(0.9)" },
+          "25%": { backgroundPosition: "50% 100%", transform: "rotate(5deg) scale(1.1)" },
+          "50%": { backgroundPosition: "100% 50%", transform: "rotate(-3deg) scale(0.95)" },
+          "75%": { backgroundPosition: "50% 0%", transform: "rotate(3deg) scale(1.05)" },
+          "100%": { backgroundPosition: "0% 50%", transform: "rotate(-5deg) scale(0.9)" },
+        },
       },
       animation: {
         "accordion-down": "accordion-down 0.2s ease-out",
@@ -90,6 +97,7 @@ export default {
         "pulse-glow": "pulse-glow 3s ease-in-out infinite",
         "float": "float 6s ease-in-out infinite",
         "caret-blink": "caret-blink 0.8s steps(2, start) infinite",
+        "aurora": "aurora 8s ease-in-out infinite alternate",
       },
     },
   },

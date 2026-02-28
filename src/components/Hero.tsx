@@ -1,17 +1,12 @@
 import { motion } from "framer-motion";
 import { ArrowDown, Github, Linkedin, FileDown } from "lucide-react";
-import BackgroundBeams from "./BackgroundBeams";
 import Typewriter from "./Typewriter";
+import SplitText from "./SplitText";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 
 const Hero = () => {
   return (
     <section className="relative min-h-screen flex items-center justify-center section-padding pt-24 overflow-hidden">
-      <BackgroundBeams />
-
-      {/* Single ambient orb — reduced from 2 for cleaner look */}
-      <div className="absolute top-1/4 left-1/2 -translate-x-1/2 w-[320px] h-[320px] sm:w-[420px] sm:h-[420px] md:w-[640px] md:h-[640px] bg-primary/5 rounded-full blur-3xl pointer-events-none" />
-
       <motion.div
         className="container mx-auto max-w-4xl text-center relative z-10 px-4"
         variants={staggerContainer(0.12)}
@@ -29,14 +24,20 @@ const Hero = () => {
           </span>
         </motion.div>
 
-        {/* Main heading */}
-        <motion.h1
-          variants={fadeUp}
-          className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-6"
+        {/* Main heading with glow + SplitText */}
+        <h1
+          className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-6"
         >
-          Hi, I'm{" "}
-          <span className="text-gradient">Yogesh Vadivel</span>
-        </motion.h1>
+          <span className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
+            <span className="w-[60%] h-[80%] bg-primary/10 dark:bg-primary/[0.07] rounded-full blur-[60px] sm:blur-[80px]" />
+          </span>
+          <span className="relative">
+            <SplitText text="Hi, I'm " delay={0.3} stagger={0.04} />
+            <span className="text-gradient">
+              <SplitText text="Yogesh Vadivel" delay={0.6} stagger={0.04} />
+            </span>
+          </span>
+        </h1>
 
         {/* Subtitle with typewriter */}
         <motion.p

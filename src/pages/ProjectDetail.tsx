@@ -52,7 +52,7 @@ const ProjectDetail = () => {
 
   if (!project || !project.caseStudy) {
     return (
-      <div className="min-h-screen bg-background text-foreground flex items-center justify-center">
+      <div className="min-h-screen text-foreground flex items-center justify-center relative z-[1]">
         <div className="text-center px-4">
           <h1 className="text-4xl font-bold mb-4">Project not found</h1>
           <button onClick={handleBackToProjects} className="text-primary hover:underline">
@@ -71,7 +71,7 @@ const ProjectDetail = () => {
   const nextImage = () => setGalleryIdx((galleryIdx + 1) % gallery.length);
 
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen text-foreground relative z-[1]">
       {/* Top bar */}
       <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40">
         <div className="container mx-auto max-w-5xl flex items-center justify-between h-16 px-4 sm:px-6">
@@ -240,7 +240,7 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">The Problem</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed pl-10">{cs.problem}</p>
+            <p className="text-muted-foreground leading-relaxed pl-0 sm:pl-10">{cs.problem}</p>
           </motion.div>
 
           {/* Approach */}
@@ -251,7 +251,7 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">Approach</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed pl-10">{cs.approach}</p>
+            <p className="text-muted-foreground leading-relaxed pl-0 sm:pl-10">{cs.approach}</p>
           </motion.div>
 
           {/* Architecture */}
@@ -262,11 +262,11 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">Architecture</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed pl-10 mb-5">{cs.architecture}</p>
+            <p className="text-muted-foreground leading-relaxed pl-0 sm:pl-10 mb-5">{cs.architecture}</p>
 
             {/* Architecture Cards */}
             {cs.architectureCards && (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 pl-0 sm:pl-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:pl-10">
                 {cs.architectureCards.map((card) => (
                   <div
                     key={card.label}
@@ -292,9 +292,9 @@ const ProjectDetail = () => {
                 </div>
                 <h2 className="text-xl font-bold">How It Works</h2>
               </div>
-              <div className="space-y-0 pl-10">
+              <div className="space-y-0 pl-0 sm:pl-10">
                 {cs.howItWorks.map((step, idx) => (
-                  <div key={step.title} className="relative pl-8 pb-8 last:pb-0">
+                  <div key={step.title} className="relative pl-6 sm:pl-8 pb-8 last:pb-0">
                     {/* Vertical line */}
                     {idx < cs.howItWorks!.length - 1 && (
                       <div className="absolute left-[11px] top-7 bottom-0 w-px bg-border/40" />
@@ -319,7 +319,7 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">Key Features</h2>
             </div>
-            <ul className="grid gap-3 pl-10">
+            <ul className="grid gap-3 pl-0 sm:pl-10">
               {project.highlights.map((h) => (
                 <li key={h} className="text-sm text-muted-foreground flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
@@ -337,7 +337,7 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">Challenges & Solutions</h2>
             </div>
-            <ul className="grid gap-3 pl-10">
+            <ul className="grid gap-3 pl-0 sm:pl-10">
               {cs.challenges.map((c) => (
                 <li key={c} className="text-sm text-muted-foreground flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 flex-shrink-0" />
@@ -370,7 +370,7 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">Results</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed pl-10">{cs.results}</p>
+            <p className="text-muted-foreground leading-relaxed pl-0 sm:pl-10">{cs.results}</p>
           </motion.div>
 
           {/* CTAs */}

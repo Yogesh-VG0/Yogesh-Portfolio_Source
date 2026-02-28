@@ -5,7 +5,7 @@ import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 
 const NotFound = () => {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-background text-foreground">
+    <div className="flex min-h-screen items-center justify-center text-foreground relative z-[1]">
       <motion.div
         className="text-center px-4"
         variants={staggerContainer(0.1)}

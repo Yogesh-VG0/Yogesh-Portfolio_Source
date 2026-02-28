@@ -8,10 +8,11 @@ import Education from "@/components/Education";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
+import CursorGlow from "@/components/CursorGlow";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-background text-foreground overflow-x-hidden w-full">
+    <div className="min-h-screen text-foreground overflow-x-hidden w-full relative z-[1]">
       {/* Skip-to-content for keyboard a11y */}
       <a
         href="#about"
@@ -19,15 +20,16 @@ const Index = () => {
       >
         Skip to content
       </a>
+      <CursorGlow />
       <ScrollProgress />
       <Navbar />
       <main>
         <Hero />
-        <About />
-        <Skills />
+        <div className="section-separator"><About /></div>
+        <div className="section-separator"><Skills /></div>
         <Projects />
-        <Experience />
-        <Education />
+        <div className="section-separator"><Experience /></div>
+        <div className="section-separator"><Education /></div>
         <Contact />
       </main>
       <Footer />

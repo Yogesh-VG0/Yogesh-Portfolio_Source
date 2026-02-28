@@ -8,11 +8,17 @@ import Index from "./pages/Index";
 const Resume = lazy(() => import("./pages/Resume"));
 const NotFound = lazy(() => import("./pages/NotFound"));
 const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
+const StarsBackground = lazy(() => import("./components/StarsBackground"));
+const ClickSpark = lazy(() => import("./components/ClickSpark"));
 
 const App = () => (
   <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
     <TooltipProvider>
       <Sonner />
+      <Suspense fallback={null}>
+        <StarsBackground />
+        <ClickSpark />
+      </Suspense>
       <BrowserRouter>
         <Suspense fallback={<div className="min-h-screen bg-background" />}>
           <Routes>

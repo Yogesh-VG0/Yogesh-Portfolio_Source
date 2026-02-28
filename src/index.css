@@ -8,51 +8,51 @@
 @layer base {
   :root {
     --background: 220 20% 97%;
-    --foreground: 222 30% 12%;
+    --foreground: 222 40% 8%;
     --card: 0 0% 100%;
-    --card-foreground: 222 30% 12%;
+    --card-foreground: 222 40% 8%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 30% 12%;
-    --primary: 217 91% 60%;
+    --popover-foreground: 222 40% 8%;
+    --primary: 217 91% 55%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 220 14% 92%;
-    --secondary-foreground: 222 25% 15%;
-    --muted: 220 14% 94%;
-    --muted-foreground: 220 10% 42%;
+    --secondary: 220 16% 90%;
+    --secondary-foreground: 222 30% 12%;
+    --muted: 220 14% 92%;
+    --muted-foreground: 220 12% 35%;
     --accent: 199 89% 48%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 13% 88%;
-    --input: 220 13% 88%;
-    --ring: 217 91% 60%;
+    --border: 220 18% 82%;
+    --input: 220 18% 82%;
+    --ring: 217 91% 55%;
     --radius: 0.75rem;
-    --text-tertiary: 220 10% 58%;
-    --surface-elevated: 220 14% 96%;
+    --text-tertiary: 220 12% 45%;
+    --surface-elevated: 220 16% 94%;
   }
 
   .dark {
-    --background: 225 30% 5%;
+    --background: 0 0% 0%;
     --foreground: 210 20% 93%;
-    --card: 225 25% 8%;
+    --card: 0 0% 4%;
     --card-foreground: 210 20% 93%;
-    --popover: 225 25% 8%;
+    --popover: 0 0% 4%;
     --popover-foreground: 210 20% 93%;
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
-    --secondary: 222 22% 12%;
+    --secondary: 0 0% 7%;
     --secondary-foreground: 210 20% 93%;
-    --muted: 222 20% 13%;
+    --muted: 0 0% 8%;
     --muted-foreground: 215 15% 52%;
     --accent: 199 89% 48%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 30%;
     --destructive-foreground: 210 40% 98%;
-    --border: 222 18% 14%;
-    --input: 222 18% 14%;
+    --border: 0 0% 10%;
+    --input: 0 0% 10%;
     --ring: 217 91% 60%;
     --text-tertiary: 215 15% 52%;
-    --surface-elevated: 225 25% 10%;
+    --surface-elevated: 0 0% 6%;
   }
 }
 
@@ -111,8 +111,25 @@
     @apply bg-clip-text text-transparent bg-gradient-to-r from-primary via-blue-400 to-cyan-400;
   }
 
+  .dark .text-gradient {
+    @apply from-blue-400 via-cyan-300 to-blue-400;
+  }
+
+  /* Subtle section separator */
+  .section-separator {
+    @apply relative;
+  }
+  .section-separator::after {
+    content: '';
+    @apply absolute bottom-0 left-1/2 -translate-x-1/2 w-24 h-px bg-gradient-to-r from-transparent via-border/60 to-transparent;
+  }
+
   .glass-card {
     @apply bg-card/50 backdrop-blur-xl border border-border/40 shadow-sm;
+  }
+
+  :root .glass-card {
+    @apply bg-card/80 border-border/60 shadow-md;
   }
 
   .glass-card-hover {
@@ -121,6 +138,10 @@
   .glass-card-hover:hover {
     @apply border-primary/25 shadow-lg;
     box-shadow: 0 8px 40px -12px hsl(217 91% 60% / 0.12);
+  }
+
+  :root .glass-card-hover:hover {
+    box-shadow: 0 8px 40px -12px hsl(217 91% 60% / 0.2);
   }
 
   .glow {
@@ -154,10 +175,57 @@
     content: "";
     position: absolute;
     inset: 0;
-    opacity: 0.03;
+    opacity: 0.025;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 0;
+  }
+
+  .dark .noise-overlay::before {
+    opacity: 0.04;
+  }
+}
+
+/* ================================================================== */
+/*  Light-mode component strengthening                                 */
+/*  Components use bg-card/30, border-border/30 etc which are          */
+/*  invisible on white. These rules add definition in light mode only. */
+/* ================================================================== */
+html:not(.dark) [class*="border"][class*="rounded"] {
+  box-shadow: 0 1px 6px -2px rgba(0, 0, 0, 0.08), 0 0 0 1px rgba(0, 0, 0, 0.03);
+}
+
+html:not(.dark) [class*="bg-card"] {
+  background-color: hsl(220 25% 98% / 0.85) !important;
+}
+
+html:not(.dark) [class*="border-border"] {
+  border-color: hsl(220 18% 78% / 0.6) !important;
+}
+
+html:not(.dark) [class*="bg-secondary"] {
+  background-color: hsl(220 16% 90% / 0.7) !important;
+}
+
+html:not(.dark) [class*="text-muted-foreground"] {
+  color: hsl(220 14% 32%) !important;
+}
+
+/* ================================================================== */
+/*  Light-mode aurora gradient animation                               */
+/* ================================================================== */
+@keyframes aurora-drift {
+  0%, 100% {
+    background-position: 0% 50%, 100% 0%, 50% 100%, 0% 0%;
+  }
+  25% {
+    background-position: 100% 0%, 0% 100%, 100% 50%, 50% 50%;
+  }
+  50% {
+    background-position: 50% 100%, 50% 50%, 0% 0%, 100% 100%;
+  }
+  75% {
+    background-position: 0% 0%, 100% 100%, 100% 0%, 0% 50%;
   }
 }
 

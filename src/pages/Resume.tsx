@@ -13,7 +13,7 @@ const Resume = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="min-h-screen text-foreground flex flex-col relative z-[1]">
       {/* Top bar */}
       <motion.header
         variants={staggerContainer(0.1)}

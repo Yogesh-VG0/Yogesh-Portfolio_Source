@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useCallback } from "react";
 import {
   Star,
   Github,
@@ -11,10 +11,18 @@ import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { projects, type Project } from "@/data/projects";
 import SectionHeader from "./SectionHeader";
 import { Link } from "react-router-dom";
+import CountUp from "./CountUp";
 
 /* ------------------------------------------------------------------ */
 /*  Unified project card                                               */
 /* ------------------------------------------------------------------ */
+/** Parse a metric value — returns { num, suffix } if it starts with a number, else null */
+const parseMetricValue = (value: string): { num: number; suffix: string } | null => {
+  const match = value.match(/^([\d.]+)(.*)$/);
+  if (!match) return null;
+  return { num: parseFloat(match[1]), suffix: match[2] };
+};
+
 const ProjectCard = ({
   project,
   variant,
@@ -23,16 +31,40 @@ const ProjectCard = ({
   variant: "featured" | "standard";
 }) => {
   const isFeatured = variant === "featured";
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [spotlight, setSpotlight] = useState({ x: 0, y: 0, visible: false });
+
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    const rect = cardRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    setSpotlight({ x: e.clientX - rect.left, y: e.clientY - rect.top, visible: true });
+  }, []);
+
+  const handleMouseLeave = useCallback(() => {
+    setSpotlight((s) => ({ ...s, visible: false }));
+  }, []);
 
   return (
     <motion.div
+      ref={cardRef}
       variants={fadeUp}
+      onMouseMove={handleMouseMove}
+      onMouseLeave={handleMouseLeave}
       className={`group relative rounded-2xl border overflow-hidden transition-all duration-500 p-5 sm:p-7 md:p-9 ${
         isFeatured
           ? "bg-card/60 border-primary/15 hover:border-primary/35 hover:shadow-2xl hover:shadow-primary/5"
           : "bg-card/40 border-border/30 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/3"
       }`}
     >
+      {/* Cursor-following spotlight */}
+      <div
+        className="absolute inset-0 pointer-events-none transition-opacity duration-300 z-0"
+        style={{
+          opacity: spotlight.visible ? 1 : 0,
+          background: `radial-gradient(600px circle at ${spotlight.x}px ${spotlight.y}px, hsl(217 91% 60% / 0.06), transparent 40%)`,
+        }}
+      />
+
       {/* Ambient glow */}
       <div
         className={`absolute -top-24 -right-24 rounded-full blur-3xl pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-700 ${
@@ -98,18 +130,25 @@ const ProjectCard = ({
       {/* Metrics row */}
       {project.metrics && (
         <div className="flex flex-wrap gap-2 sm:gap-3 mb-6">
-          {project.metrics.map((m) => (
-            <div
-              key={m.label}
-              className="flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded-lg bg-background/50 border border-border/20 text-muted-foreground/70"
-            >
-              <span className="text-primary/70">{m.icon}</span>
-              <span className="font-semibold text-foreground/80">
-                {m.value}
-              </span>
-              <span className="text-muted-foreground/50">{m.label}</span>
-            </div>
-          ))}
+          {project.metrics.map((m) => {
+            const parsed = parseMetricValue(m.value);
+            return (
+              <div
+                key={m.label}
+                className="flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded-lg bg-background/50 border border-border/20 text-muted-foreground/70"
+              >
+                <span className="text-primary/70">{m.icon}</span>
+                <span className="font-semibold text-foreground/80">
+                  {parsed ? (
+                    <CountUp end={parsed.num} suffix={parsed.suffix} duration={1.8} />
+                  ) : (
+                    m.value
+                  )}
+                </span>
+                <span className="text-muted-foreground/50">{m.label}</span>
+              </div>
+            );
+          })}
         </div>
       )}
 
@@ -153,6 +192,18 @@ const ProjectCard = ({
             Live Demo
           </motion.a>
         )}
+        {project.caseStudy && (
+          <Link to={`/projects/${project.slug}`}>
+            <motion.span
+              whileHover={{ scale: 1.03, y: -1 }}
+              whileTap={tapScale}
+              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl text-primary text-sm font-semibold border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-colors"
+            >
+              <Telescope size={14} />
+              Deep Dive
+            </motion.span>
+          </Link>
+        )}
         {project.githubUrl && (
           <motion.a
             href={project.githubUrl}
@@ -165,18 +216,6 @@ const ProjectCard = ({
             <Github size={14} />
             Source Code
           </motion.a>
-        )}
-        {project.caseStudy && (
-          <Link to={`/projects/${project.slug}`}>
-            <motion.span
-              whileHover={{ scale: 1.03, y: -1 }}
-              whileTap={tapScale}
-              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl bg-secondary/60 text-muted-foreground text-sm font-medium border border-border/30 hover:text-foreground hover:bg-secondary/80 transition-colors"
-            >
-              <Telescope size={14} />
-              Deep Dive
-            </motion.span>
-          </Link>
         )}
       </div>
     </motion.div>

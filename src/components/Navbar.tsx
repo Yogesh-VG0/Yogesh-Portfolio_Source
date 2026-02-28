@@ -62,69 +62,8 @@ const Navbar = () => {
   }, [mobileOpen]);
 
   return (
-    <nav
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? "bg-background/70 backdrop-blur-xl border-b border-border/40 shadow-sm"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="container mx-auto flex items-center justify-between h-16 px-4 sm:px-6 relative z-50">
-        {/* Logo */}
-        <a
-          href="#"
-          className="text-lg font-bold tracking-tight text-foreground hover:text-primary transition-colors focus-visible:outline-primary"
-        >
-          YV<span className="text-primary">.</span>
-        </a>
-
-        {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-1">
-          {navLinks.map((link) => {
-            const isActive = activeSection === link.href.slice(1);
-            return (
-              <a
-                key={link.href}
-                href={link.href}
-                aria-current={isActive ? "true" : undefined}
-                className={`relative px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
-                  isActive
-                    ? "text-primary"
-                    : "text-muted-foreground hover:text-foreground"
-                }`}
-              >
-                {link.label}
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-indicator"
-                    className="absolute inset-0 rounded-lg bg-primary/10"
-                    transition={{ type: "spring", stiffness: 350, damping: 30 }}
-                  />
-                )}
-              </a>
-            );
-          })}
-          <div className="ml-3">
-            <ThemeToggle />
-          </div>
-        </div>
-
-        {/* Mobile toggle */}
-        <div className="flex md:hidden items-center gap-2">
-          <ThemeToggle />
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className="w-9 h-9 flex items-center justify-center rounded-lg text-foreground hover:bg-secondary transition-colors"
-            aria-label={mobileOpen ? "Close menu" : "Open menu"}
-            aria-expanded={mobileOpen}
-            aria-controls="mobile-menu"
-          >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
-      </div>
-
-      {/* Mobile menu — full-screen overlay */}
+    <>
+      {/* Mobile menu — full-screen overlay, rendered OUTSIDE nav so z-index works */}
       <AnimatePresence>
         {mobileOpen && (
           <motion.div
@@ -132,10 +71,10 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 top-16 z-40 bg-background/95 backdrop-blur-2xl md:hidden"
+            className="fixed inset-0 z-[90] bg-background backdrop-blur-2xl md:hidden"
             id="mobile-menu"
           >
-            <nav className="flex flex-col items-center justify-center gap-6 h-full -mt-16" role="navigation">
+            <div className="flex flex-col items-center justify-center gap-8 h-full" role="navigation">
               {navLinks.map((link, i) => (
                 <motion.a
                   key={link.href}
@@ -154,11 +93,76 @@ const Navbar = () => {
                   {link.label}
                 </motion.a>
               ))}
-            </nav>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
-    </nav>
+
+      <nav
+        className={`fixed top-0 left-0 right-0 z-[95] transition-all duration-300 ${
+          scrolled
+            ? "bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm"
+            : mobileOpen
+              ? "bg-transparent"
+              : "bg-background/40 backdrop-blur-md md:bg-transparent md:backdrop-blur-none"
+        }`}
+      >
+        <div className="container mx-auto flex items-center justify-between h-16 px-4 sm:px-6">
+          {/* Logo */}
+          <a
+            href="#"
+            className="text-lg font-bold tracking-tight text-foreground hover:text-primary transition-colors focus-visible:outline-primary"
+          >
+            YV<span className="text-primary">.</span>
+          </a>
+
+          {/* Desktop nav */}
+          <div className="hidden md:flex items-center gap-1">
+            {navLinks.map((link) => {
+              const isActive = activeSection === link.href.slice(1);
+              return (
+                <a
+                  key={link.href}
+                  href={link.href}
+                  aria-current={isActive ? "true" : undefined}
+                  className={`relative px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
+                    isActive
+                      ? "text-primary"
+                      : "text-muted-foreground hover:text-foreground"
+                  }`}
+                >
+                  {link.label}
+                  {isActive && (
+                    <motion.span
+                      layoutId="nav-indicator"
+                      className="absolute inset-0 rounded-lg bg-primary/10"
+                      transition={{ type: "spring", stiffness: 350, damping: 30 }}
+                    />
+                  )}
+                </a>
+              );
+            })}
+            <div className="ml-3">
+              <ThemeToggle />
+            </div>
+          </div>
+
+          {/* Mobile toggle */}
+          <div className="flex md:hidden items-center gap-2">
+            <ThemeToggle />
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className="w-10 h-10 flex items-center justify-center rounded-lg text-foreground hover:bg-secondary/80 transition-colors"
+              aria-label={mobileOpen ? "Close menu" : "Open menu"}
+              aria-expanded={mobileOpen}
+              aria-controls="mobile-menu"
+            >
+              {mobileOpen ? <X size={22} /> : <Menu size={22} />}
+            </button>
+          </div>
+        </div>
+      </nav>
+    </>
   );
 };
 

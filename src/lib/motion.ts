@@ -95,7 +95,7 @@ export const staggerContainer = (stagger = STAGGER_DELAY): Variants => ({
   visible: {
     transition: {
       staggerChildren: stagger,
-      delayChildren: 0.1,
+      delayChildren: 0,
     },
   },
 });

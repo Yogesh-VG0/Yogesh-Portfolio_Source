@@ -33,9 +33,9 @@ const Hero = () => {
             <span className="w-[60%] h-[80%] bg-primary/10 dark:bg-primary/[0.07] rounded-full blur-[60px] sm:blur-[80px]" />
           </span>
           <span className="relative">
-            <SplitText text="Hi, I'm " delay={0.3} stagger={0.04} />
+            <SplitText text="Hi, I'm " delay={0} stagger={0.02} />
             <AuroraText colors={["#0070F3", "#38bdf8", "#7928CA", "#0070F3"]} speed={1}>
-              <SplitText text="Yogesh Vadivel" delay={0.6} stagger={0.04} />
+              <SplitText text="Yogesh Vadivel" delay={0} stagger={0.02} />
             </AuroraText>
           </span>
         </h1>

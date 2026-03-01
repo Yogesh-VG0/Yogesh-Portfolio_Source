@@ -10,6 +10,7 @@ const NotFound = lazy(() => import("./pages/NotFound"));
 const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
 const StarsBackground = lazy(() => import("./components/StarsBackground"));
 const ClickSpark = lazy(() => import("./components/ClickSpark"));
+const CursorGlow = lazy(() => import("./components/CursorGlow"));
 
 const App = () => (
   <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
@@ -18,6 +19,7 @@ const App = () => (
       <Suspense fallback={null}>
         <StarsBackground />
         <ClickSpark />
+        <CursorGlow />
       </Suspense>
       <BrowserRouter>
         <Suspense fallback={<div className="min-h-screen bg-background" />}>

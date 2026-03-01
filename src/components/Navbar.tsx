@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
+import { useScrollDirection } from "@/hooks/use-scroll-direction";
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -17,6 +18,7 @@ const Navbar = () => {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const activeSectionRef = useRef("");
+  const navVisible = useScrollDirection(10);
 
   /* ---- Scroll listener: glass effect only (lightweight) ---- */
   const handleScroll = useCallback(() => {
@@ -106,6 +108,10 @@ const Navbar = () => {
               ? "bg-transparent"
               : "bg-background/40 backdrop-blur-md md:bg-transparent md:backdrop-blur-none"
         }`}
+        style={{
+          transform: navVisible || mobileOpen ? "translateY(0)" : "translateY(-100%)",
+          transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s, backdrop-filter 0.3s, border-color 0.3s, box-shadow 0.3s",
+        }}
       >
         <div className="container mx-auto flex items-center justify-between h-16 px-4 sm:px-6">
           {/* Logo */}

@@ -20,6 +20,7 @@ import {
 } from "lucide-react";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { projects } from "@/data/projects";
+import { useScrollDirection } from "@/hooks/use-scroll-direction";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -27,6 +28,7 @@ const ProjectDetail = () => {
   const project = projects.find((p) => p.slug === slug);
   const [galleryIdx, setGalleryIdx] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
+  const headerVisible = useScrollDirection(10);
 
   /* Scroll to top on mount */
   useEffect(() => {
@@ -73,7 +75,13 @@ const ProjectDetail = () => {
   return (
     <div className="min-h-screen text-foreground relative z-[1]">
       {/* Top bar */}
-      <header className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40">
+      <header
+        className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40"
+        style={{
+          transform: headerVisible ? "translateY(0)" : "translateY(-100%)",
+          transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
+      >
         <div className="container mx-auto max-w-5xl flex items-center justify-between h-16 px-4 sm:px-6">
           <button
             onClick={handleBackToProjects}

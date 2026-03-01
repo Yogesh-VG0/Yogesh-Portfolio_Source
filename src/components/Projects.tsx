@@ -87,18 +87,6 @@ const ProjectCard = ({
         </div>
       )}
 
-      {/* Hero screenshot */}
-      {project.image && (
-        <div className="mb-5 -mx-1 sm:-mx-2 overflow-hidden rounded-xl border border-border/20">
-          <img
-            src={project.image}
-            alt={`${project.title} screenshot`}
-            loading="lazy"
-            className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-          />
-        </div>
-      )}
-
       {/* Meta row */}
       <div className="flex flex-wrap items-center gap-2 mb-3">
         <span
@@ -126,6 +114,18 @@ const ProjectCard = ({
       <p className="text-sm md:text-[15px] text-muted-foreground/70 leading-relaxed mb-5">
         {project.description}
       </p>
+
+      {/* Hero screenshot */}
+      {project.image && (
+        <div className="mb-5 -mx-1 sm:-mx-2 overflow-hidden rounded-xl border border-border/20">
+          <img
+            src={project.image}
+            alt={`${project.title} screenshot`}
+            loading="lazy"
+            className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
+          />
+        </div>
+      )}
 
       {/* Metrics row */}
       {project.metrics && (

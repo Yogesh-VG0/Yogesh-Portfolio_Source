@@ -3,10 +3,13 @@ import { motion } from "framer-motion";
 import { Download, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
+import { useScrollDirection } from "@/hooks/use-scroll-direction";
 
 const RESUME_PATH = "/Yogesh_Resume.pdf";
 
 const Resume = () => {
+  const headerVisible = useScrollDirection(10);
+
   useEffect(() => {
     document.title = "Resume — Yogesh Vadivel";
     return () => { document.title = "Yogesh Vadivel — Full-Stack Developer"; };
@@ -20,6 +23,10 @@ const Resume = () => {
         initial="hidden"
         animate="visible"
         className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40"
+        style={{
+          transform: headerVisible ? "translateY(0)" : "translateY(-100%)",
+          transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
+        }}
       >
         <div className="container mx-auto max-w-6xl flex items-center justify-between h-16 px-4 sm:px-6">
           <motion.div variants={fadeUp}>

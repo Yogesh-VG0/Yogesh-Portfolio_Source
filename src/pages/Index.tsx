@@ -8,7 +8,6 @@ import Education from "@/components/Education";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
 import ScrollProgress from "@/components/ScrollProgress";
-import CursorGlow from "@/components/CursorGlow";
 
 const Index = () => {
   return (
@@ -20,7 +19,6 @@ const Index = () => {
       >
         Skip to content
       </a>
-      <CursorGlow />
       <ScrollProgress />
       <Navbar />
       <main>

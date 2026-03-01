@@ -8,17 +8,17 @@
 @layer base {
   :root {
     --background: 220 20% 97%;
-    --foreground: 222 40% 8%;
+    --foreground: 222 47% 4%;
     --card: 0 0% 100%;
-    --card-foreground: 222 40% 8%;
+    --card-foreground: 222 47% 4%;
     --popover: 0 0% 100%;
-    --popover-foreground: 222 40% 8%;
+    --popover-foreground: 222 47% 4%;
     --primary: 217 91% 55%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 16% 90%;
-    --secondary-foreground: 222 30% 12%;
+    --secondary-foreground: 222 35% 8%;
     --muted: 220 14% 92%;
-    --muted-foreground: 220 12% 35%;
+    --muted-foreground: 220 14% 25%;
     --accent: 199 89% 48%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
@@ -27,23 +27,23 @@
     --input: 220 18% 82%;
     --ring: 217 91% 55%;
     --radius: 0.75rem;
-    --text-tertiary: 220 12% 45%;
+    --text-tertiary: 220 14% 30%;
     --surface-elevated: 220 16% 94%;
   }
 
   .dark {
     --background: 0 0% 0%;
-    --foreground: 210 20% 93%;
+    --foreground: 0 0% 98%;
     --card: 0 0% 4%;
-    --card-foreground: 210 20% 93%;
+    --card-foreground: 0 0% 98%;
     --popover: 0 0% 4%;
-    --popover-foreground: 210 20% 93%;
+    --popover-foreground: 0 0% 98%;
     --primary: 217 91% 60%;
     --primary-foreground: 0 0% 100%;
     --secondary: 0 0% 7%;
-    --secondary-foreground: 210 20% 93%;
+    --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 8%;
-    --muted-foreground: 215 15% 52%;
+    --muted-foreground: 215 15% 72%;
     --accent: 199 89% 48%;
     --accent-foreground: 0 0% 100%;
     --destructive: 0 62% 30%;
@@ -51,7 +51,7 @@
     --border: 0 0% 10%;
     --input: 0 0% 10%;
     --ring: 217 91% 60%;
-    --text-tertiary: 215 15% 52%;
+    --text-tertiary: 215 15% 72%;
     --surface-elevated: 0 0% 6%;
   }
 }
@@ -210,7 +210,7 @@ html:not(.dark) [class*="bg-secondary"] {
 }
 
 html:not(.dark) [class*="text-muted-foreground"] {
-  color: hsl(220 14% 32%) !important;
+  color: hsl(220 14% 22%) !important;
 }
 
 /* ================================================================== */

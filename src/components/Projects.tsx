@@ -106,13 +106,8 @@ const ProjectCard = ({
       </h3>
 
       {/* Tagline */}
-      <p className="text-sm text-muted-foreground/60 font-medium mb-3">
+      <p className="text-sm text-muted-foreground/60 font-medium mb-4">
         {project.tagline}
-      </p>
-
-      {/* Description */}
-      <p className="text-sm md:text-[15px] text-muted-foreground/70 leading-relaxed mb-5">
-        {project.description}
       </p>
 
       {/* Hero screenshot */}
@@ -126,6 +121,11 @@ const ProjectCard = ({
           />
         </div>
       )}
+
+      {/* Description */}
+      <p className="text-sm md:text-[15px] text-muted-foreground/70 leading-relaxed mb-5">
+        {project.description}
+      </p>
 
       {/* Metrics row */}
       {project.metrics && (

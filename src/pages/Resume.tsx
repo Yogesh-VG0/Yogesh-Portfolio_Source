@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Download, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -14,6 +14,8 @@ const RESUME_PATH = "/Yogesh_Resume.pdf";
 const Resume = () => {
   const headerVisible = useScrollDirection(10);
   const viewerRef = useRef<HTMLDivElement>(null);
+  const [viewerHeight, setViewerHeight] = useState<number>(0);
+  const initialized = useRef(false);
 
   useEffect(() => {
     document.title = "Resume — Yogesh Vadivel";
@@ -22,15 +24,33 @@ const Resume = () => {
     };
   }, []);
 
-  // Initialize GemBox PDF Viewer once the container is mounted
+  // Calculate available height after header renders
   useEffect(() => {
-    if (!viewerRef.current) return;
-
-    GemBoxPdfViewer.create({
-      container: viewerRef.current,
-      initialDocument: RESUME_PATH,
-    });
+    function updateHeight() {
+      // 64px = header height (h-16)
+      const h = window.innerHeight - 64;
+      setViewerHeight(h > 200 ? h : window.innerHeight);
+    }
+    updateHeight();
+    window.addEventListener("resize", updateHeight);
+    return () => window.removeEventListener("resize", updateHeight);
   }, []);
+
+  // Initialize GemBox PDF Viewer once container is mounted AND has real dimensions
+  useEffect(() => {
+    if (!viewerRef.current || viewerHeight === 0 || initialized.current) return;
+
+    // Use requestAnimationFrame to ensure the browser has painted
+    // the container with its final dimensions before GemBox reads them
+    requestAnimationFrame(() => {
+      if (!viewerRef.current || initialized.current) return;
+      initialized.current = true;
+      GemBoxPdfViewer.create({
+        container: viewerRef.current,
+        initialDocument: RESUME_PATH,
+      });
+    });
+  }, [viewerHeight]);
 
   return (
     <div className="min-h-screen text-foreground flex flex-col relative z-[1]">
@@ -73,13 +93,13 @@ const Resume = () => {
 
       {/* PDF viewer — GemBox renders natively on all devices */}
       <main className="flex-1 flex flex-col">
-        <div className="flex-1 flex flex-col px-0 sm:container sm:mx-auto sm:max-w-5xl sm:px-4 py-0 sm:py-6">
-          <div
-            ref={viewerRef}
-            className="flex-1 sm:rounded-xl overflow-hidden sm:shadow-lg"
-            style={{ height: "calc(100vh - 4rem)" }}
-          />
-        </div>
+        <div
+          ref={viewerRef}
+          style={{
+            width: "100%",
+            height: viewerHeight > 0 ? `${viewerHeight}px` : "calc(100vh - 64px)",
+          }}
+        />
       </main>
     </div>
   );

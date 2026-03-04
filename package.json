@@ -16,6 +16,7 @@
   },
   "dependencies": {
     "@emailjs/browser": "^4.4.1",
+    "@gembox/pdfviewer": "^2026.3.101",
     "@hookform/resolvers": "^3.10.0",
     "@radix-ui/react-label": "^2.1.7",
     "@radix-ui/react-slot": "^1.2.3",

@@ -92,9 +92,10 @@ const Resume = () => {
       </motion.header>
 
       {/* PDF viewer — GemBox renders natively on all devices */}
-      <main className="flex-1 flex flex-col">
+      <main className="flex-1 flex flex-col relative z-[50]">
         <div
           ref={viewerRef}
+          className="bg-white dark:bg-neutral-900"
           style={{
             width: "100%",
             height: viewerHeight > 0 ? `${viewerHeight}px` : "calc(100vh - 64px)",

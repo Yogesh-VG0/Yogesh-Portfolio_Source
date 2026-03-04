@@ -1,6 +1,5 @@
 // @ts-nocheck
 import { useEffect, useRef } from "react";
-import { useIsMobile } from "@/hooks/use-mobile";
 
 function Wave(e: any) {
   this.phase = e.phase || 0;
@@ -79,12 +78,26 @@ Line.prototype.draw = function (ctx: CanvasRenderingContext2D) {
   ctx.closePath();
 };
 
+/**
+ * Detect touch-capable devices (phones + tablets) where
+ * cursor-following animations are useless and can interfere
+ * with other page elements like the GemBox PDF viewer.
+ */
+function isTouchDevice(): boolean {
+  if (typeof navigator === "undefined") return false;
+  if (navigator.maxTouchPoints > 0) return true;
+  const ua = navigator.userAgent || "";
+  if (/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini|Samsung/i.test(ua)) return true;
+  if (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 0) return true;
+  return false;
+}
+
 const CursorGlow = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const isMobile = useIsMobile();
+  const isTouch = isTouchDevice();
 
   useEffect(() => {
-    if (isMobile) return;
+    if (isTouch) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
 
@@ -158,9 +171,9 @@ const CursorGlow = () => {
       document.removeEventListener("touchmove", onMove);
       window.removeEventListener("resize", resize);
     };
-  }, [isMobile]);
+  }, [isTouch]);
 
-  if (isMobile) return null;
+  if (isTouch) return null;
 
   return (
     <canvas

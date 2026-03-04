@@ -132,7 +132,7 @@ export const projects: Project[] = [
       { src: "/expensevision_img/add_expenses_page.png", alt: "Add expense form with auto-categorization" },
       { src: "/expensevision_img/scan_receipt_page.png", alt: "Receipt scanning with OCR and AI parsing" },
     ],
-    liveUrl: "https://expensevision-ip5u.onrender.com",
+    liveUrl: "https://expensevision.tech",
     githubUrl: "https://github.com/Yogesh-VG0/ExpenseVision",
     caseStudy: {
       problem:
@@ -175,17 +175,18 @@ export const projects: Project[] = [
     statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
     year: "2025 – Present",
     description:
-      "A full-stack game reviews platform that aggregates data from RAWG, Steam, IGDB, CheapShark, and Wikipedia to build rich game profiles. Features auto-discovery cron jobs, multi-source scoring with verdict badges, community reviews, curated lists, live player counts, price tracking, and a pixel-art gaming aesthetic with dark/light mode.",
+      "A full-stack game reviews platform that aggregates data from RAWG, Steam, IGDB, CheapShark, and Wikipedia to build rich game profiles with 1000+ games. Features auto-discovery cron jobs, multi-source scoring with verdict badges, community reviews, curated lists, live player counts, price tracking, and a pixel-art gaming aesthetic with dark/light mode.",
     highlights: [
-      "293+ games ingested from RAWG and enriched with Steam reviews, IGDB ratings, CheapShark deals, and Wikipedia summaries",
+      "1000+ games ingested from RAWG and enriched with Steam reviews, IGDB ratings, CheapShark deals, and Wikipedia summaries",
       "Multi-source scoring algorithm that picks the best available score from Steam, IGDB, Metacritic, or RAWG and assigns a verdict label",
       "Auto-discovery cron jobs that find trending, new, and top-rated games from RAWG and IGDB PopScore signals",
       "Rich game pages with trailer embeds, screenshot galleries, Steam achievements, news feeds, pros/cons, and live player counts",
       "Community reviews with helpful voting, curated game lists, and full-text search with on-demand ingestion",
       "Pixel-art gaming aesthetic with Framer Motion scroll-reveal animations, hero carousel, and responsive mobile-first design",
+      "1000+ games across PC and Android with live player counts, price tracking, and daily automated discovery",
     ],
     metrics: [
-      { icon: <Gamepad2 size={14} />, label: "Games", value: "293+" },
+      { icon: <Gamepad2 size={14} />, label: "Games", value: "1000+" },
       { icon: <Database size={14} />, label: "APIs", value: "5" },
       { icon: <Globe size={14} />, label: "Pages", value: "7" },
       { icon: <Calendar size={14} />, label: "Cron", value: "Daily" },
@@ -237,10 +238,10 @@ export const projects: Project[] = [
         "Coordinating 5 external APIs with different auth methods (API keys, OAuth, no auth) and rate limits. Built per-source caching and graceful fallbacks so the pipeline never fails completely",
         "On-demand ingestion during search: when a user searches for a game that is not in the database, the search endpoint triggers real-time ingestion from external sources before returning results",
         "Computing a fair score from wildly different rating systems (Steam percentage, IGDB 0-100, Metacritic 0-100, RAWG 0-5). Built a priority chain with normalization so scores are comparable",
-        "Keeping 293+ game profiles current with daily cron jobs that discover new games and refresh trending flags without hitting API rate limits",
+        "Keeping 1000+ game profiles current with daily cron jobs that discover new games and refresh trending flags without hitting API rate limits",
       ],
       results:
-        "Production game reviews platform at verdict.games with 293+ games, data from 5 external APIs, auto-discovery cron jobs, multi-source scoring, community reviews, curated lists, and a responsive pixel-art design. Deployed on Vercel with Supabase backend and daily automated updates.",
+        "Production game reviews platform at verdict.games with 1000+ games, data from 5 external APIs, auto-discovery cron jobs, multi-source scoring, community reviews, curated lists, and a responsive pixel-art design. Deployed on Vercel with Supabase backend and daily automated updates.",
     },
   },
 ];

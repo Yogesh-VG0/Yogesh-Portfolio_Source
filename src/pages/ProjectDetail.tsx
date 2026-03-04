@@ -140,7 +140,7 @@ const ProjectDetail = () => {
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
               {project.title}
             </h1>
-            <p className="text-base sm:text-lg text-muted-foreground max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-lg text-foreground/80 max-w-2xl leading-relaxed">
               {project.tagline}
             </p>
           </motion.div>
@@ -219,7 +219,7 @@ const ProjectDetail = () => {
 
               {/* Caption */}
               {currentImg && (
-                <p className="text-xs text-muted-foreground/50 mt-2 font-mono">{currentImg.alt}</p>
+                <p className="text-sm text-foreground/65 mt-2 font-mono">{currentImg.alt}</p>
               )}
             </motion.div>
           )}
@@ -230,11 +230,11 @@ const ProjectDetail = () => {
               {project.metrics.map((m) => (
                 <div
                   key={m.label}
-                  className="flex items-center gap-1.5 text-xs font-mono px-3 py-2 rounded-lg bg-card/50 border border-border/20 text-muted-foreground/70"
+                  className="flex items-center gap-1.5 text-xs font-mono px-3 py-2 rounded-lg bg-card/50 border border-border/20 text-foreground/70"
                 >
-                  <span className="text-primary/70">{m.icon}</span>
-                  <span className="font-semibold text-foreground/80">{m.value}</span>
-                  <span className="text-muted-foreground/50">{m.label}</span>
+                  <span className="text-primary/80">{m.icon}</span>
+                  <span className="font-semibold text-foreground">{m.value}</span>
+                  <span className="text-foreground/60">{m.label}</span>
                 </div>
               ))}
             </motion.div>
@@ -248,7 +248,7 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">The Problem</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed pl-0 sm:pl-10">{cs.problem}</p>
+            <p className="text-foreground/80 leading-relaxed pl-0 sm:pl-10">{cs.problem}</p>
           </motion.div>
 
           {/* Approach */}
@@ -259,7 +259,7 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">Approach</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed pl-0 sm:pl-10">{cs.approach}</p>
+            <p className="text-foreground/80 leading-relaxed pl-0 sm:pl-10">{cs.approach}</p>
           </motion.div>
 
           {/* Architecture */}
@@ -270,7 +270,7 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">Architecture</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed pl-0 sm:pl-10 mb-5">{cs.architecture}</p>
+            <p className="text-foreground/80 leading-relaxed pl-0 sm:pl-10 mb-5">{cs.architecture}</p>
 
             {/* Architecture Cards */}
             {cs.architectureCards && (
@@ -284,7 +284,7 @@ const ProjectDetail = () => {
                       {card.icon && <span className="text-lg">{card.icon}</span>}
                       <h3 className="text-sm font-bold text-foreground">{card.label}</h3>
                     </div>
-                    <p className="text-xs text-muted-foreground/70 leading-relaxed">{card.detail}</p>
+                    <p className="text-xs text-foreground/75 leading-relaxed">{card.detail}</p>
                   </div>
                 ))}
               </div>
@@ -312,7 +312,7 @@ const ProjectDetail = () => {
                       <span className="text-[10px] font-bold text-primary">{idx + 1}</span>
                     </div>
                     <h3 className="text-sm font-bold text-foreground mb-1">{step.title}</h3>
-                    <p className="text-[13px] text-muted-foreground/70 leading-relaxed">{step.description}</p>
+                    <p className="text-sm text-foreground/80 leading-relaxed">{step.description}</p>
                   </div>
                 ))}
               </div>
@@ -329,7 +329,7 @@ const ProjectDetail = () => {
             </div>
             <ul className="grid gap-3 pl-0 sm:pl-10">
               {project.highlights.map((h) => (
-                <li key={h} className="text-sm text-muted-foreground flex items-start gap-2.5">
+                <li key={h} className="text-sm text-foreground/80 flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
                   {h}
                 </li>
@@ -347,7 +347,7 @@ const ProjectDetail = () => {
             </div>
             <ul className="grid gap-3 pl-0 sm:pl-10">
               {cs.challenges.map((c) => (
-                <li key={c} className="text-sm text-muted-foreground flex items-start gap-2.5">
+                <li key={c} className="text-sm text-foreground/80 flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 flex-shrink-0" />
                   {c}
                 </li>
@@ -362,7 +362,7 @@ const ProjectDetail = () => {
               {project.tech.map((t) => (
                 <span
                   key={t}
-                  className="text-xs font-mono px-3 py-1.5 rounded-lg bg-secondary/40 text-muted-foreground/70 border border-border/20 hover:border-primary/20 hover:text-foreground/80 transition-colors"
+                  className="text-xs font-mono px-3 py-1.5 rounded-lg bg-secondary/40 text-foreground/75 border border-border/20 hover:border-primary/20 hover:text-foreground transition-colors"
                 >
                   {t}
                 </span>
@@ -378,7 +378,7 @@ const ProjectDetail = () => {
               </div>
               <h2 className="text-xl font-bold">Results</h2>
             </div>
-            <p className="text-muted-foreground leading-relaxed pl-0 sm:pl-10">{cs.results}</p>
+            <p className="text-foreground/80 leading-relaxed pl-0 sm:pl-10">{cs.results}</p>
           </motion.div>
 
           {/* CTAs */}

@@ -4,6 +4,9 @@ import {
   Layers,
   Calendar,
   Sparkles,
+  Gamepad2,
+  Database,
+  Globe,
 } from "lucide-react";
 import type { Project } from "./projects";
 
@@ -163,23 +166,81 @@ export const projects: Project[] = [
     },
   },
   {
-    slug: "weatherwise",
-    title: "WeatherWise",
+    slug: "verdict-games",
+    title: "Verdict Games",
     tagline:
-      "Command-line weather reports with styled HTML output (CS50P final project)",
-    featured: false,
-    status: "Open Source",
-    statusColor: "text-sky-400 bg-sky-500/10 border-sky-500/20",
-    year: "2025",
+      "A premium game reviews and discovery platform with data from 5+ APIs and 293+ games",
+    featured: true,
+    status: "Production",
+    statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
+    year: "2025 – Present",
     description:
-      "A Python CLI app that fetches live weather data from OpenWeatherMap and generates a clean, styled HTML report you can open in any browser. Built as a CS50P final project with input validation and full test coverage.",
+      "A full-stack game reviews platform that aggregates data from RAWG, Steam, IGDB, CheapShark, and Wikipedia to build rich game profiles. Features auto-discovery cron jobs, multi-source scoring with verdict badges, community reviews, curated lists, live player counts, price tracking, and a pixel-art gaming aesthetic with dark/light mode.",
     highlights: [
-      "Live weather data from OpenWeatherMap with city search and error handling",
-      "Generates a styled HTML report you can save and share",
-      "Input validation for graceful handling of typos and bad queries",
-      "Fully tested with automated unit tests",
+      "293+ games ingested from RAWG and enriched with Steam reviews, IGDB ratings, CheapShark deals, and Wikipedia summaries",
+      "Multi-source scoring algorithm that picks the best available score from Steam, IGDB, Metacritic, or RAWG and assigns a verdict label",
+      "Auto-discovery cron jobs that find trending, new, and top-rated games from RAWG and IGDB PopScore signals",
+      "Rich game pages with trailer embeds, screenshot galleries, Steam achievements, news feeds, pros/cons, and live player counts",
+      "Community reviews with helpful voting, curated game lists, and full-text search with on-demand ingestion",
+      "Pixel-art gaming aesthetic with Framer Motion scroll-reveal animations, hero carousel, and responsive mobile-first design",
     ],
-    tech: ["Python", "OpenWeatherMap API", "HTML/CSS", "unittest"],
-    githubUrl: "https://github.com/Yogesh-VG0/weather-dashboard",
+    metrics: [
+      { icon: <Gamepad2 size={14} />, label: "Games", value: "293+" },
+      { icon: <Database size={14} />, label: "APIs", value: "5" },
+      { icon: <Globe size={14} />, label: "Pages", value: "7" },
+      { icon: <Calendar size={14} />, label: "Cron", value: "Daily" },
+      { icon: <Sparkles size={14} />, label: "Scoring", value: "Multi-src" },
+    ],
+    tech: [
+      "Next.js",
+      "React 19",
+      "TypeScript",
+      "Tailwind CSS v4",
+      "Framer Motion",
+      "Supabase",
+      "PostgreSQL",
+      "React Query",
+      "Vercel",
+    ],
+    image: "/verdict_games_img/verdict_homepage.png",
+    gallery: [
+      { src: "/verdict_games_img/verdict_homepage.png", alt: "Verdict Games homepage with hero carousel, trending games, and new releases" },
+      { src: "/verdict_games_img/game_page.png", alt: "Game detail page with verdict score, pros and cons, and pricing sidebar" },
+      { src: "/verdict_games_img/game_page_mediasection.png", alt: "Game page media section with trailer, screenshot gallery, and achievements" },
+      { src: "/verdict_games_img/game_page_newssection.png", alt: "Game page news section with latest Steam news and community reviews" },
+    ],
+    liveUrl: "https://www.verdict.games",
+    githubUrl: "https://github.com/Yogesh-VG0/VerdictGames",
+    caseStudy: {
+      problem:
+        "Finding honest, data-driven game reviews in one place is hard. Most review sites rely on a single score source or subjective editorial takes. Players have to visit Steam, IGDB, Metacritic, and deal sites separately just to decide if a game is worth buying.",
+      approach:
+        "Built a multi-source ingestion pipeline that pulls game data from RAWG (primary metadata), then enriches it in parallel with Steam reviews, IGDB ratings and trailers, CheapShark price deals, and Wikipedia descriptions. A scoring algorithm picks the best available score and auto-generates verdict badges, summaries, pros, and cons. Cron jobs keep the database fresh by discovering new games and updating trending flags daily.",
+      architecture:
+        "Next.js App Router handles both the frontend and API routes. Supabase (PostgreSQL) stores all game data with Row Level Security. The ingestion pipeline runs a 13-step process: search RAWG, fetch full details, fire all enrichment calls in parallel (Steam, IGDB, CheapShark, Wikipedia), compute scores, generate verdicts, and upsert into the database. React Query caches everything on the client side.",
+      architectureCards: [
+        { label: "Frontend", detail: "Next.js 16 + React 19 with Framer Motion animations, hero carousel, and pixel-art gaming theme", icon: "🖥️" },
+        { label: "API Layer", detail: "Next.js Route Handlers serving game data, search, reviews, lists, and ingestion endpoints", icon: "🔌" },
+        { label: "Database", detail: "Supabase PostgreSQL with 6 tables, RLS policies, triggers, and 20+ indexes for fast queries", icon: "🗄️" },
+        { label: "Ingestion", detail: "13-step pipeline that searches RAWG, enriches from 4 sources in parallel, computes scores, and upserts", icon: "🔄" },
+        { label: "External APIs", detail: "RAWG, Steam, IGDB/Twitch, CheapShark, and Wikipedia REST APIs with caching and rate-limit handling", icon: "🌐" },
+        { label: "Cron Jobs", detail: "Auto-discover games from 5 RAWG categories and refresh trending flags using IGDB PopScore signals", icon: "⏰" },
+      ],
+      howItWorks: [
+        { title: "Search and Match", description: "The pipeline searches RAWG for the best match, scores results by release date, rating, and review count, then generates a URL slug and checks for duplicates in the database." },
+        { title: "Enrich from 5 Sources", description: "In parallel, the pipeline fetches Steam review summaries and player counts, IGDB ratings and trailers, CheapShark price deals, and Wikipedia descriptions. Each source is optional and fails gracefully." },
+        { title: "Score and Verdict", description: "A priority chain picks the best score: Steam review percentage, then IGDB aggregated rating, then Metacritic, then RAWG user rating. The score maps to a verdict label (Must Play, Worth It, Mixed, or Skip) and an auto-generated summary." },
+        { title: "Generate Pros and Cons", description: "The system reads signals like Steam sentiment, player counts, IGDB critic scores, and genre tags to auto-generate a pros and cons list for each game. Negative signals like microtransactions or mixed reviews get flagged too." },
+        { title: "Keep It Fresh", description: "Daily cron jobs discover new games from 5 RAWG categories (trending, new releases, upcoming, top-rated, popular). A separate cron refreshes trending and featured flags using a weighted IGDB PopScore composite." },
+      ],
+      challenges: [
+        "Coordinating 5 external APIs with different auth methods (API keys, OAuth, no auth) and rate limits. Built per-source caching and graceful fallbacks so the pipeline never fails completely",
+        "On-demand ingestion during search: when a user searches for a game that is not in the database, the search endpoint triggers real-time ingestion from external sources before returning results",
+        "Computing a fair score from wildly different rating systems (Steam percentage, IGDB 0-100, Metacritic 0-100, RAWG 0-5). Built a priority chain with normalization so scores are comparable",
+        "Keeping 293+ game profiles current with daily cron jobs that discover new games and refresh trending flags without hitting API rate limits",
+      ],
+      results:
+        "Production game reviews platform at verdict.games with 293+ games, data from 5 external APIs, auto-discovery cron jobs, multi-source scoring, community reviews, curated lists, and a responsive pixel-art design. Deployed on Vercel with Supabase backend and daily automated updates.",
+    },
   },
 ];

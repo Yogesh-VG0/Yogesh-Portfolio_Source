@@ -4,11 +4,19 @@ import { Download, ArrowLeft } from "lucide-react";
 import { Link } from "react-router-dom";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const RESUME_PATH = "/Yogesh_Resume.pdf";
+const RESUME_FULL_URL = "https://yogeshv.me/Yogesh_Resume.pdf";
+const GDOCS_VIEWER_URL = `https://docs.google.com/viewer?url=${encodeURIComponent(RESUME_FULL_URL)}&embedded=true`;
 
 const Resume = () => {
   const headerVisible = useScrollDirection(10);
+  const isMobile = useIsMobile();
+
+  // Google Docs viewer is used on mobile because iOS/Android browsers don't
+  // render PDFs inline inside an <iframe> — they just download the file instead.
+  const iframeSrc = isMobile ? GDOCS_VIEWER_URL : RESUME_PATH;
 
   useEffect(() => {
     document.title = "Resume — Yogesh Vadivel";
@@ -59,7 +67,7 @@ const Resume = () => {
         <div className="flex-1 container mx-auto max-w-5xl px-2 sm:px-4 py-4 sm:py-6 flex flex-col">
           <div className="flex-1 rounded-xl border border-border/30 bg-card/30 overflow-hidden shadow-lg min-h-[70vh] sm:min-h-[80vh]">
             <iframe
-              src={RESUME_PATH}
+              src={iframeSrc}
               title="Yogesh Vadivel Resume"
               className="w-full h-full min-h-[70vh] sm:min-h-[80vh]"
             />

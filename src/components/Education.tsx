@@ -5,9 +5,9 @@ import { fadeUp, staggerContainer, hoverLift } from "@/lib/motion";
 import SectionHeader from "./SectionHeader";
 
 const certifications = [
-  { name: "CS50X — Introduction to Computer Science", issuer: "Harvard", year: "2024" },
-  { name: "CS50P — Introduction to Programming with Python", issuer: "Harvard", year: "2024" },
-  { name: "AWS Cloud Practitioner Essentials", issuer: "AWS", year: "2024" },
+  { name: "CS50X — Introduction to Computer Science", issuer: "Harvard", year: "2025" },
+  { name: "CS50P — Introduction to Programming with Python", issuer: "Harvard", year: "2025" },
+  { name: "AWS Cloud Practitioner Essentials", issuer: "AWS", year: "2025" },
 ];
 
 const Education = () => {
@@ -35,7 +35,7 @@ const Education = () => {
                 <div>
                   <h3 className="text-lg font-bold text-foreground">Bachelor's in Computer Science</h3>
                   <p className="text-sm text-muted-foreground mt-1">Manipal Academy of Higher Education, Dubai</p>
-                  <p className="text-xs font-mono text-muted-foreground/60 mt-0.5">2022 – 2026</p>
+                  <p className="text-xs font-mono text-muted-foreground/60 mt-0.5">2021 – 2025</p>
                 </div>
               </div>
             </motion.div>

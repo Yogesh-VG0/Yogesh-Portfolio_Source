@@ -1,82 +1,4 @@
-// @ts-nocheck
 import { useEffect, useRef } from "react";
-
-function Wave(e: any) {
-  this.phase = e.phase || 0;
-  this.offset = e.offset || 0;
-  this.frequency = e.frequency || 0.001;
-  this.amplitude = e.amplitude || 1;
-}
-Wave.prototype.update = function () {
-  this.phase += this.frequency;
-  return this.offset + Math.sin(this.phase) * this.amplitude;
-};
-
-function Node() {
-  this.x = 0;
-  this.y = 0;
-  this.vx = 0;
-  this.vy = 0;
-}
-
-const E = {
-  friction: 0.5,
-  trails: 20,
-  size: 50,
-  dampening: 0.25,
-  tension: 0.98,
-};
-
-function Line(e: any, pos: any) {
-  this.spring = e.spring + 0.1 * Math.random() - 0.02;
-  this.friction = E.friction + 0.01 * Math.random() - 0.002;
-  this.nodes = [];
-  for (let i = 0; i < E.size; i++) {
-    const t = new Node();
-    t.x = pos.x;
-    t.y = pos.y;
-    this.nodes.push(t);
-  }
-}
-Line.prototype.update = function () {
-  let e = this.spring;
-  let t = this.nodes[0];
-  t.vx += (this._pos.x - t.x) * e;
-  t.vy += (this._pos.y - t.y) * e;
-  for (let i = 0; i < this.nodes.length; i++) {
-    t = this.nodes[i];
-    if (i > 0) {
-      const n = this.nodes[i - 1];
-      t.vx += (n.x - t.x) * e;
-      t.vy += (n.y - t.y) * e;
-      t.vx += n.vx * E.dampening;
-      t.vy += n.vy * E.dampening;
-    }
-    t.vx *= this.friction;
-    t.vy *= this.friction;
-    t.x += t.vx;
-    t.y += t.vy;
-    e *= E.tension;
-  }
-};
-Line.prototype.draw = function (ctx: CanvasRenderingContext2D) {
-  let n = this.nodes[0].x;
-  let i = this.nodes[0].y;
-  ctx.beginPath();
-  ctx.moveTo(n, i);
-  for (let a = 1; a < this.nodes.length - 2; a++) {
-    const e = this.nodes[a];
-    const t = this.nodes[a + 1];
-    n = 0.5 * (e.x + t.x);
-    i = 0.5 * (e.y + t.y);
-    ctx.quadraticCurveTo(e.x, e.y, n, i);
-  }
-  const last = this.nodes[this.nodes.length - 2];
-  const end = this.nodes[this.nodes.length - 1];
-  ctx.quadraticCurveTo(last.x, last.y, end.x, end.y);
-  ctx.stroke();
-  ctx.closePath();
-};
 
 /**
  * Detect touch-capable devices (phones + tablets) where
@@ -87,7 +9,12 @@ function isTouchDevice(): boolean {
   if (typeof navigator === "undefined") return false;
   if (navigator.maxTouchPoints > 0) return true;
   const ua = navigator.userAgent || "";
-  if (/Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini|Samsung/i.test(ua)) return true;
+  if (
+    /Android|iPhone|iPad|iPod|webOS|BlackBerry|IEMobile|Opera Mini|Samsung/i.test(
+      ua,
+    )
+  )
+    return true;
   if (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 0) return true;
   return false;
 }
@@ -98,78 +25,112 @@ const CursorGlow = () => {
 
   useEffect(() => {
     if (isTouch) return;
+
     const canvas = canvasRef.current;
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
+    let raf = 0;
     let running = true;
-    const pos = { x: 0, y: 0 };
-    let lines: any[] = [];
-    let inited = false;
 
-    const f = new Wave({
-      phase: Math.random() * 2 * Math.PI,
-      amplitude: 40,
-      frequency: 0.0015,
-      offset: 215,
-    });
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+
+    const pointer = {
+      x: window.innerWidth / 2,
+      y: window.innerHeight / 2,
+      tx: window.innerWidth / 2,
+      ty: window.innerHeight / 2,
+      visible: false,
+      alpha: 0,
+      targetAlpha: 0,
+    };
+
+    const GLOW_SIZE = 110;
+    const CORE_SIZE = 26;
+    const EASE = 0.16;
+    const FADE_EASE = 0.12;
 
     const resize = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resize();
-
-    const initLines = () => {
-      lines = [];
-      for (let i = 0; i < E.trails; i++) {
-        const l = new Line({ spring: 0.4 + (i / E.trails) * 0.025 }, pos);
-        l._pos = pos;
-        lines.push(l);
-      }
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = Math.floor(w * dpr);
+      canvas.height = Math.floor(h * dpr);
+      canvas.style.width = `${w}px`;
+      canvas.style.height = `${h}px`;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.scale(dpr, dpr);
     };
 
-    const onMove = (e: MouseEvent | TouchEvent) => {
-      if ("touches" in e && e.touches.length) {
-        pos.x = e.touches[0].pageX;
-        pos.y = e.touches[0].pageY;
-      } else if ("clientX" in e) {
-        pos.x = (e as MouseEvent).clientX;
-        pos.y = (e as MouseEvent).clientY;
-      }
-      if (!inited) {
-        inited = true;
-        initLines();
-      }
+    const onPointerMove = (e: PointerEvent) => {
+      pointer.tx = e.clientX;
+      pointer.ty = e.clientY;
+      pointer.visible = true;
+      pointer.targetAlpha = 1;
+    };
+
+    const onPointerLeave = () => {
+      pointer.visible = false;
+      pointer.targetAlpha = 0;
+    };
+
+    const drawGlow = (x: number, y: number, alpha: number) => {
+      if (alpha <= 0.001) return;
+
+      const outer = ctx.createRadialGradient(x, y, 0, x, y, GLOW_SIZE);
+      outer.addColorStop(0, `rgba(99, 102, 241, ${0.22 * alpha})`);
+      outer.addColorStop(0.35, `rgba(99, 102, 241, ${0.14 * alpha})`);
+      outer.addColorStop(0.7, `rgba(99, 102, 241, ${0.06 * alpha})`);
+      outer.addColorStop(1, "rgba(99, 102, 241, 0)");
+
+      ctx.fillStyle = outer;
+      ctx.beginPath();
+      ctx.arc(x, y, GLOW_SIZE, 0, Math.PI * 2);
+      ctx.fill();
+
+      const core = ctx.createRadialGradient(x, y, 0, x, y, CORE_SIZE);
+      core.addColorStop(0, `rgba(255, 255, 255, ${0.16 * alpha})`);
+      core.addColorStop(0.45, `rgba(167, 139, 250, ${0.18 * alpha})`);
+      core.addColorStop(1, "rgba(167, 139, 250, 0)");
+
+      ctx.fillStyle = core;
+      ctx.beginPath();
+      ctx.arc(x, y, CORE_SIZE, 0, Math.PI * 2);
+      ctx.fill();
     };
 
     const render = () => {
       if (!running) return;
-      ctx.globalCompositeOperation = "source-over";
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+      pointer.x += (pointer.tx - pointer.x) * EASE;
+      pointer.y += (pointer.ty - pointer.y) * EASE;
+      pointer.alpha += (pointer.targetAlpha - pointer.alpha) * FADE_EASE;
+
+      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
+
       ctx.globalCompositeOperation = "lighter";
-      const hue = f.update();
-      ctx.strokeStyle = `hsla(${Math.round(hue)}, 70%, 55%, 0.25)`;
-      ctx.lineWidth = 1;
-      for (const line of lines) {
-        line.update();
-        line.draw(ctx);
-      }
-      requestAnimationFrame(render);
+      drawGlow(pointer.x, pointer.y, pointer.alpha);
+      ctx.globalCompositeOperation = "source-over";
+
+      raf = window.requestAnimationFrame(render);
     };
 
-    document.addEventListener("mousemove", onMove, { passive: true });
-    document.addEventListener("touchmove", onMove, { passive: true });
+    resize();
+    raf = window.requestAnimationFrame(render);
+
     window.addEventListener("resize", resize);
-    render();
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("pointerleave", onPointerLeave);
+    document.addEventListener("mouseleave", onPointerLeave);
 
     return () => {
       running = false;
-      document.removeEventListener("mousemove", onMove);
-      document.removeEventListener("touchmove", onMove);
+      window.cancelAnimationFrame(raf);
       window.removeEventListener("resize", resize);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("pointerleave", onPointerLeave);
+      document.removeEventListener("mouseleave", onPointerLeave);
     };
   }, [isTouch]);
 
@@ -179,7 +140,6 @@ const CursorGlow = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-[30] pointer-events-none"
-      style={{ width: "100vw", height: "100vh" }}
     />
   );
 };

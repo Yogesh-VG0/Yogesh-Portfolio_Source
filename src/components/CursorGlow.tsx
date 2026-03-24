@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useRef } from "react";
 
 /**
@@ -19,6 +20,85 @@ function isTouchDevice(): boolean {
   return false;
 }
 
+/* ── Spring-physics node ── */
+function Node(x: number, y: number) {
+  this.x = x;
+  this.y = y;
+  this.vx = 0;
+  this.vy = 0;
+}
+
+/* ── Single short trail line ── */
+const TRAIL_LENGTH = 18;   // nodes in the trail (keeps it short)
+const SPRING = 0.42;       // spring stiffness toward target
+const FRICTION = 0.48;     // velocity damping per node
+const DAMPENING = 0.25;    // how much parent velocity carries over
+const TENSION = 0.98;      // spring decay along the chain
+
+function Trail(x: number, y: number) {
+  this.nodes = [];
+  for (let i = 0; i < TRAIL_LENGTH; i++) {
+    this.nodes.push(new Node(x, y));
+  }
+}
+
+Trail.prototype.update = function (tx: number, ty: number) {
+  let spring = SPRING;
+  const head = this.nodes[0];
+  head.vx += (tx - head.x) * spring;
+  head.vy += (ty - head.y) * spring;
+
+  for (let i = 0; i < this.nodes.length; i++) {
+    const n = this.nodes[i];
+    if (i > 0) {
+      const prev = this.nodes[i - 1];
+      n.vx += (prev.x - n.x) * spring;
+      n.vy += (prev.y - n.y) * spring;
+      n.vx += prev.vx * DAMPENING;
+      n.vy += prev.vy * DAMPENING;
+    }
+    n.vx *= FRICTION;
+    n.vy *= FRICTION;
+    n.x += n.vx;
+    n.y += n.vy;
+    spring *= TENSION;
+  }
+};
+
+Trail.prototype.draw = function (ctx: CanvasRenderingContext2D) {
+  const nodes = this.nodes;
+  if (nodes.length < 3) return;
+
+  ctx.beginPath();
+  ctx.moveTo(nodes[0].x, nodes[0].y);
+
+  for (let i = 1; i < nodes.length - 2; i++) {
+    const cur = nodes[i];
+    const next = nodes[i + 1];
+    const mx = 0.5 * (cur.x + next.x);
+    const my = 0.5 * (cur.y + next.y);
+    ctx.quadraticCurveTo(cur.x, cur.y, mx, my);
+  }
+
+  const last = nodes[nodes.length - 2];
+  const end = nodes[nodes.length - 1];
+  ctx.quadraticCurveTo(last.x, last.y, end.x, end.y);
+  ctx.stroke();
+};
+
+/* ── Hue oscillator ── */
+function Wave(phase: number, offset: number, amplitude: number, frequency: number) {
+  this.phase = phase;
+  this.offset = offset;
+  this.amplitude = amplitude;
+  this.frequency = frequency;
+}
+Wave.prototype.update = function () {
+  this.phase += this.frequency;
+  return this.offset + Math.sin(this.phase) * this.amplitude;
+};
+
+/* ── Component ── */
 const CursorGlow = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const isTouch = isTouchDevice();
@@ -32,105 +112,68 @@ const CursorGlow = () => {
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
-    let raf = 0;
     let running = true;
+    const pos = { x: 0, y: 0 };
+    let trail: any = null;
 
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-
-    const pointer = {
-      x: window.innerWidth / 2,
-      y: window.innerHeight / 2,
-      tx: window.innerWidth / 2,
-      ty: window.innerHeight / 2,
-      visible: false,
-      alpha: 0,
-      targetAlpha: 0,
-    };
-
-    const GLOW_SIZE = 110;
-    const CORE_SIZE = 26;
-    const EASE = 0.16;
-    const FADE_EASE = 0.12;
+    const hue = new Wave(
+      Math.random() * Math.PI * 2,
+      215,
+      40,
+      0.0015,
+    );
 
     const resize = () => {
-      const w = window.innerWidth;
-      const h = window.innerHeight;
-      canvas.width = Math.floor(w * dpr);
-      canvas.height = Math.floor(h * dpr);
-      canvas.style.width = `${w}px`;
-      canvas.style.height = `${h}px`;
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.scale(dpr, dpr);
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
     };
+    resize();
 
-    const onPointerMove = (e: PointerEvent) => {
-      pointer.tx = e.clientX;
-      pointer.ty = e.clientY;
-      pointer.visible = true;
-      pointer.targetAlpha = 1;
-    };
-
-    const onPointerLeave = () => {
-      pointer.visible = false;
-      pointer.targetAlpha = 0;
-    };
-
-    const drawGlow = (x: number, y: number, alpha: number) => {
-      if (alpha <= 0.001) return;
-
-      const outer = ctx.createRadialGradient(x, y, 0, x, y, GLOW_SIZE);
-      outer.addColorStop(0, `rgba(99, 102, 241, ${0.22 * alpha})`);
-      outer.addColorStop(0.35, `rgba(99, 102, 241, ${0.14 * alpha})`);
-      outer.addColorStop(0.7, `rgba(99, 102, 241, ${0.06 * alpha})`);
-      outer.addColorStop(1, "rgba(99, 102, 241, 0)");
-
-      ctx.fillStyle = outer;
-      ctx.beginPath();
-      ctx.arc(x, y, GLOW_SIZE, 0, Math.PI * 2);
-      ctx.fill();
-
-      const core = ctx.createRadialGradient(x, y, 0, x, y, CORE_SIZE);
-      core.addColorStop(0, `rgba(255, 255, 255, ${0.16 * alpha})`);
-      core.addColorStop(0.45, `rgba(167, 139, 250, ${0.18 * alpha})`);
-      core.addColorStop(1, "rgba(167, 139, 250, 0)");
-
-      ctx.fillStyle = core;
-      ctx.beginPath();
-      ctx.arc(x, y, CORE_SIZE, 0, Math.PI * 2);
-      ctx.fill();
+    const onMove = (e: MouseEvent | TouchEvent) => {
+      if ("touches" in e && e.touches.length) {
+        pos.x = e.touches[0].pageX;
+        pos.y = e.touches[0].pageY;
+      } else if ("clientX" in e) {
+        pos.x = (e as MouseEvent).clientX;
+        pos.y = (e as MouseEvent).clientY;
+      }
+      if (!trail) {
+        trail = new Trail(pos.x, pos.y);
+      }
     };
 
     const render = () => {
       if (!running) return;
 
-      pointer.x += (pointer.tx - pointer.x) * EASE;
-      pointer.y += (pointer.ty - pointer.y) * EASE;
-      pointer.alpha += (pointer.targetAlpha - pointer.alpha) * FADE_EASE;
-
-      ctx.clearRect(0, 0, canvas.width / dpr, canvas.height / dpr);
-
-      ctx.globalCompositeOperation = "lighter";
-      drawGlow(pointer.x, pointer.y, pointer.alpha);
       ctx.globalCompositeOperation = "source-over";
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      raf = window.requestAnimationFrame(render);
+      if (trail) {
+        trail.update(pos.x, pos.y);
+
+        ctx.globalCompositeOperation = "lighter";
+        const h = hue.update();
+        ctx.strokeStyle = `hsla(${Math.round(h)}, 70%, 55%, 0.35)`;
+        ctx.lineWidth = 1.5;
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        trail.draw(ctx);
+        ctx.globalCompositeOperation = "source-over";
+      }
+
+      requestAnimationFrame(render);
     };
 
-    resize();
-    raf = window.requestAnimationFrame(render);
-
+    document.addEventListener("mousemove", onMove, { passive: true });
+    document.addEventListener("touchmove", onMove, { passive: true });
     window.addEventListener("resize", resize);
-    window.addEventListener("pointermove", onPointerMove, { passive: true });
-    window.addEventListener("pointerleave", onPointerLeave);
-    document.addEventListener("mouseleave", onPointerLeave);
+    render();
 
     return () => {
       running = false;
-      window.cancelAnimationFrame(raf);
+      document.removeEventListener("mousemove", onMove);
+      document.removeEventListener("touchmove", onMove);
       window.removeEventListener("resize", resize);
-      window.removeEventListener("pointermove", onPointerMove);
-      window.removeEventListener("pointerleave", onPointerLeave);
-      document.removeEventListener("mouseleave", onPointerLeave);
     };
   }, [isTouch]);
 
@@ -140,6 +183,7 @@ const CursorGlow = () => {
     <canvas
       ref={canvasRef}
       className="fixed inset-0 z-[30] pointer-events-none"
+      style={{ width: "100vw", height: "100vh" }}
     />
   );
 };

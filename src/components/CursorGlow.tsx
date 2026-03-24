@@ -155,9 +155,9 @@ const CursorGlow = () => {
         const h = hue.update();
         ctx.strokeStyle = `hsla(${Math.round(h)}, 70%, 55%, 0.25)`;
         ctx.lineWidth = 1;
-        ctx.lineCap = "round";
-        ctx.lineJoin = "round";
-        trail.draw(ctx);
+        for (let i = 0; i < 20; i++) {
+          trail.draw(ctx);
+        }
         ctx.globalCompositeOperation = "source-over";
       }
 

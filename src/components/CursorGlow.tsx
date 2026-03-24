@@ -153,8 +153,8 @@ const CursorGlow = () => {
 
         ctx.globalCompositeOperation = "lighter";
         const h = hue.update();
-        ctx.strokeStyle = `hsla(${Math.round(h)}, 70%, 55%, 0.35)`;
-        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = `hsla(${Math.round(h)}, 70%, 55%, 0.25)`;
+        ctx.lineWidth = 1;
         ctx.lineCap = "round";
         ctx.lineJoin = "round";
         trail.draw(ctx);

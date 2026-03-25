@@ -76,7 +76,7 @@ const ProjectDetail = () => {
     <div className="min-h-screen text-foreground relative z-[1]">
       {/* Top bar */}
       <header
-        className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40"
+        className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40"
         style={{
           transform: headerVisible ? "translateY(0)" : "translateY(-100%)",
           transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
@@ -118,7 +118,7 @@ const ProjectDetail = () => {
         </div>
       </header>
 
-      <main className="container mx-auto max-w-5xl px-4 sm:px-6 py-10 sm:py-16">
+      <main className="container mx-auto max-w-5xl px-4 sm:px-6 pt-24 sm:pt-28 pb-10 sm:pb-16">
         <motion.div
           variants={staggerContainer(0.08)}
           initial="hidden"
@@ -148,23 +148,23 @@ const ProjectDetail = () => {
           {/* Image Carousel */}
           {gallery.length > 0 && (
             <motion.div variants={fadeUp} className="mb-10 sm:mb-12">
-              <div className="relative group rounded-xl overflow-hidden border border-border/30 shadow-lg bg-card/20">
+              <div className="relative group rounded-xl overflow-hidden border border-border/30 shadow-lg bg-black/10 dark:bg-black/30 aspect-[16/10]">
                 {/* Main image with click to open lightbox */}
                 <button
                   onClick={() => setLightboxOpen(true)}
-                  className="w-full cursor-zoom-in"
+                  className="absolute inset-0 w-full h-full cursor-zoom-in"
                   aria-label="Click to enlarge image"
                 >
-                  <AnimatePresence mode="wait">
+                  <AnimatePresence initial={false}>
                     <motion.img
                       key={galleryIdx}
                       src={gallery[galleryIdx].src}
                       alt={gallery[galleryIdx].alt}
-                      className="w-full h-auto object-cover"
+                      className="absolute inset-0 w-full h-full object-cover"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: 0.25 }}
                     />
                   </AnimatePresence>
                 </button>
@@ -174,14 +174,14 @@ const ProjectDetail = () => {
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100"
+                      className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100 z-[2]"
                       aria-label="Previous image"
                     >
                       <ChevronLeft size={18} />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100"
+                      className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100 z-[2]"
                       aria-label="Next image"
                     >
                       <ChevronRight size={18} />
@@ -191,7 +191,7 @@ const ProjectDetail = () => {
 
                 {/* Image counter badge */}
                 {gallery.length > 1 && (
-                  <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-sm text-white text-[11px] font-mono">
+                  <div className="absolute bottom-3 right-3 px-2.5 py-1 rounded-lg bg-black/50 backdrop-blur-sm text-white text-[11px] font-mono z-[2]">
                     {galleryIdx + 1} / {gallery.length}
                   </div>
                 )}

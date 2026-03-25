@@ -1,4 +1,4 @@
-import { motion, useInView } from "framer-motion";
+import { motion, useInView, AnimatePresence } from "framer-motion";
 import { useRef, useState, useCallback } from "react";
 import {
   Star,
@@ -6,6 +6,8 @@ import {
   ExternalLink,
   CircleDot,
   Telescope,
+  ChevronLeft,
+  ChevronRight,
 } from "lucide-react";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { projects, type Project } from "@/data/projects";
@@ -33,6 +35,8 @@ const ProjectCard = ({
   const isFeatured = variant === "featured";
   const cardRef = useRef<HTMLDivElement>(null);
   const [spotlight, setSpotlight] = useState({ x: 0, y: 0, visible: false });
+  const gallery = project.gallery || [];
+  const [galleryIdx, setGalleryIdx] = useState(0);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
     const rect = cardRef.current?.getBoundingClientRect();
@@ -44,13 +48,32 @@ const ProjectCard = ({
     setSpotlight((s) => ({ ...s, visible: false }));
   }, []);
 
+  const prevImage = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setGalleryIdx((prev) => (prev - 1 + gallery.length) % gallery.length);
+    },
+    [gallery.length],
+  );
+
+  const nextImage = useCallback(
+    (e: React.MouseEvent) => {
+      e.stopPropagation();
+      setGalleryIdx((prev) => (prev + 1) % gallery.length);
+    },
+    [gallery.length],
+  );
+
+  const hasGallery = gallery.length > 1;
+  const currentImage = gallery.length > 0 ? gallery[galleryIdx] : null;
+
   return (
     <motion.div
       ref={cardRef}
       variants={fadeUp}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className={`group relative rounded-2xl border overflow-hidden transition-all duration-500 p-5 sm:p-7 md:p-9 ${
+      className={`group relative rounded-2xl border overflow-hidden transition-all duration-500 p-4 sm:p-7 md:p-9 ${
         isFeatured
           ? "bg-card/60 border-primary/15 hover:border-primary/35 hover:shadow-2xl hover:shadow-primary/5"
           : "bg-card/40 border-border/30 hover:border-primary/20 hover:shadow-xl hover:shadow-primary/3"
@@ -100,42 +123,91 @@ const ProjectCard = ({
         </span>
       </div>
 
-      {/* Title */}
-      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground group-hover:text-primary transition-colors mb-1.5">
-        {project.title}
-      </h3>
+      {/* Title — clickable to live site */}
+      {project.liveUrl ? (
+        <a
+          href={project.liveUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-block"
+        >
+          <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground hover:text-primary transition-colors mb-1.5 cursor-pointer">
+            {project.title}
+          </h3>
+        </a>
+      ) : (
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-foreground group-hover:text-primary transition-colors mb-1.5">
+          {project.title}
+        </h3>
+      )}
 
       {/* Tagline */}
       <p className="text-sm text-muted-foreground/60 font-medium mb-4">
         {project.tagline}
       </p>
 
-      {/* Hero screenshot */}
-      {project.image && (
-        <div className="mb-5 -mx-1 sm:-mx-2 overflow-hidden rounded-xl border border-border/20">
-          <img
-            src={project.image}
-            alt={`${project.title} screenshot`}
-            loading="lazy"
-            className="w-full h-auto object-cover transition-transform duration-500 group-hover:scale-[1.02]"
-          />
+      {/* Gallery with next/back navigation */}
+      {currentImage && (
+        <div className="relative mb-5 -mx-1 sm:-mx-2 overflow-hidden rounded-xl border border-border/20 aspect-[16/10] bg-black/10 dark:bg-black/30">
+          <AnimatePresence initial={false}>
+            <motion.img
+              key={galleryIdx}
+              src={currentImage.src}
+              alt={currentImage.alt}
+              loading="lazy"
+              className="absolute inset-0 w-full h-full object-cover"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+            />
+          </AnimatePresence>
+
+          {/* Navigation arrows */}
+          {hasGallery && (
+            <>
+              <button
+                onClick={prevImage}
+                className="absolute left-1.5 sm:left-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm flex items-center justify-center text-white transition-all z-[2]"
+                aria-label="Previous image"
+              >
+                <ChevronLeft size={16} className="sm:hidden" />
+                <ChevronLeft size={18} className="hidden sm:block" />
+              </button>
+              <button
+                onClick={nextImage}
+                className="absolute right-1.5 sm:right-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm flex items-center justify-center text-white transition-all z-[2]"
+                aria-label="Next image"
+              >
+                <ChevronRight size={16} className="sm:hidden" />
+                <ChevronRight size={18} className="hidden sm:block" />
+              </button>
+            </>
+          )}
+
+          {/* Image counter badge */}
+          {hasGallery && (
+            <div className="absolute bottom-2 right-2 sm:bottom-3 sm:right-3 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-lg bg-black/50 backdrop-blur-sm text-white text-[10px] sm:text-[11px] font-mono z-[2]">
+              {galleryIdx + 1} / {gallery.length}
+            </div>
+          )}
         </div>
       )}
 
       {/* Description */}
-      <p className="text-sm md:text-[15px] text-muted-foreground/70 leading-relaxed mb-5">
+      <p className="text-[13px] sm:text-sm md:text-[15px] text-muted-foreground/70 leading-relaxed mb-5">
         {project.description}
       </p>
 
       {/* Metrics row */}
       {project.metrics && (
-        <div className="flex flex-wrap gap-2 sm:gap-3 mb-6">
+        <div className="flex flex-wrap gap-1.5 sm:gap-3 mb-5 sm:mb-6">
           {project.metrics.map((m) => {
             const parsed = parseMetricValue(m.value);
             return (
               <div
                 key={m.label}
-                className="flex items-center gap-1.5 text-xs font-mono px-2.5 py-1.5 rounded-lg bg-background/50 border border-border/20 text-muted-foreground/70"
+                className="flex items-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs font-mono px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-background/50 border border-border/20 text-muted-foreground/70"
               >
                 <span className="text-primary/70">{m.icon}</span>
                 <span className="font-semibold text-foreground/80">
@@ -153,24 +225,24 @@ const ProjectCard = ({
       )}
 
       {/* Highlights — truncated to 4 on card */}
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 mb-2">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 sm:gap-y-2.5 mb-2">
         {project.highlights.slice(0, 4).map((h) => (
           <li
             key={h}
-            className="text-[13px] leading-relaxed text-muted-foreground/80 flex items-start gap-2.5"
+            className="text-[12px] sm:text-[13px] leading-relaxed text-muted-foreground/80 flex items-start gap-2"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-[6px] flex-shrink-0" />
+            <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-[5px] sm:mt-[6px] flex-shrink-0" />
             {h}
           </li>
         ))}
       </ul>
 
       {/* Tech chips */}
-      <div className="flex flex-wrap gap-1.5 mt-5 mb-6">
+      <div className="flex flex-wrap gap-1.5 mt-4 sm:mt-5 mb-5 sm:mb-6">
         {project.tech.map((t) => (
           <span
             key={t}
-            className="text-[11px] font-mono px-2 py-0.5 rounded-md bg-secondary/40 text-muted-foreground/60 border border-border/20"
+            className="text-[10px] sm:text-[11px] font-mono px-2 py-0.5 rounded-md bg-secondary/40 text-muted-foreground/60 border border-border/20"
           >
             {t}
           </span>
@@ -178,7 +250,7 @@ const ProjectCard = ({
       </div>
 
       {/* CTA buttons */}
-      <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3">
+      <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3">
         {project.liveUrl && (
           <motion.a
             href={project.liveUrl}

@@ -8,7 +8,7 @@ const experiences = [
   {
     role: "Full-Stack Developer Intern",
     company: "SmallCap.Ai",
-    location: "Remote, London",
+    location: "Remote, Dubai",
     period: "2024",
     points: [
       "Built production dashboards used by admin and end-user teams for real-time data monitoring",

@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef, useState, useCallback, cloneElement } from "react";
+import { useRef, useState, useCallback, cloneElement, useEffect } from "react";
 import { MapPin, Briefcase, Code2, GraduationCap } from "lucide-react";
 import { fadeUp, staggerContainer, scaleUp } from "@/lib/motion";
 import SectionHeader from "./SectionHeader";
@@ -76,6 +76,33 @@ const About = () => {
     (data: Activity[]) => (isMobile ? filterLastMonths(data, 6) : data),
     [isMobile]
   );
+
+  useEffect(() => {
+    if (!selectedActivity) return;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target;
+      if (!(target instanceof Node)) return;
+
+      if (!containerRef.current?.contains(target)) {
+        setSelectedActivity(null);
+      }
+    };
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setSelectedActivity(null);
+      }
+    };
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [selectedActivity]);
 
   return (
     <section id="about" className="section-padding">
@@ -164,7 +191,7 @@ const About = () => {
                       Math.max(8, selectedActivity.x),
                       (containerRef.current?.clientWidth ?? 300) - 160
                     ),
-                    top: selectedActivity.y - 50,
+                    top: Math.max(12, selectedActivity.y - 50),
                     minWidth: 140,
                   }}
                 >

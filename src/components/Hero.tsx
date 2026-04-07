@@ -7,7 +7,7 @@ import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 
 const Hero = () => {
   return (
-    <section className="relative min-h-screen flex items-center justify-center section-padding pt-24 overflow-hidden">
+    <section className="relative isolate min-h-screen flex items-center justify-center section-padding pt-24 overflow-hidden">
       <motion.div
         className="container mx-auto max-w-4xl text-center relative z-10 px-4"
         variants={staggerContainer(0.12)}

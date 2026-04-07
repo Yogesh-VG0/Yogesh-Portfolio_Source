@@ -1,5 +1,5 @@
-// @ts-nocheck
-import { useEffect, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useTheme } from "next-themes";
 
 /**
  * Detect touch-capable devices (phones + tablets) where
@@ -17,15 +17,22 @@ function isTouchDevice(): boolean {
   )
     return true;
   if (/Macintosh/i.test(ua) && navigator.maxTouchPoints > 0) return true;
-  return false;
+ return false;
 }
 
 /* ── Spring-physics node ── */
-function Node(x: number, y: number) {
-  this.x = x;
-  this.y = y;
-  this.vx = 0;
-  this.vy = 0;
+class SpringNode {
+  x: number;
+  y: number;
+  vx: number;
+  vy: number;
+
+  constructor(x: number, y: number) {
+    this.x = x;
+    this.y = y;
+    this.vx = 0;
+    this.vy = 0;
+  }
 }
 
 /* ── Single short trail line ── */
@@ -35,73 +42,84 @@ const FRICTION = 0.48;     // velocity damping per node
 const DAMPENING = 0.25;    // how much parent velocity carries over
 const TENSION = 0.98;      // spring decay along the chain
 
-function Trail(x: number, y: number) {
-  this.nodes = [];
-  for (let i = 0; i < TRAIL_LENGTH; i++) {
-    this.nodes.push(new Node(x, y));
+class Trail {
+  nodes: SpringNode[];
+
+  constructor(x: number, y: number) {
+    this.nodes = Array.from({ length: TRAIL_LENGTH }, () => new SpringNode(x, y));
+  }
+
+  update(tx: number, ty: number) {
+    let spring = SPRING;
+    const head = this.nodes[0];
+    head.vx += (tx - head.x) * spring;
+    head.vy += (ty - head.y) * spring;
+
+    for (let i = 0; i < this.nodes.length; i++) {
+      const node = this.nodes[i];
+      if (i > 0) {
+        const prev = this.nodes[i - 1];
+        node.vx += (prev.x - node.x) * spring;
+        node.vy += (prev.y - node.y) * spring;
+        node.vx += prev.vx * DAMPENING;
+        node.vy += prev.vy * DAMPENING;
+      }
+      node.vx *= FRICTION;
+      node.vy *= FRICTION;
+      node.x += node.vx;
+      node.y += node.vy;
+      spring *= TENSION;
+    }
+  }
+
+  draw(ctx: CanvasRenderingContext2D) {
+    const nodes = this.nodes;
+    if (nodes.length < 3) return;
+
+    ctx.beginPath();
+    ctx.moveTo(nodes[0].x, nodes[0].y);
+
+    for (let i = 1; i < nodes.length - 2; i++) {
+      const current = nodes[i];
+      const next = nodes[i + 1];
+      const midX = 0.5 * (current.x + next.x);
+      const midY = 0.5 * (current.y + next.y);
+      ctx.quadraticCurveTo(current.x, current.y, midX, midY);
+    }
+
+    const last = nodes[nodes.length - 2];
+    const end = nodes[nodes.length - 1];
+    ctx.quadraticCurveTo(last.x, last.y, end.x, end.y);
+    ctx.stroke();
   }
 }
-
-Trail.prototype.update = function (tx: number, ty: number) {
-  let spring = SPRING;
-  const head = this.nodes[0];
-  head.vx += (tx - head.x) * spring;
-  head.vy += (ty - head.y) * spring;
-
-  for (let i = 0; i < this.nodes.length; i++) {
-    const n = this.nodes[i];
-    if (i > 0) {
-      const prev = this.nodes[i - 1];
-      n.vx += (prev.x - n.x) * spring;
-      n.vy += (prev.y - n.y) * spring;
-      n.vx += prev.vx * DAMPENING;
-      n.vy += prev.vy * DAMPENING;
-    }
-    n.vx *= FRICTION;
-    n.vy *= FRICTION;
-    n.x += n.vx;
-    n.y += n.vy;
-    spring *= TENSION;
-  }
-};
-
-Trail.prototype.draw = function (ctx: CanvasRenderingContext2D) {
-  const nodes = this.nodes;
-  if (nodes.length < 3) return;
-
-  ctx.beginPath();
-  ctx.moveTo(nodes[0].x, nodes[0].y);
-
-  for (let i = 1; i < nodes.length - 2; i++) {
-    const cur = nodes[i];
-    const next = nodes[i + 1];
-    const mx = 0.5 * (cur.x + next.x);
-    const my = 0.5 * (cur.y + next.y);
-    ctx.quadraticCurveTo(cur.x, cur.y, mx, my);
-  }
-
-  const last = nodes[nodes.length - 2];
-  const end = nodes[nodes.length - 1];
-  ctx.quadraticCurveTo(last.x, last.y, end.x, end.y);
-  ctx.stroke();
-};
 
 /* ── Hue oscillator ── */
-function Wave(phase: number, offset: number, amplitude: number, frequency: number) {
-  this.phase = phase;
-  this.offset = offset;
-  this.amplitude = amplitude;
-  this.frequency = frequency;
+class Wave {
+  phase: number;
+  offset: number;
+  amplitude: number;
+  frequency: number;
+
+  constructor(phase: number, offset: number, amplitude: number, frequency: number) {
+    this.phase = phase;
+    this.offset = offset;
+    this.amplitude = amplitude;
+    this.frequency = frequency;
+  }
+
+  update() {
+    this.phase += this.frequency;
+    return this.offset + Math.sin(this.phase) * this.amplitude;
+  }
 }
-Wave.prototype.update = function () {
-  this.phase += this.frequency;
-  return this.offset + Math.sin(this.phase) * this.amplitude;
-};
 
 /* ── Component ── */
 const CursorGlow = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const isTouch = isTouchDevice();
+  const isTouch = useMemo(() => isTouchDevice(), []);
+  const { resolvedTheme } = useTheme();
+  const isDark = resolvedTheme !== "light";
 
   useEffect(() => {
     if (isTouch) return;
@@ -114,13 +132,14 @@ const CursorGlow = () => {
 
     let running = true;
     const pos = { x: 0, y: 0 };
-    let trail: any = null;
+    let trail: Trail | null = null;
+    let animationFrame = 0;
 
     const hue = new Wave(
       Math.random() * Math.PI * 2,
-      215,
-      40,
-      0.0015,
+      isDark ? 215 : 228,
+      isDark ? 40 : 22,
+      isDark ? 0.0015 : 0.0012,
     );
 
     const resize = () => {
@@ -147,35 +166,60 @@ const CursorGlow = () => {
 
       ctx.globalCompositeOperation = "source-over";
       ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.shadowBlur = 0;
+      ctx.shadowColor = "transparent";
 
       if (trail) {
         trail.update(pos.x, pos.y);
 
-        ctx.globalCompositeOperation = "lighter";
         const h = hue.update();
-        ctx.strokeStyle = `hsla(${Math.round(h)}, 70%, 55%, 0.25)`;
-        ctx.lineWidth = 1;
-        for (let i = 0; i < 20; i++) {
-          trail.draw(ctx);
+        if (isDark) {
+          ctx.globalCompositeOperation = "lighter";
+          ctx.strokeStyle = `hsla(${Math.round(h)}, 70%, 55%, 0.25)`;
+          ctx.lineWidth = 1;
+          for (let i = 0; i < 20; i++) {
+            trail.draw(ctx);
+          }
+          ctx.globalCompositeOperation = "source-over";
+        } else {
+          const head = trail.nodes[0];
+          ctx.strokeStyle = `hsla(${Math.round(h)}, 82%, 60%, 0.13)`;
+          ctx.lineWidth = 1.15;
+          ctx.shadowBlur = 20;
+          ctx.shadowColor = `hsla(${Math.round(h + 18)}, 88%, 72%, 0.18)`;
+          for (let i = 0; i < 12; i++) {
+            trail.draw(ctx);
+          }
+
+          ctx.shadowBlur = 0;
+          ctx.beginPath();
+          ctx.fillStyle = `hsla(${Math.round(h + 12)}, 90%, 72%, 0.08)`;
+          ctx.arc(head.x, head.y, 22, 0, Math.PI * 2);
+          ctx.fill();
+
+          ctx.beginPath();
+          ctx.fillStyle = `hsla(${Math.round(h - 16)}, 85%, 68%, 0.05)`;
+          ctx.arc(head.x, head.y, 10, 0, Math.PI * 2);
+          ctx.fill();
         }
-        ctx.globalCompositeOperation = "source-over";
       }
 
-      requestAnimationFrame(render);
+      animationFrame = requestAnimationFrame(render);
     };
 
     document.addEventListener("mousemove", onMove, { passive: true });
     document.addEventListener("touchmove", onMove, { passive: true });
     window.addEventListener("resize", resize);
-    render();
+    animationFrame = requestAnimationFrame(render);
 
     return () => {
       running = false;
+      cancelAnimationFrame(animationFrame);
       document.removeEventListener("mousemove", onMove);
       document.removeEventListener("touchmove", onMove);
       window.removeEventListener("resize", resize);
     };
-  }, [isTouch]);
+  }, [isDark, isTouch]);
 
   if (isTouch) return null;
 

@@ -66,6 +66,9 @@ const ProjectCard = ({
 
   const hasGallery = gallery.length > 1;
   const currentImage = gallery.length > 0 ? gallery[galleryIdx] : null;
+  const cardTagline = project.cardTagline ?? project.tagline;
+  const cardDescription = project.cardDescription ?? project.description;
+  const cardHighlights = project.cardHighlights ?? project.highlights;
 
   return (
     <motion.div
@@ -118,7 +121,7 @@ const ProjectCard = ({
           <CircleDot size={8} />
           {project.status}
         </span>
-        <span className="text-[11px] text-muted-foreground/50 font-mono">
+        <span className="text-[11px] text-foreground/60 font-mono">
           {project.year}
         </span>
       </div>
@@ -142,8 +145,8 @@ const ProjectCard = ({
       )}
 
       {/* Tagline */}
-      <p className="text-sm text-muted-foreground/60 font-medium mb-4">
-        {project.tagline}
+      <p className="text-sm text-foreground/74 font-medium mb-4">
+        {cardTagline}
       </p>
 
       {/* Gallery with next/back navigation */}
@@ -195,8 +198,8 @@ const ProjectCard = ({
       )}
 
       {/* Description */}
-      <p className="text-[13px] sm:text-sm md:text-[15px] text-muted-foreground/70 leading-relaxed mb-5">
-        {project.description}
+      <p className="text-[13px] sm:text-sm md:text-[15px] text-foreground/80 leading-relaxed mb-5">
+        {cardDescription}
       </p>
 
       {/* Metrics row */}
@@ -207,17 +210,17 @@ const ProjectCard = ({
             return (
               <div
                 key={m.label}
-                className="flex items-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs font-mono px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-background/50 border border-border/20 text-muted-foreground/70"
+                className="flex items-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs font-mono px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-background/50 border border-border/20 text-foreground/74"
               >
                 <span className="text-primary/70">{m.icon}</span>
-                <span className="font-semibold text-foreground/80">
+                <span className="font-semibold text-foreground">
                   {parsed ? (
                     <CountUp end={parsed.num} suffix={parsed.suffix} duration={1.8} />
                   ) : (
                     m.value
                   )}
                 </span>
-                <span className="text-muted-foreground/50">{m.label}</span>
+                <span className="text-foreground/56">{m.label}</span>
               </div>
             );
           })}
@@ -226,10 +229,10 @@ const ProjectCard = ({
 
       {/* Highlights — truncated to 4 on card */}
       <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 sm:gap-y-2.5 mb-2">
-        {project.highlights.slice(0, 4).map((h) => (
+        {cardHighlights.slice(0, 4).map((h) => (
           <li
             key={h}
-            className="text-[12px] sm:text-[13px] leading-relaxed text-muted-foreground/80 flex items-start gap-2"
+            className="text-[12px] sm:text-[13px] leading-relaxed text-foreground/78 flex items-start gap-2"
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-[5px] sm:mt-[6px] flex-shrink-0" />
             {h}
@@ -242,7 +245,7 @@ const ProjectCard = ({
         {project.tech.map((t) => (
           <span
             key={t}
-            className="text-[10px] sm:text-[11px] font-mono px-2 py-0.5 rounded-md bg-secondary/40 text-muted-foreground/60 border border-border/20"
+            className="text-[10px] sm:text-[11px] font-mono px-2 py-0.5 rounded-md bg-secondary/40 text-foreground/72 border border-border/20"
           >
             {t}
           </span>
@@ -283,7 +286,7 @@ const ProjectCard = ({
             rel="noopener noreferrer"
             whileHover={{ scale: 1.03, y: -1 }}
             whileTap={tapScale}
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl bg-secondary/60 text-muted-foreground text-sm font-medium border border-border/30 hover:text-foreground hover:bg-secondary/80 transition-colors"
+            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl bg-secondary/60 text-foreground/80 text-sm font-medium border border-border/30 hover:text-foreground hover:bg-secondary/80 transition-colors"
           >
             <Github size={14} />
             Source Code

@@ -56,7 +56,7 @@ const Experience = () => {
                       <h3 className="text-lg md:text-xl font-bold text-foreground">{exp.role}</h3>
                       <p className="text-sm text-primary font-mono">{exp.company} · {exp.location}</p>
                     </div>
-                    <span className="inline-flex items-center gap-1.5 text-xs font-mono text-muted-foreground bg-secondary/60 px-3 py-1 rounded-full border border-border/30 self-start">
+                    <span className="inline-flex items-center gap-1.5 text-xs font-mono text-foreground/72 bg-secondary/60 px-3 py-1 rounded-full border border-border/30 self-start">
                       <Calendar size={12} />
                       {exp.period}
                     </span>
@@ -64,7 +64,7 @@ const Experience = () => {
 
                   <ul className="space-y-2.5">
                     {exp.points.map((point) => (
-                      <li key={point} className="text-sm text-muted-foreground flex items-start gap-2.5">
+                      <li key={point} className="text-sm text-foreground/80 flex items-start gap-2.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
                         {point}
                       </li>

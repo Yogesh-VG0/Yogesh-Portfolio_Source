@@ -21,7 +21,7 @@ const SectionHeader = ({ label, title, description, align = "left" }: SectionHea
         }`}
       />
       {description && (
-        <p className={`text-muted-foreground mt-4 ${isCenter ? "max-w-2xl mx-auto" : "max-w-lg"}`}>
+        <p className={`text-foreground/78 mt-4 ${isCenter ? "max-w-2xl mx-auto" : "max-w-lg"}`}>
           {description}
         </p>
       )}

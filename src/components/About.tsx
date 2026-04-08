@@ -121,7 +121,7 @@ const About = () => {
               <motion.span
                 key={h.label}
                 variants={scaleUp}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm text-sm text-muted-foreground"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm text-sm text-foreground/76"
               >
                 <span className="text-primary">{h.icon}</span>
                 {h.label}
@@ -130,7 +130,7 @@ const About = () => {
           </motion.div>
 
           {/* Bio text */}
-          <motion.div variants={fadeUp} className="space-y-4 text-muted-foreground leading-relaxed text-base md:text-lg">
+          <motion.div variants={fadeUp} className="space-y-4 text-foreground/82 leading-relaxed text-base md:text-lg">
             <p>
               I'm a full-stack developer based in Dubai with a background in Computer Science from Manipal University Dubai.
               I've built and deployed production applications using React, Python, and Node, including a machine learning
@@ -197,7 +197,7 @@ const About = () => {
                 >
                   <span className="font-bold text-primary">{selectedActivity.count}</span>
                   {" "}contribution{selectedActivity.count !== 1 ? "s" : ""} on{" "}
-                  <span className="text-muted-foreground">{formatDate(selectedActivity.date)}</span>
+                  <span className="text-foreground/70">{formatDate(selectedActivity.date)}</span>
                 </div>
               )}
             </div>

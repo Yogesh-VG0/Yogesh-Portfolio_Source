@@ -16,7 +16,7 @@ const Hero = () => {
       >
         {/* Status badge */}
         <motion.div variants={fadeUp} className="mb-6">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/60 bg-card/40 backdrop-blur-md text-xs font-mono text-muted-foreground">
+          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/60 bg-card/40 backdrop-blur-md text-xs font-mono text-foreground/72">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
@@ -43,7 +43,7 @@ const Hero = () => {
         {/* Subtitle with typewriter */}
         <motion.p
           variants={fadeUp}
-          className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="text-lg md:text-xl text-foreground/82 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           I build{" "}
           <Typewriter

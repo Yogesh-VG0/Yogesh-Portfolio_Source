@@ -15,12 +15,15 @@ export interface Project {
   slug: string;
   title: string;
   tagline: string;
+  cardTagline?: string;
   featured: boolean;
   status: "Production" | "In Progress" | "Open Source" | "Archived";
   statusColor: string;
   year: string;
   description: string;
+  cardDescription?: string;
   highlights: string[];
+  cardHighlights?: string[];
   metrics?: ProjectMetric[];
   tech: string[];
   image?: string;

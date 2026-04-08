@@ -34,8 +34,8 @@ const Education = () => {
                 </div>
                 <div>
                   <h3 className="text-lg font-bold text-foreground">Bachelor's in Computer Science</h3>
-                  <p className="text-sm text-muted-foreground mt-1">Manipal Academy of Higher Education, Dubai</p>
-                  <p className="text-xs font-mono text-muted-foreground/60 mt-0.5">2021 – 2025</p>
+                  <p className="text-sm text-foreground/78 mt-1">Manipal Academy of Higher Education, Dubai</p>
+                  <p className="text-xs font-mono text-foreground/62 mt-0.5">2021 – 2025</p>
                 </div>
               </div>
             </motion.div>
@@ -50,7 +50,7 @@ const Education = () => {
               </div>
               <ul className="space-y-3 pl-1">
                 {certifications.map((cert) => (
-                  <li key={cert.name} className="flex items-start gap-2.5 text-sm text-muted-foreground">
+                  <li key={cert.name} className="flex items-start gap-2.5 text-sm text-foreground/80">
                     <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
                     <span>
                       {cert.name}

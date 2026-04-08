@@ -181,7 +181,7 @@ const SkillCard = ({ group, meta, inView, isMobile }: SkillCardProps) => {
           </motion.div>
           <div>
             <h3 className="text-base font-bold text-foreground">{group.title}</h3>
-            <p className="text-[11px] font-mono text-muted-foreground/60">
+            <p className="text-[11px] font-mono text-foreground/62">
               {group.skills.length} {group.skills.length === 1 ? "skill" : "skills"}
             </p>
           </div>
@@ -263,7 +263,7 @@ const Skills = () => {
           {/* Total skills count */}
           <motion.p
             variants={fadeUp}
-            className="text-center mt-10 text-sm text-muted-foreground/50 font-mono"
+            className="text-center mt-10 text-sm text-foreground/60 font-mono"
           >
             {skillGroups.reduce((acc, g) => acc + g.skills.length, 0)}+ technologies & counting
           </motion.p>

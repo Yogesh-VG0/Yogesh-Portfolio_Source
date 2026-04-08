@@ -85,7 +85,7 @@ const ProjectDetail = () => {
         <div className="container mx-auto max-w-5xl flex items-center justify-between h-16 px-4 sm:px-6">
           <button
             onClick={handleBackToProjects}
-            className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+            className="inline-flex items-center gap-2 text-sm font-medium text-foreground/72 hover:text-foreground transition-colors"
           >
             <ArrowLeft size={16} />
             Back to Projects
@@ -108,7 +108,7 @@ const ProjectDetail = () => {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/40 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/40 text-xs font-medium text-foreground/80 hover:text-foreground transition-colors"
               >
                 <Github size={12} />
                 Source
@@ -133,14 +133,14 @@ const ProjectDetail = () => {
                 <CircleDot size={8} />
                 {project.status}
               </span>
-              <span className="text-[11px] text-muted-foreground/50 font-mono">
+              <span className="text-[11px] text-foreground/60 font-mono">
                 {project.year}
               </span>
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight mb-3">
               {project.title}
             </h1>
-            <p className="text-base sm:text-lg text-foreground/80 max-w-2xl leading-relaxed">
+            <p className="text-base sm:text-lg text-foreground/78 max-w-2xl leading-relaxed">
               {project.tagline}
             </p>
           </motion.div>
@@ -230,11 +230,11 @@ const ProjectDetail = () => {
               {project.metrics.map((m) => (
                 <div
                   key={m.label}
-                  className="flex items-center gap-1.5 text-xs font-mono px-3 py-2 rounded-lg bg-card/50 border border-border/20 text-foreground/70"
+                  className="flex items-center gap-1.5 text-xs font-mono px-3 py-2 rounded-lg bg-card/50 border border-border/20 text-foreground/74"
                 >
                   <span className="text-primary/80">{m.icon}</span>
                   <span className="font-semibold text-foreground">{m.value}</span>
-                  <span className="text-foreground/60">{m.label}</span>
+                  <span className="text-foreground/56">{m.label}</span>
                 </div>
               ))}
             </motion.div>
@@ -284,7 +284,7 @@ const ProjectDetail = () => {
                       {card.icon && <span className="text-lg">{card.icon}</span>}
                       <h3 className="text-sm font-bold text-foreground">{card.label}</h3>
                     </div>
-                    <p className="text-xs text-foreground/75 leading-relaxed">{card.detail}</p>
+                    <p className="text-xs text-foreground/74 leading-relaxed">{card.detail}</p>
                   </div>
                 ))}
               </div>
@@ -362,7 +362,7 @@ const ProjectDetail = () => {
               {project.tech.map((t) => (
                 <span
                   key={t}
-                  className="text-xs font-mono px-3 py-1.5 rounded-lg bg-secondary/40 text-foreground/75 border border-border/20 hover:border-primary/20 hover:text-foreground transition-colors"
+                  className="text-xs font-mono px-3 py-1.5 rounded-lg bg-secondary/40 text-foreground/72 border border-border/20 hover:border-primary/20 hover:text-foreground transition-colors"
                 >
                   {t}
                 </span>
@@ -403,7 +403,7 @@ const ProjectDetail = () => {
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.03 }}
                 whileTap={tapScale}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-secondary/60 text-muted-foreground text-sm font-medium border border-border/30 hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-secondary/60 text-foreground/80 text-sm font-medium border border-border/30 hover:text-foreground transition-colors"
               >
                 <Github size={14} />
                 View Source Code
@@ -413,7 +413,7 @@ const ProjectDetail = () => {
               <motion.span
                 whileHover={{ scale: 1.03 }}
                 whileTap={tapScale}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-secondary/60 text-muted-foreground text-sm font-medium border border-border/30 hover:text-foreground transition-colors"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-secondary/60 text-foreground/80 text-sm font-medium border border-border/30 hover:text-foreground transition-colors"
               >
                 All Projects
                 <ArrowRight size={14} />

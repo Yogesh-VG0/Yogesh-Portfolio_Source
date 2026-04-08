@@ -114,7 +114,7 @@ const Contact = () => {
                   <div className="w-11 h-11 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors flex-shrink-0 text-primary">
                     {s.icon}
                   </div>
-                  <span className="text-sm text-muted-foreground group-hover:text-foreground transition-colors break-all">
+                  <span className="text-sm text-foreground/78 group-hover:text-foreground transition-colors break-all">
                     {s.label}
                   </span>
                   <ArrowUpRight size={14} className="text-muted-foreground/0 group-hover:text-primary transition-all -translate-x-1 group-hover:translate-x-0 opacity-0 group-hover:opacity-100 flex-shrink-0" />
@@ -205,7 +205,7 @@ const Contact = () => {
                       <AlertCircle size={12} /> {errors.message}
                     </p>
                   ) : <span />}
-                  <span className={`text-xs ${form.message.length > 1000 ? "text-red-500" : "text-muted-foreground/60"}`}>
+                  <span className={`text-xs ${form.message.length > 1000 ? "text-red-500" : "text-foreground/60"}`}>
                     {form.message.length}/1000
                   </span>
                 </div>

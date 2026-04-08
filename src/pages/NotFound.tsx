@@ -18,7 +18,7 @@ const NotFound = () => {
         <motion.h1 variants={fadeUp} className="text-6xl sm:text-8xl font-extrabold tracking-tight mb-4">
           <span className="text-gradient">4</span>0<span className="text-gradient">4</span>
         </motion.h1>
-        <motion.p variants={fadeUp} className="text-lg text-muted-foreground mb-8 max-w-md mx-auto">
+        <motion.p variants={fadeUp} className="text-lg text-foreground/78 mb-8 max-w-md mx-auto">
           The page you're looking for doesn't exist or has been moved.
         </motion.p>
         <motion.div variants={fadeUp}>
@@ -33,7 +33,7 @@ const NotFound = () => {
             </motion.span>
           </Link>
         </motion.div>
-        <motion.p variants={fadeUp} className="mt-8 text-xs text-muted-foreground/40 font-mono">
+        <motion.p variants={fadeUp} className="mt-8 text-xs text-foreground/55 font-mono">
           YV<span className="text-primary">.</span>
         </motion.p>
       </motion.div>

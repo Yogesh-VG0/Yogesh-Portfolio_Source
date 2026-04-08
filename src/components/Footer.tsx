@@ -14,7 +14,7 @@ const Footer = () => {
           <span className="text-sm font-semibold text-foreground">
             YV<span className="text-primary">.</span>
           </span>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-xs text-foreground/70">
             &copy; {new Date().getFullYear()} Yogesh Vadivel
           </p>
         </div>
@@ -29,7 +29,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1 }}
               whileTap={tapScale}
-              className="w-9 h-9 rounded-lg bg-secondary/60 border border-border/30 flex items-center justify-center text-muted-foreground hover:text-primary hover:border-primary/30 transition-colors"
+              className="w-9 h-9 rounded-lg bg-secondary/60 border border-border/30 flex items-center justify-center text-foreground/70 hover:text-primary hover:border-primary/30 transition-colors"
               aria-label={s.label}
             >
               {s.icon}
@@ -39,7 +39,7 @@ const Footer = () => {
 
         {/* Back to top + built with */}
         <div className="flex items-center gap-4">
-          <p className="text-xs text-muted-foreground/60 font-mono hidden sm:block">
+          <p className="text-xs text-foreground/58 font-mono hidden sm:block">
             React + Tailwind
           </p>
           <motion.button

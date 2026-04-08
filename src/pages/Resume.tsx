@@ -69,7 +69,7 @@ const Resume = () => {
           <motion.div variants={fadeUp}>
             <Link
               to="/"
-              className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+              className="inline-flex items-center gap-2 text-sm font-medium text-foreground/72 hover:text-foreground transition-colors"
             >
               <ArrowLeft size={16} />
               Back to Portfolio

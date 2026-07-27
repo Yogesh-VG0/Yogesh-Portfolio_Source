@@ -9,7 +9,7 @@ import "@gembox/pdfviewer/dist/es/pdfviewer.css";
 
 GemBoxPdfViewer.setLicense("FREE-LIMITED-KEY");
 
-const RESUME_PATH = "/Yogesh_Resume.pdf";
+const RESUME_PATH = "/Yogesh_Vadivel_Resume.pdf";
 
 const Resume = () => {
   const headerVisible = useScrollDirection(10);

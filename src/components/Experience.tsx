@@ -11,9 +11,9 @@ const experiences = [
     "location": "Remote, Sharjah, UAE",
     "period": "Jul 2026 – Oct 2026",
     "points": [
-      "Customized business website pages with WordPress, Elementor and ThemeForest themes.",
-      "Updated navigation, forms and mobile layouts; supported cPanel setup, plugins and backups.",
-      "Reviewed Google Search Console and Excel campaign reports; supported Rank Math SEO."
+      "Customized business website pages with WordPress, Elementor and ThemeForest themes, including navigation, headers, footers, contact forms and mobile layouts.",
+      "Handled WordPress setup in cPanel, plugin configuration, backups and site restoration.",
+      "Applied Rank Math SEO and tracked organic visibility in Google Search Console, reviewing search queries, clicks and impressions."
     ]
   },
   {

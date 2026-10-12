@@ -6,17 +6,25 @@ import SectionHeader from "./SectionHeader";
 
 const experiences = [
   {
-    role: "Full-Stack Developer Intern",
-    company: "SmallCap.Ai",
-    location: "Remote, Dubai",
-    period: "2024",
-    points: [
-      "Built production dashboards used by admin and end-user teams for real-time data monitoring",
-      "Integrated REST APIs connecting React frontend to Node.js backend services",
-      "Improved page load performance and UI responsiveness across key user flows",
-      "Collaborated in agile sprints with cross-functional teams in a remote environment",
-    ],
+    "role": "Web Development Intern",
+    "company": "TechMagic Technologies",
+    "location": "Remote, Sharjah, UAE",
+    "period": "Jul 2026 – Oct 2026",
+    "points": [
+      "Customized existing WordPress templates using Elementor, editing website content and page layouts."
+    ]
   },
+  {
+    "role": "Full-Stack Web Development Intern",
+    "company": "Smallcap.ai",
+    "location": "Remote, Dubai, UAE",
+    "period": "Jun 2024 – Aug 2024",
+    "points": [
+      "Built a React admin dashboard with Chart.js, reusable components, searchable tables, filters and pagination.",
+      "Developed Node.js/Express APIs and MongoDB Atlas schemas, with AWS Lambda integration for create, update and delete workflows.",
+      "Integrated application modules and fixed CSS conflicts, overlays and mobile layout issues."
+    ]
+  }
 ];
 
 const Experience = () => {

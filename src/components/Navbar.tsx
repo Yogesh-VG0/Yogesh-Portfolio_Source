@@ -128,8 +128,9 @@ const Navbar = () => {
         <div className="container mx-auto flex items-center justify-between h-16 px-4 sm:px-6">
           {/* Logo */}
           <a
-            href="#"
-            className="text-lg font-bold tracking-tight text-foreground hover:text-primary transition-colors focus-visible:outline-primary"
+            href="/"
+            aria-label="YV. — Yogesh Vadivel home"
+            className="inline-flex min-h-11 min-w-11 items-center text-lg font-bold tracking-tight text-foreground hover:text-primary transition-colors focus-visible:outline-primary"
           >
             YV<span className="text-primary">.</span>
           </a>

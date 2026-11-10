@@ -9,9 +9,9 @@ afterEach(cleanup);
 describe("search metadata", () => {
   it("gives every public page a distinct title, description, and canonical", () => {
     const pages = indexablePaths.map(getPageSeo);
-    expect(pages).toHaveLength(5);
-    expect(new Set(pages.map(p => p.title)).size).toBe(5);
-    expect(new Set(pages.map(p => p.description)).size).toBe(5);
+    expect(pages).toHaveLength(6);
+    expect(new Set(pages.map(p => p.title)).size).toBe(6);
+    expect(new Set(pages.map(p => p.description)).size).toBe(6);
     for (const page of pages) {
       expect(page.title).toContain("Yogesh Vadivel");
       expect(page.canonical).toMatch(/^https:\/\/yogeshv\.me\/.*\/$|^https:\/\/yogeshv\.me\/$/);
@@ -32,7 +32,7 @@ describe("search metadata", () => {
   it("keeps shared search metadata independent of visitor location", () => {
     const home = getPageSeo("/");
     expect(home.title).toBe("Yogesh Vadivel | Full-Stack Developer");
-    expect(home.description).toContain("India and the UAE");
+    expect(home.description).toContain("React, Next.js, Python and Node.js");
     expect(home.structuredData["@graph"].find(node => node["@type"] === "Person")).not.toHaveProperty("homeLocation");
   });
 

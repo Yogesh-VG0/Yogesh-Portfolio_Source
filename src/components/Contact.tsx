@@ -23,9 +23,12 @@ interface FormErrors {
 const Contact = () => {
   const ref = useRef(null);
   const formRef = useRef<HTMLFormElement>(null);
+  const pendingRef = useRef(false);
+  const lastAttemptRef = useRef(0);
   const inView = useInView(ref, { once: true, margin: "-80px" });
   const [form, setForm] = useState({ name: "", email: "", message: "" });
   const [status, setStatus] = useState<FormStatus>("idle");
+  const [sendError, setSendError] = useState("Something went wrong. Try again or email me directly.");
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState({ name: false, email: false, message: false });
 
@@ -62,8 +65,18 @@ const Contact = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (pendingRef.current || !formRef.current) return;
+    if (new FormData(formRef.current).get("website")) return;
     setTouched({ name: true, email: true, message: true });
     if (!validateForm()) return;
+    if (lastAttemptRef.current && Date.now() - lastAttemptRef.current < 30000) {
+      setSendError("Please wait 30 seconds between messages, or email me directly.");
+      setStatus("error");
+      return;
+    }
+    pendingRef.current = true;
+    lastAttemptRef.current = Date.now();
+    setSendError("Something went wrong. Try again or email me directly.");
     setStatus("sending");
     try {
       await emailjs.sendForm(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, formRef.current!, EMAILJS_PUBLIC_KEY);
@@ -74,6 +87,8 @@ const Contact = () => {
     } catch {
       setStatus("error");
       setTimeout(() => setStatus("idle"), 5000);
+    } finally {
+      pendingRef.current = false;
     }
   };
 
@@ -130,6 +145,7 @@ const Contact = () => {
               variants={fadeUp}
               className="md:col-span-3 space-y-4"
             >
+              <div className="absolute -left-[10000px] h-px w-px overflow-hidden" aria-hidden="true"><label htmlFor="contact-website">Leave this field empty</label><input id="contact-website" name="website" type="text" tabIndex={-1} autoComplete="off" /></div>
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="contact-name" className="sr-only">Name</label>
@@ -137,6 +153,7 @@ const Contact = () => {
                     id="contact-name"
                     type="text"
                     name="name"
+                    autoComplete="name"
                     placeholder="Name"
                     value={form.name}
                     onChange={(e) => {
@@ -161,6 +178,7 @@ const Contact = () => {
                     id="contact-email"
                     type="email"
                     name="email"
+                    autoComplete="email"
                     placeholder="Email"
                     value={form.email}
                     onChange={(e) => {
@@ -236,13 +254,13 @@ const Contact = () => {
               </motion.button>
 
               {status === "success" && (
-                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-emerald-500">
+                <motion.p role="status" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-emerald-500">
                   Thanks for reaching out! I'll get back to you soon.
                 </motion.p>
               )}
               {status === "error" && (
-                <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-red-500">
-                  Something went wrong. Try again or email me directly.
+                <motion.p role="alert" initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-sm text-red-500">
+                  {sendError}
                 </motion.p>
               )}
             </motion.form>

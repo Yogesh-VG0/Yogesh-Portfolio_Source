@@ -8,6 +8,7 @@ import {
   Telescope,
   ChevronLeft,
   ChevronRight,
+  ArrowRight,
 } from "lucide-react";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { projects, type Project } from "@/data/projects";
@@ -36,7 +37,7 @@ const ProjectCard = ({
   const isFeatured = variant === "featured";
   const cardRef = useRef<HTMLDivElement>(null);
   const [spotlight, setSpotlight] = useState({ x: 0, y: 0, visible: false });
-  const gallery = project.gallery || [];
+  const gallery = (project.gallery || []).slice(0, 4);
   const [galleryIdx, setGalleryIdx] = useState(0);
 
   const handleMouseMove = useCallback((e: React.MouseEvent) => {
@@ -50,7 +51,7 @@ const ProjectCard = ({
   }, []);
 
   const prevImage = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.SyntheticEvent) => {
       e.stopPropagation();
       setGalleryIdx((prev) => (prev - 1 + gallery.length) % gallery.length);
     },
@@ -58,7 +59,7 @@ const ProjectCard = ({
   );
 
   const nextImage = useCallback(
-    (e: React.MouseEvent) => {
+    (e: React.SyntheticEvent) => {
       e.stopPropagation();
       setGalleryIdx((prev) => (prev + 1) % gallery.length);
     },
@@ -152,7 +153,7 @@ const ProjectCard = ({
 
       {/* Gallery with next/back navigation */}
       {currentImage && (
-        <div className="relative mb-5 -mx-1 sm:-mx-2 overflow-hidden rounded-xl border border-border/20 aspect-[16/10] bg-black/10 dark:bg-black/30">
+        <div className="relative mb-5 -mx-1 sm:-mx-2 overflow-hidden rounded-xl border border-border/20 aspect-[16/10] bg-black/10 dark:bg-black/30" role="region" aria-roledescription="carousel" aria-label={`${project.title} screenshots`} tabIndex={0} onKeyDown={event => { if (event.key === "ArrowLeft") { event.preventDefault(); prevImage(event); } if (event.key === "ArrowRight") { event.preventDefault(); nextImage(event); } }}>
           <AnimatePresence initial={false}>
             <motion.img
               key={galleryIdx}
@@ -160,6 +161,7 @@ const ProjectCard = ({
               {...screenshotSources(currentImage.src, "(max-width: 640px) calc(100vw - 64px), (max-width: 1024px) 80vw, 960px")}
               alt={currentImage.alt}
               loading="lazy"
+              width="1920" height="1200"
               className="absolute inset-0 w-full h-full object-cover"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -173,7 +175,7 @@ const ProjectCard = ({
             <>
               <button
                 onClick={prevImage}
-                className="absolute left-1.5 sm:left-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm flex items-center justify-center text-white transition-all z-[2]"
+                className="absolute left-1.5 sm:left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm flex items-center justify-center text-white transition-all z-[2]"
                 aria-label="Previous image"
               >
                 <ChevronLeft size={16} className="sm:hidden" />
@@ -181,7 +183,7 @@ const ProjectCard = ({
               </button>
               <button
                 onClick={nextImage}
-                className="absolute right-1.5 sm:right-3 top-1/2 -translate-y-1/2 w-8 h-8 sm:w-10 sm:h-10 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm flex items-center justify-center text-white transition-all z-[2]"
+                className="absolute right-1.5 sm:right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-sm flex items-center justify-center text-white transition-all z-[2]"
                 aria-label="Next image"
               >
                 <ChevronRight size={16} className="sm:hidden" />
@@ -255,7 +257,7 @@ const ProjectCard = ({
       </div>
 
       {/* CTA buttons */}
-      <div className="flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-2.5 sm:gap-3">
+      <div className="flex flex-wrap items-center gap-2 sm:gap-3">
         {project.liveUrl && (
           <motion.a
             href={project.liveUrl}
@@ -263,10 +265,10 @@ const ProjectCard = ({
             rel="noopener noreferrer"
             whileHover={{ scale: 1.03, y: -1 }}
             whileTap={tapScale}
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-shadow"
+            className="inline-flex min-h-11 items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-shadow"
           >
             <ExternalLink size={14} />
-            Live Demo
+            <span><span className="hidden sm:inline">Live </span>Demo</span>
           </motion.a>
         )}
         {project.caseStudy && (
@@ -274,7 +276,7 @@ const ProjectCard = ({
             <motion.span
               whileHover={{ scale: 1.03, y: -1 }}
               whileTap={tapScale}
-              className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl text-primary text-sm font-semibold border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-colors"
+              className="inline-flex min-h-11 items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl text-primary text-sm font-semibold border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-colors"
             >
               <Telescope size={14} />
               Deep Dive
@@ -288,10 +290,12 @@ const ProjectCard = ({
             rel="noopener noreferrer"
             whileHover={{ scale: 1.03, y: -1 }}
             whileTap={tapScale}
-            className="inline-flex items-center justify-center gap-2 w-full sm:w-auto px-5 py-2.5 rounded-xl bg-secondary/60 text-foreground/80 text-sm font-medium border border-border/30 hover:text-foreground hover:bg-secondary/80 transition-colors"
+            aria-label={`${project.title} source code`}
+            title="Source code"
+            className="inline-flex min-h-11 min-w-11 items-center justify-center gap-2 px-2 text-foreground/75 text-sm font-medium hover:text-primary transition-colors"
           >
             <Github size={14} />
-            Source Code
+            <span className="hidden sm:inline">Source Code</span>
           </motion.a>
         )}
       </div>
@@ -327,6 +331,7 @@ const Projects = () => {
               />
             ))}
           </div>
+          <Link to="/projects/" className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-primary">Explore all case studies<ArrowRight size={16} aria-hidden="true" /></Link>
         </motion.div>
       </div>
     </section>

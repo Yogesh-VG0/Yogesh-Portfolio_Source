@@ -2,6 +2,7 @@ import { motion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { tapScale } from "@/lib/motion";
 import { socials } from "@/data/socials";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const scrollToTop = () => window.scrollTo({ top: 0, behavior: "smooth" });
@@ -39,9 +40,7 @@ const Footer = () => {
 
         {/* Back to top + built with */}
         <div className="flex items-center gap-4">
-          <p className="text-xs text-foreground/58 font-mono hidden sm:block">
-            React + Tailwind
-          </p>
+          <nav aria-label="Footer" className="flex items-center gap-4 text-sm text-foreground/75"><Link to="/projects/" className="inline-flex min-h-11 items-center hover:text-primary">Projects</Link><Link to="/resume/" className="inline-flex min-h-11 items-center hover:text-primary">Resume</Link><a href="/#contact" className="inline-flex min-h-11 items-center hover:text-primary">Contact</a></nav>
           <motion.button
             onClick={scrollToTop}
             whileHover={{ scale: 1.1, y: -2 }}
@@ -52,6 +51,11 @@ const Footer = () => {
             <ArrowUp size={16} />
           </motion.button>
         </div>
+      </div>
+      <div className="container mx-auto mt-6 max-w-5xl text-xs leading-6 text-foreground/65" data-nosnippet>
+        <details><summary className="inline-flex min-h-11 cursor-pointer items-center underline underline-offset-4">Privacy &amp; country selection</summary>
+          <p className="mt-2 max-w-3xl">GeoJS uses your IP address to return your country for automatic profile and resume selection. This site stores only the country code and timestamp in session storage for 30 minutes; it never requests device location. Your theme choice is saved in your browser. Contact submissions are sent through EmailJS. Cloudflare Web Analytics measures visits on the production site.</p>
+        </details>
       </div>
     </footer>
   );

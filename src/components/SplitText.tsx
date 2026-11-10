@@ -25,7 +25,6 @@ const SplitText = ({
 
   return (
     <span className={className}>
-      <span className="sr-only">{text}</span>
       {words.map((word, wIdx) => (
         <Fragment key={wIdx}>
         <span className="inline-block whitespace-nowrap" aria-hidden="true">
@@ -38,7 +37,7 @@ const SplitText = ({
                 key={`${wIdx}-${cIdx}`}
                 className="inline-block"
                 aria-hidden="true"
-                initial={reducedMotion ? false : { opacity: 0, y: 20, rotateX: 30 }}
+                initial={reducedMotion ? false : { opacity: 1, y: 12, rotateX: 15 }}
                 animate={{ opacity: 1, y: 0, rotateX: 0 }}
                 transition={{
                   duration: reducedMotion ? 0 : 0.35,

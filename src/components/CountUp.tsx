@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import { useInView } from "framer-motion";
+import { useInView, useReducedMotion } from "framer-motion";
 
 interface CountUpProps {
   end: number;
@@ -24,15 +24,17 @@ const CountUp = ({
 }: CountUpProps) => {
   const ref = useRef<HTMLSpanElement>(null);
   const inView = useInView(ref, { once: true, margin: "-40px" });
-  const [value, setValue] = useState(0);
+  const [value, setValue] = useState(end);
+  const reducedMotion = useReducedMotion();
 
   useEffect(() => {
-    if (!inView) return;
+    if (!inView || reducedMotion || duration <= 0) return;
 
     const start = 0;
     const startTime = performance.now();
     const durationMs = duration * 1000;
 
+    let frame = 0;
     const step = (now: number) => {
       const elapsed = now - startTime;
       const progress = Math.min(elapsed / durationMs, 1);
@@ -43,20 +45,21 @@ const CountUp = ({
       setValue(current);
 
       if (progress < 1) {
-        requestAnimationFrame(step);
+        frame = requestAnimationFrame(step);
       } else {
         setValue(end);
       }
     };
 
-    requestAnimationFrame(step);
-  }, [inView, end, duration]);
+    frame = requestAnimationFrame(step);
+    return () => cancelAnimationFrame(frame);
+  }, [inView, end, duration, reducedMotion]);
+  const displayValue = reducedMotion || !inView || duration <= 0 ? end : value;
 
   return (
-    <span ref={ref} className={className}>
-      {prefix}
-      {decimals > 0 ? value.toFixed(decimals) : Math.round(value)}
-      {suffix}
+    <span ref={ref} className={`inline-grid tabular-nums ${className}`}>
+      <span className="col-start-1 row-start-1" style={{ opacity: displayValue === end ? 1 : 0 }}>{prefix}{decimals > 0 ? end.toFixed(decimals) : Math.round(end)}{suffix}</span>
+      {displayValue !== end && <span aria-hidden="true" data-nosnippet className="col-start-1 row-start-1">{prefix}{decimals > 0 ? displayValue.toFixed(decimals) : Math.round(displayValue)}{suffix}</span>}
     </span>
   );
 };

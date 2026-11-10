@@ -1,22 +1,21 @@
-<!DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
   <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="robots" content="noindex, follow">
-    <title>Redirecting…</title>
-    <script>
-      // SPA redirect for GitHub Pages: converts path to query param
-      // so the SPA can pick it up and route correctly.
-      var pathSegmentsToKeep = 0;
-      var l = window.location;
-      l.replace(
-        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
-        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
-        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
-        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
-        l.hash
-      );
-    </script>
+    <title>Page not found | Yogesh Vadivel</title>
+    <link rel="icon" href="/favicon.ico">
+    <style>
+      :root { color-scheme: light dark; --bg:#f6f8fc; --text:#101827; --muted:#48556a; --border:#ccd5e3; }
+      @media(prefers-color-scheme:dark) { :root { --bg:#05080d; --text:#f5f7fc; --muted:#aab8cc; --border:#293446; } }
+      :root[data-theme=light] { color-scheme:light; --bg:#f6f8fc; --text:#101827; --muted:#48556a; --border:#ccd5e3; }
+      :root[data-theme=dark] { color-scheme:dark; --bg:#05080d; --text:#f5f7fc; --muted:#aab8cc; --border:#293446; }
+      * { box-sizing:border-box; } body { margin:0; min-height:100svh; display:grid; place-items:center; background:var(--bg); color:var(--text); font:16px/1.8 Arial,sans-serif; padding:24px; }
+      main { width:100%; max-width:620px; } .label { color:#579cf5; letter-spacing:.15em; font-size:13px; font-weight:700; } h1 { margin:16px 0; font-size:clamp(32px,7vw,54px); line-height:1.2; letter-spacing:-.04em; } p { max-width:48ch; color:var(--muted); }
+      nav { display:flex; flex-wrap:wrap; gap:12px; margin-top:30px; } a { display:inline-flex; align-items:center; min-height:48px; padding:8px 20px; color:var(--text); border:1px solid var(--border); border-radius:10px; text-decoration:none; } a.primary { background:#0757d1; border-color:#0757d1; color:white; } a:focus-visible { outline:3px solid #60a5fa; outline-offset:4px; }
+    </style>
+    <script>try { document.documentElement.dataset.theme = localStorage.getItem('portfolio-theme') || 'system'; } catch {}</script>
   </head>
-  <body></body>
+  <body><main><p class="label">YOGESH VADIVEL · 404</p><h1>This page couldn't be found.</h1><p>The link may be outdated or the address may contain a typo. You can return to my portfolio or explore the project case studies.</p><nav aria-label="Recovery links"><a class="primary" href="/">Back to home</a><a href="/projects/">Explore projects</a><a href="/resume/">Resume</a></nav></main></body>
 </html>

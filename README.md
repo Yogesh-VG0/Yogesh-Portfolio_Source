@@ -1,8 +1,10 @@
 # Yogesh Vadivel — Portfolio
 
-Source for [yogeshv.me](https://yogeshv.me), built with React 18, TypeScript, Vite, Tailwind CSS, and Framer Motion. Hosted on GitHub Pages with a custom domain.
+Source for **[yogeshv.me](https://yogeshv.me/)**. React 18, TypeScript, Vite, Tailwind CSS, and Framer Motion; hosted on GitHub Pages.
 
-## Local development
+![Yogesh Vadivel portfolio](public/og-image.jpg)
+
+## Run locally
 
 Requires Node.js 20.19+ or 22.12+ and npm.
 
@@ -11,132 +13,111 @@ npm ci
 npm run dev
 ```
 
-Vite serves the site at `http://localhost:8080`. Contact form configuration is documented in `.env.example`.
+Development: `http://localhost:8080`. Production preview: `npm run preview`, then `http://localhost:4173`. Contact configuration is in `.env.example`.
 
-## Checks and production build
+## Production checks
 
 ```sh
 npm run lint
 npm run test
 npm run build
-npm run preview
 ```
 
-`build` runs TypeScript checks, bundles the app, prerenders all public routes, generates the sitemap, and verifies HTML, structured data, canonical URLs, images, and internal links. `npm run typecheck` is also available separately. Preview serves the production output, normally at `http://localhost:4173`.
+The build type-checks, bundles, prerenders every public route, generates `sitemap.xml`, and verifies HTML, schema, canonical URLs, local links, responsive images, and social image size. There are six indexable routes:
 
-## Appearance and navigation
+- `/`
+- `/projects/`
+- `/resume/`
+- `/projects/stockpredict-ai/`
+- `/projects/expensevision/`
+- `/projects/verdict-games/`
 
-The initial theme follows the visitor's operating-system preference and reacts to system changes. Choosing the sun/moon toggle saves an explicit override in `portfolio-theme`; the old generic `theme` storage key is ignored so a legacy dark default cannot override the new system default. Theme controls use the resolved light/dark mode, including when the preference is `system`.
+Unknown public URLs return a branded static HTTP 404 with `noindex`. Client-side missing routes also have `noindex`. The legacy query-string SPA receiver remains for old shared links; the 404 page no longer redirects unknown URLs to a homepage response.
 
-The skills section presents 28 selected technologies in six compact groups. Testing tools sit alongside DevOps tools; there is no separate strip. The resume uses a single 64px site header with an explicit Back to home link, YV branding, title, PDF actions and theme toggle. On small screens, PDF actions become labeled icon buttons and decorative branding is hidden to keep Back to home visible. Decorative cursor trails, backgrounds and click effects are disabled on the resume route so they cannot overlap the document.
+## SEO and content
 
-## Search visibility
+`src/lib/seo.ts` is the source of truth for titles, descriptions, canonical URLs, Open Graph/Twitter metadata, and JSON-LD. The build emits full HTML on all six routes. The homepage has one copy of the animated name in its H1; metric counters contain their final values in the initial HTML. The main hero introduction is visible before hydration so entrance animations do not delay its first paint.
 
-The homepage targets **Yogesh Vadivel**, **Yogesh Vadivel portfolio**, and relevant full-stack development work through its visible name, role, content, title, and description. Static search metadata covers India and the UAE without assigning a different home address to the same person. Project pages explain the actual React, Next.js, Python, Node.js, and AI work. Keywords are used naturally; there is no keyword stuffing or fabricated credential/location markup.
+The profile connects `Person`, `ProfilePage`, and `WebSite` entities to the owner's GitHub and LinkedIn profiles. The degree is explicitly **B.Tech. in Computer Science and Engineering, Manipal Academy of Higher Education, Dubai**. The projects index uses `CollectionPage` and `ItemList`; case studies use `TechArticle`, `SoftwareSourceCode`, `SoftwareApplication`, and breadcrumbs. There are no invented reviews, ratings, prices, qualifications, or user counts.
 
-`src/lib/seo.ts` defines the page metadata and structured data. The build emits complete HTML for the homepage, resume, and all three project pages, so direct GitHub Pages requests can return HTTP 200 without a JavaScript redirect. React hydrates this HTML for interactivity. Legacy SPA redirects are retained, while missing pages receive `noindex` metadata.
+Each public page has a distinct 1200×630 JPEG social card, currently under 70KB. Case studies have descriptive search titles, architecture flows, implementation notes, honest limitations, related-project links, resume links, and a contact CTA. Project facts were checked against their public source repositories on 10 November 2026. Historical backtest figures include their period and context. Case-study review dates are explicit content dates, not generated from the build clock. The sitemap omits optional `lastmod` values rather than inventing update dates.
 
-Each public page has its own title, description, trailing-slash canonical URL, absolute social image URL, and JSON-LD. The homepage connects `ProfilePage`, `Person`, and `WebSite` entities to the existing GitHub and LinkedIn profile links. Projects include authorship and breadcrumbs. The sitemap is generated from the same route list during every build; `robots.txt` permits crawling.
+Automatic location variants are preserved. Transient location text uses `data-nosnippet`; the shared search description focuses on identity, work, and credentials. Location adaptation is not a substitute for separately indexable regional pages, and Google decides which snippets and AI summaries to show.
 
-After publishing, verify the `yogeshv.me` property in [Google Search Console](https://search.google.com/search-console), submit `https://yogeshv.me/sitemap.xml`, and inspect the homepage and project URLs. Request indexing after significant updates. Property verification requires the owner's Google account or DNS access; this repository does not contain a verification token. Maintain the same portfolio URL in GitHub and LinkedIn profiles and monitor name-related search queries in Search Console. Search engines decide rankings and when to recrawl; these changes do not guarantee a particular position.
+The complete audit and owner checklist are in [docs/seo-qa.md](docs/seo-qa.md).
 
-## Mobile readability and GitHub activity
+## Appearance, accessibility, and performance
 
-Phones use a readable hero heading with the same animated gradient and staggered name entrance as desktop, a short introduction, and a two-column action layout. The name stays on one line on narrow phones; reduced-motion preferences disable the name animation. Mobile sections use one layer of horizontal padding. Body copy, project summaries, experience entries, and skill labels use larger text and more line spacing. Project cards present the first two highlights, four metrics and six technologies on phones; their case-study pages retain the complete details.
+Theme follows the operating system until the visitor chooses an override, saved in `portfolio-theme`. All six skill groups and the animated name remain. Mobile layouts use readable type and consistent spacing. Resume and project pages include home/project navigation, PDF or source actions, and theme controls.
 
-GitHub activity uses the same unfiltered full-year dataset on every screen size. The native chart viewport scrolls horizontally, starts at the latest activity, and has a swipe hint on mobile. The yearly total stays outside that viewport and wraps within the card. The small-screen color legend is hidden to keep the footer uncluttered; desktop legend SVGs are decorative to assistive technology. Day details open on click/tap and close during scrolling. A direct GitHub profile link remains available if the activity API fails.
+The resume has a readable HTML summary. Its PDF viewer is downloaded only after **Preview PDF** is clicked; Open/Download actions use the same automatically selected document. A large lazy viewer dependency still produces a Vite chunk warning, but it is excluded from initial resume rendering.
 
-## Responsive images
+GitHub activity loads as About enters view. Before that, prerendered HTML includes a useful GitHub profile link. Every device uses the same full-year data; the graph scrolls horizontally and the yearly total remains visible. No contribution count is hardcoded.
 
-Project screenshots are served as WebP files at 640, 1280, and 1920 pixels, with browser-selected `srcset` sizes. Original PNGs live in `assets/source-screenshots/` and are excluded from the published `public/` directory. The social image uses a compressed JPEG; its original is `assets/og-image.png`.
+Home project previews contain four manually navigated screenshots; the case studies retain full galleries. Arrow keys work in carousels, lightboxes trap focus and close on Escape, and image frames reserve space. There is no carousel autoplay to pause. Screenshots use responsive WebP variants. Fonts are self-hosted variable WOFF2 files with `font-display: swap`; the main Inter font is preloaded and both SIL OFL licenses are retained in `public/fonts/`.
 
-To regenerate image assets after replacing a source image, install Pillow in your Python environment and run:
+Cloudflare Web Analytics is already installed for production hosts. Local previews do not send analytics. The contact form includes validation, a honeypot, duplicate-request protection, a 30-second retry cooldown, and success/error feedback. Client controls are not a replacement for EmailJS allowed-origin restrictions and provider-side abuse controls.
+
+## Regional profile and resume
+
+One shared country lookup controls the hero badge, About location, and resume:
+
+| IP country | Profile location | PDF |
+| --- | --- | --- |
+| India (`IN`) | Madurai, Tamil Nadu, India | India |
+| Any other country | Dubai, UAE | UAE |
+| Lookup unavailable/invalid/timed out | Dubai, UAE | UAE |
+
+Selection has no version selector and ignores legacy `region` query parameters. While lookup is pending, profile wording is neutral and PDF actions wait. Education and past employment locations remain factual.
+
+The static site uses GeoJS's country endpoint with a four-second timeout. Only country and timestamp are cached in session storage for 30 minutes. The app does not store IP addresses or request device location; GeoJS receives the visitor's IP as part of its request. VPNs and service availability can affect detection. Browser language/timezone do not determine selection. A footer disclosure explains this and the site's other browser storage and services.
+
+The supplied PDFs remain unchanged, selectable, linked, and approximately 63KB each. Both already have the title `Yogesh Vadivel - Full-Stack Developer` and the correct degree/experience. To replace them, keep these names:
+
+```text
+public/resumes/Yogesh_Vadivel_Resume_India.pdf
+public/resumes/Yogesh_Vadivel_Resume_UAE.pdf
+```
+
+## Asset maintenance
+
+Original screenshots live in `assets/source-screenshots/`; only responsive WebP outputs in `public/` are deployed. To regenerate them with optional Python/Pillow tooling:
 
 ```sh
 python scripts/optimize-images.py
 ```
 
-Normal builds need only Node.js; Python is not required to deploy the already-generated image files.
+Social card SVG sources live in `assets/social-cards/`. To regenerate SVGs and JPEG exports with optional Python tooling:
 
-## Regional profile and resume selection
-
-One country detection is shared across the availability badge, About location and introduction, and `/resume` page. India visitors see Madurai, Tamil Nadu, India and the Indian resume; other visitors see Dubai, UAE and the UAE resume. Education and past employment locations remain factual and unchanged. While lookup is pending, the profile uses neutral India & UAE wording and does not claim the visitor's region has already been detected.
-
-The `/resume` page automatically selects:
-
-| Visitor's IP country | Resume |
-| --- | --- |
-| India (`IN`) | Indian resume |
-| Any other country | UAE resume |
-| Lookup unavailable, invalid, or timed out | UAE resume |
-
-The preview, Open PDF link, and download always use the same selected file. During automatic detection, downloads wait until selection finishes so an Indian visitor cannot accidentally download the fallback version while the lookup is pending.
-
-Selection is fully automatic. The page has no version selector or country-selection messages. Legacy `region` query parameters are ignored, so `/resume` always selects by the visitor's IP country.
-
-### Location and privacy
-
-The static site calls the [GeoJS country endpoint](https://www.geojs.io/docs/v1/endpoints/country/) once when the application mounts, unless a valid session cache is available. All sections and client-side routes use the same result, including when storage is blocked or lookup fails. It has a four-second timeout. The browser stores only the country code and lookup timestamp in session storage, expiring after 30 minutes. Storage being disabled does not prevent selection or downloads.
-
-This is an IP lookup: GeoJS receives the visitor's IP as part of the request, but this app does not store it or request GPS permission. VPNs, proxies, blockers, and service availability can affect detection. Country is not inferred from browser language or timezone.
-
-If the hosting stack later supports server or edge functions, a same-origin country endpoint using the hosting provider's geolocation would remove the external browser lookup. GitHub Pages itself cannot run this server logic.
-
-### Updating resumes
-
-Replace the PDFs in `public/resumes/`, retaining their names:
-
-```text
-public/resumes/
-  Yogesh_Vadivel_Resume_India.pdf
-  Yogesh_Vadivel_Resume_UAE.pdf
+```sh
+python -m pip install Pillow resvg-py
+python scripts/generate-social-cards.py
+python scripts/render-social-cards.py
 ```
 
-Both are the supplied November 2026 versions, copied without modifying their contents. The obsolete `public/Yogesh_Vadivel_Resume.pdf` has been removed. Resume paths and download names have one source of truth in `src/data/resumes.ts`.
+Normal builds need only Node.js; generated images and fonts are committed. Original `assets/og-image.png` is retained as a historical source asset and is not deployed.
 
-The existing GemBox viewer remains available on desktop and mobile, loaded separately after automatic resume selection. Direct Open PDF and Download PDF links remain available if previewing fails. The viewer is a large, lazy-loaded dependency; Vite may report its chunk size during builds.
-
-## Source organization
+## Source layout
 
 ```text
-public/
-  resumes/                    Current regional PDFs
-  *_img/                      Responsive WebP project screenshots
-  CNAME, 404.html              GitHub Pages domain and SPA routing
-src/
-  entry-server.tsx            Build-time HTML rendering
-  components/                 Portfolio sections and shared UI
-    ResumePreview.tsx         Embedded PDF viewer
-    ui/                       Used notification and tooltip components
-  data/
-    experience.ts             Roles, dates, locations, and achievements
-    resumes.ts                Regional resume metadata
-    skills.ts                 Skill groups
-    projectEntries.tsx        Project details
-    projects.ts               Project list
-    socials.tsx               Contact and profile links
-  hooks/
-    use-country-detection.ts  Automatic selection and request lifecycle
-    use-visitor-region.ts     Shared regional state for all pages
-  lib/
-    resume-location.ts        Country lookup, validation, and cache
-    motion.ts                 Shared animation presets
-    seo.ts                    Page metadata and structured data
-    images.ts                 Responsive screenshot sources
-  pages/                      Home, resume, project detail, and not-found routes
-  test/                       Tests and browser API setup
-scripts/                      Prerendering, artifact checks and image conversion
-assets/                       Original images, excluded from the deployment
+public/                  Deployment assets, regional PDFs, fonts, social cards
+src/components/          UI sections, shared headers, PDF and GitHub widgets
+src/data/                Experience, education, locations, projects, skills, resumes
+src/hooks/               Shared country detection and UI hooks
+src/lib/                 Metadata, image helpers, country cache, motion presets
+src/pages/               Home, project index, resume, case studies, missing pages
+src/test/                Regional, viewer, static HTML, SEO, contact, theme tests
+scripts/                 Prerendering, verification, optional asset generation
+assets/                  Original screenshots and SVG social sources
+docs/                    Audit evidence and account follow-up checklist
 ```
 
-Unused starter UI templates and their unused form dependencies have been removed. Temporary review files, screenshots, generated builds, and TypeScript build metadata are ignored by Git.
-
-## Deployment
+## Publish
 
 ```sh
 npm run deploy
 ```
 
-The existing deployment command builds and publishes `dist/` to the `main` branch of `Yogesh-VG0/Yogesh-VG0.github.io`. This is separate from the source repository. `public/CNAME`, `public/404.html`, and the SPA redirect receiver in `index.html` must remain so custom-domain routes and query parameters work on direct visits.
+This builds and publishes `dist/` to `main` in `Yogesh-VG0/Yogesh-VG0.github.io`; source is in `Yogesh-VG0/Yogesh-Portfolio_Source`. Keep `CNAME` for the custom domain and `.nojekyll` for Pages. Confirm the Pages workflow succeeds and all canonical routes return HTTP 200 after publishing.
 
-Before publishing, run lint, tests, and the production build. Smoke-test the homepage, automatic resume selection, PDF actions, a project detail page, and the mobile layout. The contact form sends email through EmailJS and should be tested with intentional messages only.
+Search Console, Bing Webmaster Tools, profile pins/links, EmailJS dashboard settings, external app backlinks/attribution, and social-preview account settings require their respective accounts. The source code cannot force rankings, immediate indexing, or a rewritten Google AI Overview.

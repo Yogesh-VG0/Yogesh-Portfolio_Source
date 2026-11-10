@@ -37,7 +37,7 @@ describe("GitHub activity", () => {
     viewport.mobile = true;
     render(<About />);
     await screen.findByText("1268 contributions in the last year");
-    expect(screen.getByText("Swipe the chart to explore the full year.")).toBeInTheDocument();
+    expect(screen.getByText("Scroll or swipe the chart to explore the full year.")).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "View on GitHub" })).toHaveAttribute("href", "https://github.com/Yogesh-VG0");
     expect(screen.queryByText("Less")).not.toBeInTheDocument();
   });

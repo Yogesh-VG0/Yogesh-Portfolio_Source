@@ -3,11 +3,12 @@ import { useRef } from "react";
 import { GraduationCap, Award } from "lucide-react";
 import { fadeUp, staggerContainer, hoverLift } from "@/lib/motion";
 import SectionHeader from "./SectionHeader";
+import { education } from "@/data/profile";
 
 const certifications = [
   { name: "CS50X — Introduction to Computer Science", issuer: "Harvard", year: "2025" },
   { name: "CS50P — Introduction to Programming with Python", issuer: "Harvard", year: "2025" },
-  { name: "AWS Cloud Practitioner Essentials", issuer: "AWS", year: "2025" },
+  { name: "AWS Cloud Practitioner Essentials (training)", issuer: "AWS", year: "2025" },
 ];
 
 const Education = () => {
@@ -33,9 +34,9 @@ const Education = () => {
                   <GraduationCap size={20} className="text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">B.Tech. in Computer Science and Engineering</h3>
-                  <p className="text-sm text-foreground/78 mt-1">Manipal Academy of Higher Education, Dubai</p>
-                  <p className="text-xs font-mono text-foreground/62 mt-0.5">Sep 2021 – Nov 2025</p>
+                  <h3 className="text-lg font-bold text-foreground">{education.degree}</h3>
+                  <p className="text-sm text-foreground/78 mt-1">{education.institution}</p>
+                  <p className="text-xs font-mono text-foreground/62 mt-0.5">{education.period}</p>
                 </div>
               </div>
             </motion.div>

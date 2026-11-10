@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   ArrowLeft,
@@ -22,6 +22,9 @@ import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { projects } from "@/data/projects";
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
 import { screenshotSources } from "@/lib/images";
+import { projectDetails, type ProjectSlug } from "@/data/project-details";
+import ArchitectureFlow from "@/components/ArchitectureFlow";
+import ThemeToggle from "@/components/ThemeToggle";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -72,11 +75,7 @@ const ProjectDetail = () => {
   }, [slug]);
 
   const handleBackToProjects = () => {
-    navigate("/");
-    setTimeout(() => {
-      const el = document.getElementById("projects");
-      if (el) el.scrollIntoView({ behavior: "smooth" });
-    }, 100);
+    navigate("/projects/");
   };
 
   if (!project || !project.caseStudy) {
@@ -95,6 +94,8 @@ const ProjectDetail = () => {
   const cs = project.caseStudy;
   const gallery = project.gallery || [];
   const currentImg = gallery[galleryIdx] || null;
+  const detail = projectDetails[project.slug as ProjectSlug];
+  const relatedProjects = projects.filter(item => item.slug !== project.slug);
 
   const prevImage = () => setGalleryIdx((galleryIdx - 1 + gallery.length) % gallery.length);
   const nextImage = () => setGalleryIdx((galleryIdx + 1) % gallery.length);
@@ -136,17 +137,20 @@ const ProjectDetail = () => {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex min-h-11 items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/40 text-xs font-medium text-foreground/80 hover:text-foreground transition-colors"
+                aria-label="Source code"
+                className="inline-flex min-h-11 min-w-11 justify-center items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/40 text-xs font-medium text-foreground/80 hover:text-foreground transition-colors"
               >
                 <Github size={12} />
-                Source
+                <span className="hidden sm:inline">Source</span>
               </a>
             )}
+            <ThemeToggle />
           </div>
         </div>
       </header>
 
       <main className="container mx-auto max-w-5xl px-4 sm:px-6 pt-24 sm:pt-28 pb-10 sm:pb-16">
+        <nav aria-label="Breadcrumb" className="mb-6 flex flex-wrap items-center gap-2 text-xs leading-6 text-foreground/70"><Link to="/" className="hover:text-primary">Home</Link><span aria-hidden="true">/</span><Link to="/projects/" className="hover:text-primary">Projects</Link><span aria-hidden="true">/</span><span aria-current="page">{project.title}</span></nav>
         <motion.div
           variants={staggerContainer(0.08)}
           initial="hidden"
@@ -169,14 +173,15 @@ const ProjectDetail = () => {
               {project.title}
             </h1>
             <p className="text-base sm:text-lg text-foreground/78 max-w-2xl leading-relaxed">
-              {project.tagline}
+              {detail.descriptor}.
             </p>
+            <p className="mt-4 text-xs leading-6 text-foreground/65">By Yogesh Vadivel · Full-stack development · Case study reviewed <time dateTime="2026-11-10">10 November 2026</time></p>
           </motion.div>
 
           {/* Image Carousel */}
           {gallery.length > 0 && (
             <motion.div variants={fadeUp} className="mb-10 sm:mb-12">
-              <div className="relative group rounded-xl overflow-hidden border border-border/30 shadow-lg bg-black/10 dark:bg-black/30 aspect-[16/10]">
+              <div className="relative group rounded-xl overflow-hidden border border-border/30 shadow-lg bg-black/10 dark:bg-black/30 aspect-[16/10]" role="region" aria-roledescription="carousel" aria-label={`${project.title} screenshots`} onKeyDown={event => { if (event.key === "ArrowRight") { event.preventDefault(); nextImage(); } if (event.key === "ArrowLeft") { event.preventDefault(); prevImage(); } }}>
                 {/* Main image with click to open lightbox */}
                 <button
                   onClick={() => setLightboxOpen(true)}
@@ -189,6 +194,7 @@ const ProjectDetail = () => {
                       src={gallery[galleryIdx].src}
                       {...screenshotSources(gallery[galleryIdx].src, "(max-width: 768px) calc(100vw - 32px), 960px")}
                       alt={gallery[galleryIdx].alt}
+                      width="1920" height="1200"
                       className="absolute inset-0 w-full h-full object-cover"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
@@ -300,6 +306,7 @@ const ProjectDetail = () => {
               <h2 className="text-xl font-bold">Architecture</h2>
             </div>
             <p className="text-foreground/80 leading-relaxed pl-0 sm:pl-10 mb-5">{cs.architecture}</p>
+            <ArchitectureFlow steps={detail.flow} title={project.title} />
 
             {/* Architecture Cards */}
             {cs.architectureCards && (
@@ -408,13 +415,20 @@ const ProjectDetail = () => {
               <h2 className="text-xl font-bold">Results</h2>
             </div>
             <p className="text-foreground/80 leading-relaxed pl-0 sm:pl-10">{cs.results}</p>
+            <p className="mt-4 border-l-2 border-primary/40 pl-4 text-sm leading-7 text-foreground/75 sm:ml-10">{detail.note}</p>
           </motion.div>
+
+          <section className="mb-10 border-t border-border/40 pt-8">
+            <h2 className="text-xl font-bold">What I'd improve next</h2>
+            <p className="mt-3 text-base leading-8 text-foreground/80">{detail.nextSteps}</p>
+            <a href={`${project.githubUrl}/blob/main/README.md`} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm text-primary">Read the implementation notes<ExternalLink size={14} aria-hidden="true" /></a>
+          </section>
 
           {/* CTAs */}
           <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
             {project.liveUrl && (
               <motion.a
-                href={project.liveUrl}
+                href={"demoUrl" in detail ? detail.demoUrl : project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.03 }}
@@ -449,6 +463,14 @@ const ProjectDetail = () => {
               </motion.span>
             </button>
           </motion.div>
+          <section className="mt-12 border-t border-border/40 pt-8" aria-labelledby="related-projects">
+            <h2 id="related-projects" className="text-xl font-bold">Explore another project</h2>
+            <div className="mt-4 grid gap-4 sm:grid-cols-2">{relatedProjects.map(item => <Link key={item.slug} to={`/projects/${item.slug}/`} className="rounded-xl border border-border/40 p-5 transition-colors hover:border-primary/50">
+              <h3 className="flex items-center justify-between gap-3 text-base font-semibold">{item.title}<ArrowRight size={16} aria-hidden="true" /></h3>
+              <p className="mt-2 text-sm leading-7 text-foreground/75">{projectDetails[item.slug as ProjectSlug].descriptor}.</p>
+            </Link>)}</div>
+            <div className="mt-8 flex flex-wrap items-center gap-4"><a href="/#contact" className="inline-flex min-h-12 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">Let's discuss a role or project</a><Link to="/resume/" className="inline-flex min-h-11 items-center text-sm text-primary">View my resume</Link></div>
+          </section>
         </motion.div>
       </main>
 
@@ -509,4 +531,9 @@ const ProjectDetail = () => {
   );
 };
 
-export default ProjectDetail;
+export default function ProjectDetailPage() {
+  const { slug } = useParams<{ slug: string }>();
+  // Related-project navigation reuses the route; each case study needs fresh
+  // gallery/lightbox state so a long gallery's index cannot reach a shorter one.
+  return <ProjectDetail key={slug} />;
+}

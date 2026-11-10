@@ -4,10 +4,13 @@
 
 Yogesh builds web applications with React, Next.js, TypeScript, Python and Node.js, and has experience with WordPress, Elementor and technical SEO. This website contains his projects, professional experience, education, contact links and resume.
 
+Education: B.Tech. in Computer Science and Engineering, Manipal Academy of Higher Education, Dubai, September 2021–November 2025.
+
 ## Portfolio
 
 - [Yogesh Vadivel](https://yogeshv.me/): About, skills, experience, education and contact details.
 - [Resume](https://yogeshv.me/resume/): Resume automatically selected by visitor country.
+- [Project case studies](https://yogeshv.me/projects/): Architecture, implementation, results, source code and live demos.
 
 ## Projects
 

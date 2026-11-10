@@ -9,6 +9,7 @@ import Resume from "./pages/Resume";
 import NotFound from "./pages/NotFound";
 import ProjectDetail from "./pages/ProjectDetail";
 import VisitorRegionProvider from "./components/VisitorRegionProvider";
+import ProjectsIndex from "./pages/ProjectsIndex";
 const StarsBackground = lazy(() => import("./components/StarsBackground"));
 const ClickSpark = lazy(() => import("./components/ClickSpark"));
 const CursorGlow = lazy(() => import("./components/CursorGlow"));
@@ -39,6 +40,7 @@ export const SiteRoutes = () => (
     <Routes>
       <Route path="/" element={<Index />} />
       <Route path="/resume" element={<Resume />} />
+      <Route path="/projects" element={<ProjectsIndex />} />
       <Route path="/projects/:slug" element={<ProjectDetail />} />
       <Route path="*" element={<NotFound />} />
     </Routes>

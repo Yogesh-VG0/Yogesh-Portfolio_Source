@@ -1,18 +1,15 @@
 import { motion } from "framer-motion";
-import { ArrowDown, Github, Linkedin, FileDown } from "lucide-react";
-import Typewriter from "./Typewriter";
+import { ArrowDown, FileDown, Mail } from "lucide-react";
 import SplitText from "./SplitText";
 import { AuroraText } from "./AuroraText";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { Link } from "react-router-dom";
-import { useIsMobile } from "@/hooks/use-mobile";
 import { useVisitorRegion } from "@/hooks/use-visitor-region";
 import { locations } from "@/data/locations";
 
 const MotionLink = motion.create(Link);
 
 const Hero = () => {
-  const isMobile = useIsMobile(640);
   const { region, status } = useVisitorRegion();
   const location = status === "loading" ? "India & UAE" : locations[region].label;
   return (
@@ -24,7 +21,7 @@ const Hero = () => {
         animate="visible"
       >
         {/* Status badge */}
-        <motion.div variants={fadeUp} className="mb-6">
+        <motion.div variants={fadeUp} className="mb-6 flex min-h-14 items-center justify-center" data-nosnippet>
           <span className="inline-flex max-w-full items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-card/40 backdrop-blur-md text-xs leading-5 text-foreground/72 sm:font-mono">
             <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
@@ -35,16 +32,15 @@ const Hero = () => {
         </motion.div>
 
         {/* Main heading with glow + SplitText */}
-        <h1
+        <motion.p variants={fadeUp} className="mb-2 text-xl font-medium text-foreground/85 sm:text-2xl">Hi, I'm</motion.p>
+        <h1 aria-label="Yogesh Vadivel — Full-Stack Developer"
           className="relative text-[clamp(2rem,9vw,2.5rem)] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.2] sm:leading-[1.1] tracking-tight mb-4"
         >
-          <span className="sr-only">Yogesh Vadivel</span>
           <span className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
             <span className="w-[60%] h-[80%] bg-primary/10 dark:bg-primary/[0.07] rounded-full blur-[60px] sm:blur-[80px]" />
           </span>
           <span className="relative" aria-hidden="true">
-            <span className="mb-2 block text-xl font-medium tracking-normal sm:mb-0 sm:inline sm:text-[length:inherit] sm:font-extrabold sm:tracking-tight">Hi, I'm{" "}</span>
-            <AuroraText className="whitespace-nowrap" colors={["#0070F3", "#38bdf8", "#7928CA", "#0070F3"]} speed={1}>
+            <AuroraText className="whitespace-nowrap" colors={["var(--hero-blue)", "var(--hero-cyan)", "var(--hero-violet)", "var(--hero-blue)"]} speed={1}>
               <SplitText text="Yogesh Vadivel" delay={0} stagger={0.02} />
             </AuroraText>
           </span>
@@ -53,73 +49,39 @@ const Hero = () => {
           Full-Stack Developer<span className="hidden sm:inline"> · React, Next.js &amp; Python</span>
         </motion.p>
 
-        <motion.p variants={fadeUp} className="mx-auto mb-8 max-w-[30ch] text-base leading-7 text-foreground/80 sm:hidden">
-          I build reliable web apps with React, Next.js, and Python.
-        </motion.p>
-
-        {/* Subtitle with typewriter */}
-        <motion.p
-          variants={fadeUp}
-          className="hidden sm:block text-lg md:text-xl text-foreground/82 max-w-2xl mx-auto mb-10 leading-relaxed"
+        {/* Keep the primary introduction visible in the first HTML paint. */}
+        <p
+          className="mx-auto mb-8 max-w-[30ch] text-base leading-7 text-foreground/82 sm:mb-10 sm:max-w-2xl sm:text-lg md:text-xl"
         >
-          I build{" "}
-          {!isMobile && <Typewriter
-            words={[
-              "scalable web apps",
-              "modern dashboards",
-              "AI-powered solutions",
-              "beautiful interfaces",
-            ]}
-            typingSpeed={80}
-            deletingSpeed={40}
-            delayBetweenWords={2000}
-          />}{" "}
-          <br className="hidden sm:block" />
-          with React, Python, and modern technologies.
-        </motion.p>
+          I build reliable web apps with React, Next.js, and Python.
+        </p>
 
         {/* CTA buttons */}
         <motion.div variants={fadeUp} className="grid grid-cols-2 items-stretch gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-center">
-          <motion.a
-            href="#projects"
-            whileHover={{ scale: 1.04 }}
-            whileTap={tapScale}
-            className="order-1 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-7 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-shadow"
-          >
-            View Projects
-            <ArrowDown size={16} className="hidden sm:block animate-float" />
-          </motion.a>
-          <motion.a
-            href="https://github.com/Yogesh-VG0"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.04 }}
-            whileTap={tapScale}
-            className="order-3 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
-          >
-            <Github size={16} />
-            GitHub
-          </motion.a>
-          <motion.a
-            href="https://www.linkedin.com/in/yogesh-vadivel-a287a6269/"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.04 }}
-            whileTap={tapScale}
-            className="order-4 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
-          >
-            <Linkedin size={16} />
-            LinkedIn
-          </motion.a>
           <MotionLink
             to="/resume/"
             whileHover={{ scale: 1.04 }}
             whileTap={tapScale}
+            className="order-1 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-7 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-shadow"
+          >
+            <FileDown size={16} aria-hidden="true" />Resume
+          </MotionLink>
+          <motion.a
+            href="#contact"
+            whileHover={{ scale: 1.04 }}
+            whileTap={tapScale}
             className="order-2 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
           >
-            <FileDown size={16} />
-            Resume
-          </MotionLink>
+            <Mail size={16} aria-hidden="true" />Contact
+          </motion.a>
+          <motion.a
+            href="#projects"
+            whileHover={{ scale: 1.04 }}
+            whileTap={tapScale}
+            className="order-3 col-span-2 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-5 py-3 text-foreground/80 font-medium text-sm hover:text-primary transition-colors"
+          >
+            View Projects<ArrowDown size={16} aria-hidden="true" />
+          </motion.a>
         </motion.div>
 
       </motion.div>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Projects &amp; Case Studies by Yogesh Vadivel">
+<defs><radialGradient id="glow"><stop stop-color="#173765"/><stop offset="1" stop-color="#080c14"/></radialGradient></defs>
+<rect width="1200" height="630" fill="#080c14"/><rect x="560" width="640" height="630" fill="url(#glow)"/>
+<path d="M0 600H1200M1040 0V630" stroke="#355479" stroke-opacity=".25"/><rect x="78" y="70" width="52" height="4" rx="2" fill="#60a5fa"/>
+<g font-family="Arial, sans-serif"><text x="78" y="128" font-size="22" letter-spacing="4" fill="#8bbcff">SELECTED WORK</text>
+<text x="78" y="270" font-size="66" font-weight="700" letter-spacing="-2" fill="#f7faff">Projects &amp; Case Studies</text>
+<text x="78" y="345" font-size="34" fill="#c7d2e2"><tspan x="78" dy="0">Architecture, implementation, and the tradeoffs</tspan><tspan x="78" dy="47">behind three live apps.</tspan></text><rect x="78" y="465" width="248" height="44" rx="10" fill="#101d31" stroke="#234775"/><text x="97" y="494" fill="#b7d6ff" font-size="23">StockPredict AI</text><rect x="340" y="465" width="220" height="44" rx="10" fill="#101d31" stroke="#234775"/><text x="359" y="494" fill="#b7d6ff" font-size="23">ExpenseVision</text><rect x="574" y="465" width="220" height="44" rx="10" fill="#101d31" stroke="#234775"/><text x="593" y="494" fill="#b7d6ff" font-size="23">Verdict Games</text>
+<text x="78" y="570" font-size="25" fill="#9bb4d5">yogeshv.me</text><text x="1120" y="570" text-anchor="end" font-size="22" fill="#9bb4d5">Yogesh Vadivel</text></g>
+</svg>

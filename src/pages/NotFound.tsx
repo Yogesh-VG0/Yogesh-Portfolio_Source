@@ -33,6 +33,7 @@ const NotFound = () => {
             </motion.span>
           </Link>
         </motion.div>
+        <Link to="/projects/" className="mt-4 inline-flex min-h-11 items-center text-sm text-primary">Explore project case studies</Link>
         <motion.p variants={fadeUp} className="mt-8 text-xs text-foreground/55 font-mono">
           YV<span className="text-primary">.</span>
         </motion.p>

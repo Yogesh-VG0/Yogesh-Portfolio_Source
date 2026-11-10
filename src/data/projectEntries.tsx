@@ -32,7 +32,7 @@ export const projects: Project[] = [
       "Sentiment analysis from 10+ news and social sources scored by FinBERT, RoBERTa, and VADER NLP models",
       "SHAP-based explainability decomposes each prediction, then Groq AI with Gemini fallback writes a stock-specific plain-English briefing",
       "Live prices, TradingView charts, technical indicators, and interactive Sankey financial flow charts provide deep context around each prediction",
-      "Latest production backtests reached +13.71% on the 30-day horizon and +8.05% on the 7-day horizon, with drift monitoring tracking reliability over time",
+      "September 2025–March 2026 market-neutral backtests reached +13.71% on the 30-day horizon and +8.05% on the 7-day horizon, with drift monitoring tracking reliability over time",
     ],
     cardHighlights: [
       "Automated daily pipeline for data, training, predictions, and AI explanations",
@@ -45,14 +45,14 @@ export const projects: Project[] = [
       { icon: <Layers size={14} />, label: "Horizons", value: "3" },
       { icon: <Cpu size={14} />, label: "Features", value: "113" },
       { icon: <Calendar size={14} />, label: "Pipeline", value: "Daily" },
-      { icon: <Sparkles size={14} />, label: "30d Return", value: "+13.71%" },
+      { icon: <Sparkles size={14} />, label: "30d Backtest", value: "+13.71%" },
     ],
     tech: [
       "Next.js",
       "React",
       "TypeScript",
       "Node.js",
-      "FastAPI",
+      "Express.js",
       "LightGBM",
       "LSTM",
       "SHAP",
@@ -74,7 +74,7 @@ export const projects: Project[] = [
       { src: "/stock_predict_img/fundamentals_page.webp", alt: "Stock fundamentals and financial data" },
       { src: "/stock_predict_img/tradinghours_popup.webp", alt: "Trading hours popup with market session info" },
     ],
-    liveUrl: "https://stock-predict-ai.vercel.app",
+    liveUrl: "https://stockpredict.dev",
     githubUrl: "https://github.com/Yogesh-VG0/Stock_Predict_Ai",
     caseStudy: {
       problem:
@@ -86,7 +86,7 @@ export const projects: Project[] = [
       architectureCards: [
         { label: "Frontend", detail: "Next.js 15 + React 18 with TradingView charts, ECharts Sankey diagrams, and Framer Motion", icon: "🖥️" },
         { label: "API Gateway", detail: "Node.js/Express backend that proxies the ML backend, aggregates news from 10+ sources, and serves live prices from a server-side Finnhub WebSocket cache", icon: "🔌" },
-        { label: "ML Backend", detail: "FastAPI (Python) serving predictions, running SHAP analysis, and generating AI-powered plain-English explanations with Groq primary and Gemini fallback", icon: "🧠" },
+        { label: "ML Pipeline", detail: "Python runs in GitHub Actions to train models, compute SHAP values, and generate explanations with Groq and Gemini fallback. Express reads the stored results; the ML pipeline is not a live production server.", icon: "🧠" },
         { label: "Database", detail: "MongoDB Atlas for all persistent data including predictions, sentiment, features, explanations, and market context across 12+ collections", icon: "🗄️" },
         { label: "Cache", detail: "Redis for prediction caching (60s TTL), rate limiting (sliding window), and holiday data (1yr TTL)", icon: "⚡" },
         { label: "Automation", detail: "GitHub Actions runs the full pipeline every weeknight at 10:15 PM UTC, with quality gates, backtests, drift monitoring, and artifact uploads", icon: "🔄" },
@@ -105,7 +105,7 @@ export const projects: Project[] = [
         "Live price delivery uses a server-side Finnhub WebSocket plus 5-second frontend polling, with in-memory caches and automatic reconnection to keep the UI responsive",
       ],
       results:
-        "Fully automated daily pipeline running in production with zero manual intervention. 75 US stocks are predicted across 3 horizons with 113-feature modeling, SHAP explainability, Groq/Gemini briefings, and a live dashboard for charts, news, and Sankey financial flows. Latest market-neutral backtests reached +13.71% over 30 days and +8.05% over 7 days while evaluation and drift monitoring track reliability over time.",
+        "Fully automated daily pipeline running in production with zero manual intervention. 75 US stocks are predicted across 3 horizons with 113-feature modeling, SHAP explainability, Groq/Gemini briefings, and a live dashboard for charts, news, and Sankey financial flows. September 2025–March 2026 market-neutral backtests reached +13.71% over 30 days and +8.05% over 7 days while evaluation and drift monitoring track reliability over time.",
     },
   },
   {
@@ -124,7 +124,7 @@ export const projects: Project[] = [
     cardDescription:
       "Snap a receipt, let AI read it, track your spending, set budgets with alerts, import bank data, and get personalized AI tips. All in an app you can install on your phone.",
     highlights: [
-      "AI receipt scanner tries 3 providers automatically (Veryfi, Google Gemini, OpenRouter). If one fails, the next picks up so scanning always works",
+      "AI receipt scanner tries 3 providers automatically (Veryfi, Google Gemini, OpenRouter). If one fails, the next picks up to improve availability when a provider fails",
       "AI spending coach analyzes your last 90 days and gives you a summary, savings tips, budget warnings, and spending trends",
       "Set monthly budgets per category and get notified at 80% and again when you go over, so you never overspend by surprise",
       "Import bank statements via CSV with automatic column detection, date/amount parsing, and duplicate warnings before import",
@@ -132,20 +132,20 @@ export const projects: Project[] = [
       "Secured with 3 layers of protection: route guards, API authentication, and database-level access rules on every table, plus rate limiting on all endpoints",
     ],
     cardHighlights: [
-      "Snap a receipt and 3 AI providers work together to read it automatically",
+      "Snap a receipt and AI providers are tried in a fallback chain to extract receipt fields",
       "Set budgets per category and get alerts before you overspend",
       "AI analyzes 90 days of spending and gives personalized tips",
       "Install it like a phone app with push notifications and receipt sharing",
     ],
     metrics: [
       { icon: <Layers size={14} />, label: "AI Providers", value: "3" },
-      { icon: <Database size={14} />, label: "Tables", value: "6" },
-      { icon: <Cpu size={14} />, label: "API Routes", value: "17" },
+      { icon: <Database size={14} />, label: "Tables", value: "8" },
+      { icon: <Cpu size={14} />, label: "API Routes", value: "18" },
       { icon: <Sparkles size={14} />, label: "AI Models", value: "5+" },
       { icon: <Globe size={14} />, label: "PWA", value: "Installable" },
     ],
     tech: [
-      "Next.js 15",
+      "Next.js 16",
       "React 19",
       "TypeScript",
       "Supabase",
@@ -177,12 +177,12 @@ export const projects: Project[] = [
       approach:
         "Built a full-stack web app with Next.js and Supabase that handles everything: user accounts, expense storage, receipt file uploads, and AI processing. Designed the receipt scanner to try 3 different AI providers in sequence so it works reliably. Made it installable as a phone app so users can access it from their home screen and get push notifications.",
       architecture:
-        "Next.js handles both the frontend and 17 backend API endpoints. Supabase provides the database (PostgreSQL), user authentication (email + Google + GitHub), and private file storage for receipts. The receipt scanner tries Veryfi first, then Google Gemini, then OpenRouter as a fallback. AI insights use Gemini to analyze spending patterns. Upstash Redis rate-limits every endpoint to prevent abuse. Deployed on Render.",
+        "Next.js handles both the frontend and 18 backend API endpoints. Supabase provides the database (PostgreSQL), user authentication (email + Google + GitHub), and private file storage for receipts. The receipt scanner tries configured providers in sequence: Veryfi, Google Gemini, then OpenRouter. AI insights analyze spending patterns. Optional Upstash Redis provides rate limiting. Deployed on Render.",
       architectureCards: [
-        { label: "Frontend", detail: "Next.js 15 + React 19 with server-side rendering for fast page loads and interactive dashboards with Recharts", icon: "🖥️" },
-        { label: "Backend", detail: "17 API endpoints handling expenses, budgets, receipt scanning, AI insights, notifications, CSV import, and user accounts", icon: "🔌" },
-        { label: "Database", detail: "Supabase PostgreSQL with 6 tables, row-level security on every table, and 7 schema migrations", icon: "🗄️" },
-        { label: "Receipt AI", detail: "3 providers in sequence: Veryfi for speed, Google Gemini for accuracy, and OpenRouter as a free fallback. Scanning always works.", icon: "📷" },
+        { label: "Frontend", detail: "Next.js 16 + React 19 with server-side rendering for fast page loads and interactive dashboards with Recharts", icon: "🖥️" },
+        { label: "Backend", detail: "18 API endpoints handling expenses, budgets, receipt scanning, AI insights, notifications, CSV import, and user accounts", icon: "🔌" },
+        { label: "Database", detail: "Supabase PostgreSQL with 8 tables, row-level access policies, and 8 schema migrations", icon: "🗄️" },
+        { label: "Receipt AI", detail: "Configured providers are tried in sequence: Veryfi, Google Gemini, then OpenRouter. Users review extracted fields before saving, with recovery actions when scanning fails.", icon: "📷" },
         { label: "Spending AI", detail: "Google Gemini analyzes 90 days of your spending and returns personalized tips, budget warnings, and trend insights", icon: "🧠" },
         { label: "Installable App", detail: "Progressive Web App you can install on your phone with push notifications, receipt sharing from other apps, and home screen access", icon: "📱" },
       ],
@@ -200,42 +200,42 @@ export const projects: Project[] = [
         "Rate limiting every endpoint: 8 different rate limit tiers prevent abuse across AI calls, data mutations, imports, and account actions, with graceful fallback if the rate limiter is unavailable",
       ],
       results:
-        "Live at expensevision.tech. A full-featured personal finance app with AI receipt scanning across 3 providers, monthly budgets with push alerts, CSV bank import, AI spending insights, and installable PWA experience. Serves 17 API endpoints across 6 database tables with 3-layer security and rate limiting on every route.",
+        "Live at expensevision.tech. A full-featured personal finance app with AI receipt scanning across 3 providers, monthly budgets with push alerts, CSV bank import, AI spending insights, and installable PWA experience. Serves 18 API endpoints across 8 database tables with 3-layer security and rate limiting on every route.",
     },
   },
   {
     slug: "verdict-games",
     title: "Verdict Games",
     tagline:
-      "A premium game reviews and discovery platform aggregating data from 7 APIs with 8000+ games",
+      "A premium game reviews and discovery platform aggregating data from 7 APIs with 8,200+ games",
     cardTagline:
-      "Game discovery platform built from 7 APIs and 8000+ titles",
+      "Game discovery platform built from 7 APIs and 8,200+ titles",
     featured: true,
     status: "Production",
     statusColor: "text-emerald-400 bg-emerald-500/10 border-emerald-500/20",
     year: "2025 – 2026",
     description:
-      "A full-stack game reviews platform that aggregates data from 7 external APIs (RAWG, Steam, IGDB, CheapShark, Wikipedia, HowLongToBeat, GX Corner) to build rich game profiles with 8000+ games. Features a 13-step ingestion pipeline, Heroku-scheduled discovery and re-enrichment jobs, Verdict Scoring v2 with community/critic/confidence blending, 22 editorial curated lists, compare and developer hub pages, user accounts with library tracking, and a pixel-art gaming aesthetic with dark/light mode.",
+      "A full-stack game reviews platform that aggregates data from 7 external APIs (RAWG, Steam, IGDB, CheapShark, Wikipedia, HowLongToBeat, GX Corner) to build rich game profiles with 8,200+ games. Features a 13-step ingestion pipeline, GitHub Actions-scheduled discovery and re-enrichment jobs, Verdict Scoring v2 with community/critic/confidence blending, 22 editorial curated lists, compare and developer hub pages, user accounts with library tracking, and a pixel-art gaming aesthetic with dark/light mode.",
     cardDescription:
       "Combines reviews, ratings, prices, trailers, and discovery tools into one platform with rich game pages, curated lists, and daily refreshes.",
     highlights: [
-      "8000+ games ingested via a 13-step pipeline from RAWG, enriched in parallel with Steam, IGDB, CheapShark, Wikipedia, and HowLongToBeat data",
+      "8,200+ games ingested via a 13-step pipeline from RAWG, enriched in parallel with Steam, IGDB, CheapShark, Wikipedia, and HowLongToBeat data",
       "Verdict Scoring v2: Wilson Lower Bound community score + normalized critic average, blended with confidence weighting for fair rankings",
-      "Heroku-scheduled discovery, trending refresh, and re-enrichment jobs keep the catalog fresh using RAWG categories, IGDB PopScore, GX Top Liked, and freshness scoring",
+      "GitHub Actions-scheduled discovery, trending refresh, and re-enrichment jobs keep the catalog fresh using RAWG categories, IGDB PopScore, GX Top Liked, and freshness scoring",
       "Rich game pages with trailer embeds, screenshot galleries, Steam achievements, Steam player reviews, news feeds, pros/cons, live player counts, and price tracking",
       "Full user system: accounts, game library (wishlist/playing/completed), follows, community reviews with helpful voting, and curated lists",
       "Admin dashboard with game editor, review moderation, user management, audit logging, and one-click re-ingestion",
       "8 GX Corner feeds powering homepage sections: deals, free-to-play, PS Plus/Game Pass, release calendar, and gaming news",
     ],
     cardHighlights: [
-      "Aggregates 8000+ games from 7 APIs into one searchable catalog",
+      "Aggregates 8,200+ games from 7 APIs into one searchable catalog",
       "Verdict Scoring v2 blends community and critic signals fairly",
       "Daily scheduled jobs keep games, trends, and curated lists fresh",
       "Includes trailers, screenshots, reviews, price tracking, and user libraries",
     ],
     metrics: [
-      { icon: <Gamepad2 size={14} />, label: "Games", value: "8000+" },
-      { icon: <Database size={14} />, label: "APIs", value: "7" },
+      { icon: <Gamepad2 size={14} />, label: "Games", value: "8200+" },
+      { icon: <Database size={14} />, label: "Data Sources", value: "7" },
       { icon: <Globe size={14} />, label: "Pages", value: "15+" },
       { icon: <Calendar size={14} />, label: "Cron", value: "Daily" },
       { icon: <Sparkles size={14} />, label: "Scoring", value: "Multi-src" },
@@ -273,32 +273,32 @@ export const projects: Project[] = [
       problem:
         "Finding honest, data-driven game reviews in one place is hard. Most review sites rely on a single score source or subjective editorial takes. Players have to visit Steam, IGDB, Metacritic, and deal sites separately just to decide if a game is worth buying.",
       approach:
-        "Built a 13-step multi-source ingestion pipeline that pulls game data from RAWG (primary metadata), then enriches it in parallel with Steam reviews and player counts, IGDB ratings and trailers, CheapShark price deals, Wikipedia descriptions, and HowLongToBeat playtime data. Verdict Scoring v2 blends a Wilson Lower Bound community score with a normalized critic average, weighted by confidence. GX Corner feeds power 8 homepage sections, while Heroku Scheduler keeps discovery, trending, re-enrichment, and editorial list seeding jobs running automatically.",
+        "Built a 13-step multi-source ingestion pipeline that pulls game data from RAWG (primary metadata), then enriches it in parallel with Steam reviews and player counts, IGDB ratings and trailers, CheapShark price deals, Wikipedia descriptions, and HowLongToBeat playtime data. Verdict Scoring v2 blends a Wilson Lower Bound community score with a normalized critic average, weighted by confidence. GX Corner feeds power 8 homepage sections, while GitHub Actions keeps discovery, trending, re-enrichment, and editorial list seeding jobs running automatically.",
       architecture:
-        "Next.js App Router handles the frontend and 30+ API routes. Supabase PostgreSQL stores data across 20+ tables with Row Level Security on every table, 20+ migrations, and 30+ indexes. The ingestion pipeline runs a 13-step process: search RAWG, fetch full details, fire all enrichment calls in parallel (Steam, IGDB, CheapShark, Wikipedia, HowLongToBeat), compute v2 scores, generate verdicts, upsert, and verify mobile store listings. Vercel serves the app while Heroku Scheduler runs recurring discovery, trending refresh, and re-enrichment jobs.",
+        "Next.js App Router handles the frontend and 70 API routes. Supabase PostgreSQL stores data across 20+ tables with Row Level Security on every table, 20+ migrations, and 30+ indexes. The ingestion pipeline runs a 13-step process: search RAWG, fetch full details, fire all enrichment calls in parallel (Steam, IGDB, CheapShark, Wikipedia, HowLongToBeat), compute v2 scores, generate verdicts, upsert, and verify mobile store listings. Vercel serves the app while GitHub Actions runs recurring discovery, trending refresh, and re-enrichment jobs.",
       architectureCards: [
         { label: "Frontend", detail: "Next.js 16 + React 19 with Framer Motion animations, hero carousel, 11 homepage sections, and pixel-art gaming theme", icon: "🖥️" },
-        { label: "API Layer", detail: "30+ Next.js Route Handlers serving games, search, reviews, lists, library, profiles, calendar, compare, and admin endpoints", icon: "🔌" },
+        { label: "API Layer", detail: "70 Next.js Route Handlers serving games, search, reviews, lists, library, profiles, calendar, compare, and admin endpoints", icon: "🔌" },
         { label: "Database", detail: "Supabase PostgreSQL with 20+ tables, RLS on all tables, 20+ migrations, triggers, and 30+ indexes", icon: "🗄️" },
         { label: "Ingestion", detail: "13-step pipeline enriching from 7 sources in parallel, with Verdict Scoring v2 and mobile store verification", icon: "🔄" },
         { label: "External APIs", detail: "RAWG, Steam, IGDB/Twitch, CheapShark, Wikipedia, HowLongToBeat, and GX Corner (8 feeds) with caching", icon: "🌐" },
-        { label: "Cron Jobs", detail: "Heroku Scheduler runs discover, refresh-trending, re-enrich, and curated-list seeding jobs while API cron routes remain fallback-only", icon: "⏰" },
+        { label: "Cron Jobs", detail: "GitHub Actions runs discover, refresh-trending, re-enrich, and curated-list seeding jobs while API cron routes remain fallback-only", icon: "⏰" },
       ],
       howItWorks: [
         { title: "Search and Match", description: "The pipeline searches RAWG for the best match, scores results by release date, rating, and review count, then generates a URL slug and checks for duplicates in the database." },
         { title: "Enrich from 7 Sources", description: "In parallel, the pipeline fetches Steam reviews and player counts, IGDB ratings and trailers, CheapShark price deals, Wikipedia descriptions, and HowLongToBeat playtime data. Each source is optional and fails gracefully." },
         { title: "Verdict Scoring v2", description: "Community score uses Wilson Lower Bound on Steam review counts. Critic score normalizes and averages IGDB + Metacritic ratings. A confidence level (0-1) based on review count and source count weights the final blended verdict score." },
         { title: "Generate Pros and Cons", description: "The system reads signals like Steam sentiment, player counts, IGDB critic scores, and genre tags to auto-generate a pros and cons list for each game. Negative signals like microtransactions or mixed reviews get flagged." },
-        { title: "Keep It Fresh", description: "Heroku Scheduler runs discover, refresh-trending, and re-enrich jobs. Trending uses IGDB PopScore (weighted: visits 25%, want-to-play 30%, playing 30%, Steam peak 15%) + GX Top Liked + freshnessScore ranking, and a seed job keeps 22 editorial curated lists up to date." },
+        { title: "Keep It Fresh", description: "GitHub Actions runs discover, refresh-trending, and re-enrich jobs. Trending uses IGDB PopScore (weighted: visits 25%, want-to-play 30%, playing 30%, Steam peak 15%) + GX Top Liked + freshnessScore ranking, and a seed job keeps 22 editorial curated lists up to date." },
       ],
       challenges: [
-        "Coordinating 7 external APIs with different auth methods (API keys, OAuth, no auth) and rate limits. Built per-source caching, retry logic, and graceful fallbacks so the pipeline never fails completely",
+        "Coordinating core data APIs with different auth methods (API keys, OAuth, no auth) and rate limits. Built per-source caching, retry logic, and graceful fallbacks so unavailable sources can be skipped while the remaining enrichment continues",
         "On-demand ingestion during search: a 3-layer search pipeline (DB → RAWG preview → background ingest) makes search feel instant and unlimited",
         "Verdict Scoring v2: computing a fair score from wildly different rating systems using Wilson Lower Bound for community scores and normalized critic averages, blended with a confidence weight",
         "Security: 20+ schema and RLS hardening migrations, auth_profile_id() optimization, and audit logging for every admin mutation",
       ],
       results:
-        "Production game reviews platform at verdict.games with 8000+ games, data from 7 external APIs, 20+ database tables, 22 editorial curated lists, compare and developer hub pages, a full user and admin system, and automated discovery plus re-enrichment jobs. Deployed on Vercel with Supabase backend and Heroku Scheduler automation.",
+        "Production game reviews platform at verdict.games with 8,200+ games, data from 7 external APIs, 20+ database tables, 22 editorial curated lists, compare and developer hub pages, a full user and admin system, and automated discovery plus re-enrichment jobs. Deployed on Vercel with Supabase backend and GitHub Actions automation.",
     },
   },
 ];

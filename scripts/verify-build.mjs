@@ -5,7 +5,7 @@ import { join, resolve } from "node:path";
 const root = resolve("dist");
 const sitemap = await readFile(join(root, "sitemap.xml"), "utf8");
 const urls = [...sitemap.matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => new URL(match[1]));
-assert.equal(urls.length, 5, "All five public pages must be in the sitemap");
+assert.equal(urls.length, 6, "All six public pages must be in the sitemap");
 for (const url of urls) {
   const html = await readFile(join(root, url.pathname, "index.html"), "utf8");
   assert.ok(html.includes(`rel="canonical" href="${url.href}"`), `Canonical mismatch: ${url}`);
@@ -16,6 +16,19 @@ for (const url of urls) {
   const json = html.match(/<script id="page-structured-data" type="application\/ld\+json">([\s\S]*?)<\/script>/)?.[1];
   assert.ok(json, `Missing structured data: ${url}`);
   assert.ok(JSON.parse(json)["@graph"].some(node => node["@type"] === "Person"));
+  if (url.pathname === "/") {
+    const heading = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]*>/g, "");
+    assert.equal(heading, "Yogesh Vadivel", "The animated H1 must contain one clean name");
+    assert.ok(html.includes('>75</span>'), "Real stock metric must appear in initial HTML");
+    assert.ok(!html.includes("fonts.googleapis.com"), "Font CSS must be self-hosted");
+  }
+  if (url.pathname === "/resume/") {
+    assert.ok(html.includes("TechMagic Technologies") && html.includes("B.Tech."), "Resume needs readable HTML experience and education");
+    assert.ok(!html.includes('id="resume-pdf-preview"'), "PDF preview should wait for an explicit request");
+  }
+  const social = html.match(/property="og:image" content="https:\/\/yogeshv\.me([^"?]+)"/)?.[1];
+  assert.ok(social, `Missing social image: ${url}`);
+  assert.ok((await stat(join(root, social))).size < 300000, `Social image exceeds 300KB: ${social}`);
   for (const match of html.matchAll(/(?:src|href)="(\/[^"?#]*)"/g)) {
     const file = join(root, match[1]);
     const info = await stat(file).catch(() => null);

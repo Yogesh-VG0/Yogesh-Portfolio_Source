@@ -14,7 +14,7 @@ export default function SeoMetadata() {
     };
     meta("name", "description", seo.description);
     meta("name", "robots", seo.robots);
-    for (const [key, value] of Object.entries({ "og:title": seo.title, "og:description": seo.description, "og:url": seo.canonical, "og:image": seo.image, "og:image:alt": seo.imageAlt, "og:site_name": SITE_NAME })) meta("property", key, value);
+    for (const [key, value] of Object.entries({ "og:type": seo.ogType, "og:title": seo.title, "og:description": seo.description, "og:url": seo.canonical, "og:image": seo.image, "og:image:alt": seo.imageAlt, "og:site_name": SITE_NAME, "og:image:width": "1200", "og:image:height": "630", "og:image:type": "image/jpeg" })) meta("property", key, value);
     for (const [key, value] of Object.entries({ "twitter:title": seo.title, "twitter:description": seo.description, "twitter:image": seo.image, "twitter:image:alt": seo.imageAlt })) meta("name", key, value);
     let canonical = document.head.querySelector<HTMLLinkElement>('link[rel="canonical"]');
     if (!canonical) { canonical = document.createElement("link"); canonical.rel = "canonical"; document.head.appendChild(canonical); }

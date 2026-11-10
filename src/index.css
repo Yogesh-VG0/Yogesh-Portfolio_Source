@@ -1,3 +1,18 @@
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 400 800;
+  font-display: swap;
+  src: url("/fonts/inter-latin.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("/fonts/jetbrains-mono-latin.woff2") format("woff2");
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -29,6 +44,9 @@
     --radius: 0.75rem;
     --text-tertiary: 220 14% 30%;
     --surface-elevated: 220 16% 94%;
+    --hero-blue: #0757d1;
+    --hero-cyan: #0369a1;
+    --hero-violet: #6d28d9;
   }
 
   .dark {
@@ -53,6 +71,9 @@
     --ring: 217 91% 60%;
     --text-tertiary: 215 15% 72%;
     --surface-elevated: 0 0% 6%;
+    --hero-blue: #60a5fa;
+    --hero-cyan: #38bdf8;
+    --hero-violet: #a78bfa;
   }
 }
 

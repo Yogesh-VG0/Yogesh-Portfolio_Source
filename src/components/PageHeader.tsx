@@ -8,7 +8,7 @@ export default function PageHeader({ title, children }: { title: string; childre
     <header className="sticky top-0 z-50 shrink-0 border-b border-border/40 bg-background/95 backdrop-blur-xl">
       <div className="container mx-auto flex h-16 items-center justify-between gap-3 px-4 sm:px-6">
         <div className="flex min-w-0 items-center gap-3 sm:gap-4">
-          <Link to="/" aria-label="Yogesh Vadivel portfolio" className="hidden min-h-11 items-center text-lg font-bold tracking-tight text-foreground transition-colors hover:text-primary md:inline-flex">
+          <Link to="/" aria-label="YV. — Yogesh Vadivel portfolio" className="hidden min-h-11 items-center text-lg font-bold tracking-tight text-foreground transition-colors hover:text-primary md:inline-flex">
             YV<span className="text-primary">.</span>
           </Link>
           <span className="hidden h-5 w-px bg-border md:block" aria-hidden="true" />

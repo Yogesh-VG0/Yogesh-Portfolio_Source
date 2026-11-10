@@ -97,7 +97,7 @@ python scripts/generate-social-cards.py
 python scripts/render-social-cards.py
 ```
 
-Normal builds need only Node.js; generated images and fonts are committed. Original `assets/og-image.png` is retained as a historical source asset and is not deployed.
+Normal builds need only Node.js; generated images and fonts are committed. The screenshot optimizer only updates project screenshots; social cards are generated separately with the scripts above.
 
 ## Source layout
 

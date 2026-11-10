@@ -19,5 +19,3 @@ for source in sorted(sources.glob("*_img/*.png")):
             variant.save(destination, "WEBP", quality=84, method=6)
             optimized_size += destination.stat().st_size
 print(f"Original screenshots: {original_size:,} bytes; all responsive variants: {optimized_size:,} bytes")
-with Image.open(root / "assets" / "og-image.png") as image:
-    image.convert("RGB").save(public / "og-image.jpg", "JPEG", quality=88, optimize=True)

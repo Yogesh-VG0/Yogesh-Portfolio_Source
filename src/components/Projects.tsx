@@ -279,7 +279,7 @@ const ProjectCard = ({
               className="inline-flex min-h-11 items-center justify-center gap-2 px-3 sm:px-5 py-2.5 rounded-xl text-primary text-sm font-semibold border border-primary/30 bg-primary/5 hover:bg-primary/10 hover:border-primary/50 transition-colors"
             >
               <Telescope size={14} />
-              Deep Dive
+              View project
             </motion.span>
           </Link>
         )}
@@ -331,7 +331,7 @@ const Projects = () => {
               />
             ))}
           </div>
-          <Link to="/projects/" className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-primary">Explore all case studies<ArrowRight size={16} aria-hidden="true" /></Link>
+          <Link to="/projects/" className="mt-6 inline-flex min-h-11 items-center gap-2 text-sm font-medium text-primary">View all projects<ArrowRight size={16} aria-hidden="true" /></Link>
         </motion.div>
       </div>
     </section>

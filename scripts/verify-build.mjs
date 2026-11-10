@@ -23,8 +23,9 @@ for (const url of urls) {
     assert.ok(!html.includes("fonts.googleapis.com"), "Font CSS must be self-hosted");
   }
   if (url.pathname === "/resume/") {
-    assert.ok(html.includes("TechMagic Technologies") && html.includes("B.Tech."), "Resume needs readable HTML experience and education");
-    assert.ok(!html.includes('id="resume-pdf-preview"'), "PDF preview should wait for an explicit request");
+    assert.ok(html.includes("Loading resume"), "The resume route must load the selected PDF automatically");
+    assert.ok(!html.includes('id="resume-experience"') && !html.includes('id="resume-skills"'), "The resume must remain PDF-only");
+    assert.ok(!html.includes("Preview PDF"), "The resume must not require a second preview click");
   }
   const social = html.match(/property="og:image" content="https:\/\/yogeshv\.me([^"?]+)"/)?.[1];
   assert.ok(social, `Missing social image: ${url}`);

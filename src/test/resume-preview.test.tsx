@@ -2,14 +2,15 @@ import { act, cleanup, render, screen, waitFor } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import ResumePreview from "@/components/ResumePreview";
 
-const { openDocument, createViewer } = vi.hoisted(() => ({ openDocument: vi.fn(), createViewer: vi.fn() }));
+const { openDocument, createViewer, zoom } = vi.hoisted(() => ({ openDocument: vi.fn(), createViewer: vi.fn(), zoom: { zoomLevel: "automatic" } }));
 vi.mock("@gembox/pdfviewer", () => ({
   GemBoxPdfViewer: { setLicense: vi.fn(), create: createViewer },
 }));
 
 beforeEach(() => {
   openDocument.mockReset().mockResolvedValue(undefined);
-  createViewer.mockReset().mockResolvedValue({ open: openDocument });
+  zoom.zoomLevel = "automatic";
+  createViewer.mockReset().mockResolvedValue({ open: openDocument, features: { zoom } });
   vi.stubGlobal("fetch", vi.fn(async (path: string) => ({ ok: true, arrayBuffer: async () => path })));
   vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => window.setTimeout(() => callback(0), 0));
   vi.stubGlobal("cancelAnimationFrame", (id: number) => window.clearTimeout(id));
@@ -21,9 +22,22 @@ afterEach(() => {
 });
 
 describe("PDF preview lifecycle", () => {
+  it("labels the viewer's page-number field, including rebuilt toolbars", async () => {
+    let viewerContainer!: HTMLElement;
+    createViewer.mockImplementationOnce(async ({ container }: { container: HTMLElement }) => {
+      viewerContainer = container;
+      container.innerHTML = '<input class="gembox-page-input" />';
+      return { open: openDocument, features: { zoom } };
+    });
+    render(<ResumePreview path="india.pdf" label="India" />);
+    expect(await screen.findByRole("textbox", { name: "Page number" })).toBeInTheDocument();
+    viewerContainer.innerHTML = '<input class="gembox-page-input" />';
+    await waitFor(() => expect(screen.getByRole("textbox", { name: "Page number" })).toBeInTheDocument());
+  });
+
   it("serializes rapid switches and finishes with the latest document", async () => {
     let finishFirst: () => void;
-    createViewer.mockImplementationOnce(() => new Promise((resolve) => { finishFirst = () => resolve({ open: openDocument }); }));
+    createViewer.mockImplementationOnce(() => new Promise((resolve) => { finishFirst = () => resolve({ open: openDocument, features: { zoom } }); }));
     const { rerender } = render(<ResumePreview path="india.pdf" label="India" />);
     await waitFor(() => expect(createViewer).toHaveBeenCalledWith(expect.objectContaining({ initialDocument: "india.pdf" })));
     rerender(<ResumePreview path="uae.pdf" label="UAE" />);
@@ -32,6 +46,7 @@ describe("PDF preview lifecycle", () => {
     await waitFor(() => expect(openDocument).toHaveBeenLastCalledWith("uae.pdf"));
     await waitFor(() => expect(screen.getByRole("region", { name: "UAE resume preview" })).toHaveAttribute("aria-busy", "false"));
     expect(createViewer).toHaveBeenCalledTimes(1);
+    expect(zoom.zoomLevel).toBe("pageWidth");
   });
 
   it("reports failed previews while directing visitors to the PDF actions", async () => {

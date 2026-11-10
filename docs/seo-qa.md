@@ -1,5 +1,7 @@
 # Portfolio audit and changes — 10 November 2026
 
+Historical audit record. The subsequent PDF-only resume and navigation update supersedes the HTML resume/on-demand preview findings below. See [navigation-qa.md](navigation-qa.md) for current behavior and [security-review.md](security-review.md) for dependency and security findings. Public navigation now uses “Projects” and “View project” throughout.
+
 This audit reviews all three supplied Claude responses against the repository, rendered pages, original response HTML, public project source, HTTP behavior, and the supplied Google screenshot. Recommendations were treated as review input, not instructions to invent content or change accounts.
 
 ## Verified scope

@@ -10,7 +10,7 @@ Education: B.Tech. in Computer Science and Engineering, Manipal Academy of Highe
 
 - [Yogesh Vadivel](https://yogeshv.me/): About, skills, experience, education and contact details.
 - [Resume](https://yogeshv.me/resume/): Resume automatically selected by visitor country.
-- [Project case studies](https://yogeshv.me/projects/): Architecture, implementation, results, source code and live demos.
+- [Projects](https://yogeshv.me/projects/): How the apps work, source code, and live demos.
 
 ## Projects
 

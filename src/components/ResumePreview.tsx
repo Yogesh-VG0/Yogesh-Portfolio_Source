@@ -12,6 +12,24 @@ export default function ResumePreview({ path, label }: { path: string; label: st
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
 
   useEffect(() => {
+    const container = containerRef.current;
+    if (status !== "ready" || !container) return;
+    // GemBox currently renders its page field without an accessible name.
+    // Keep this small adapter scoped to the viewer, including rebuilt toolbars.
+    const labelPageField = () => {
+      container.querySelectorAll<HTMLInputElement>("input.gembox-page-input").forEach(input => {
+        if (!input.getAttribute("aria-label") && !input.getAttribute("aria-labelledby") && !input.labels?.length) {
+          input.setAttribute("aria-label", "Page number");
+        }
+      });
+    };
+    labelPageField();
+    const observer = new MutationObserver(labelPageField);
+    observer.observe(container, { childList: true, subtree: true });
+    return () => observer.disconnect();
+  }, [status]);
+
+  useEffect(() => {
     let active = true;
     const controller = new AbortController();
     setStatus("loading");
@@ -26,14 +44,30 @@ export default function ResumePreview({ path, label }: { path: string; label: st
         const document = await response.arrayBuffer();
         if (!active || !containerRef.current) return;
         if (!viewerRef.current) {
-          viewerRef.current = GemBoxPdfViewer.create({ container: containerRef.current, initialDocument: document });
+          viewerRef.current = GemBoxPdfViewer.create({
+            container: containerRef.current,
+            initialDocument: document,
+            ui: { toolbar: {
+              openButton: { isVisible: false },
+              signatureButton: { isVisible: false },
+              freeText: { isVisible: false },
+              handDrawing: { isVisible: false },
+              image: { isVisible: false },
+            } },
+          });
           await viewerRef.current;
         } else {
           const viewer = await viewerRef.current;
           if (!active) return;
           await viewer.open(document);
         }
-        if (active) setStatus("ready");
+        if (active && containerRef.current) {
+          const viewer = await viewerRef.current;
+          // Start narrow screens at page width so the name and right column
+          // are visible immediately. Visitors can still zoom in to read.
+          viewer.features.zoom.zoomLevel = containerRef.current.clientWidth < 768 ? "pageWidth" : "automatic";
+          setStatus("ready");
+        }
       }).catch(() => {
         if (active) setStatus("error");
       });

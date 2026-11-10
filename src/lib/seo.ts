@@ -6,7 +6,7 @@ export const SITE_URL = "https://yogeshv.me";
 export const SITE_NAME = "Yogesh Vadivel";
 const PERSON_ID = `${SITE_URL}/#person`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
-export const HOME_DESCRIPTION = "Yogesh Vadivel is a full-stack developer building React, Next.js, Python and Node.js apps. Explore live projects, technical case studies, experience and resume.";
+export const HOME_DESCRIPTION = "Yogesh Vadivel is a full-stack developer building React, Next.js, Python and Node.js apps. Explore his projects, development experience and resume.";
 export const indexablePaths = ["/", "/projects/", "/resume/", ...projects.map(project => `/projects/${project.slug}/`)];
 
 export function getPageSeo(pathname: string) {
@@ -20,16 +20,16 @@ export function getPageSeo(pathname: string) {
   const canonical = `${SITE_URL}${path === "/" ? "/" : `${path}/`}`;
   const title = isHome ? "Yogesh Vadivel | Full-Stack Developer"
     : isResume ? "Yogesh Vadivel Resume | Full-Stack Developer"
-      : isProjects ? "Projects & Technical Case Studies | Yogesh Vadivel"
+      : isProjects ? "Projects | Yogesh Vadivel"
         : detail ? `${detail.seoTitle} | Yogesh Vadivel` : "Page not found | Yogesh Vadivel";
   const description = isHome ? HOME_DESCRIPTION
-    : isResume ? "Yogesh Vadivel's full-stack developer resume: React, Next.js, Python, Node.js, web development internships, and B.Tech. education. Read online or download the PDF."
-      : isProjects ? "Explore Yogesh Vadivel's live web apps and technical case studies: StockPredict AI, ExpenseVision and Verdict Games. Architecture, tradeoffs, results and source code."
+    : isResume ? "View or download Yogesh Vadivel's PDF resume, with full-stack development experience, projects, education, and skills in React, Next.js, Python and Node.js."
+      : isProjects ? "Projects built by Yogesh Vadivel: StockPredict AI, ExpenseVision and Verdict Games. Open the live apps, view the code, and see how each project works."
         : project && detail ? `${detail.descriptor}, built by Yogesh Vadivel. Explore the architecture, implementation, source code and live application.`
           : "This page could not be found. Explore Yogesh Vadivel's developer portfolio, projects and resume.";
   const imagePath = project ? `/social/${project.slug}.jpg` : isResume ? "/social/resume.jpg" : isProjects ? "/social/projects.jpg" : "/og-image.jpg";
   const image = `${SITE_URL}${imagePath}`;
-  const imageAlt = project && detail ? `${project.title} — ${detail.descriptor} — by Yogesh Vadivel` : isResume ? "Yogesh Vadivel — Full-Stack Developer Resume" : isProjects ? "Yogesh Vadivel — Projects and Technical Case Studies" : "Yogesh Vadivel — Full-Stack Developer Portfolio";
+  const imageAlt = project && detail ? `${project.title} — ${detail.descriptor} — by Yogesh Vadivel` : isResume ? "Yogesh Vadivel — Full-Stack Developer Resume" : isProjects ? "Projects built by Yogesh Vadivel" : "Yogesh Vadivel — Full-Stack Developer Portfolio";
   const ogType = project ? "article" : "website";
   const person = {
     "@type": "Person", "@id": PERSON_ID, name: SITE_NAME, alternateName: "Yogesh-VG0",

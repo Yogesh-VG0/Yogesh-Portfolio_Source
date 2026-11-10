@@ -1,6 +1,6 @@
 // @vitest-environment node
 import { renderToString } from "react-dom/server";
-import { StaticRouter } from "react-router-dom/server";
+import { StaticRouter } from "react-router-dom";
 import { describe, expect, it } from "vitest";
 import CountUp from "@/components/CountUp";
 import Hero from "@/components/Hero";
@@ -23,12 +23,14 @@ describe("prerendered content", () => {
     expect([...html.matchAll(/class="animate-aurora /g)]).toHaveLength(1);
   });
 
-  it("serves a useful HTML resume before the PDF viewer is requested", () => {
+  it("keeps the resume page PDF-only with no second preview step", () => {
     const html = renderToString(<VisitorRegionProvider><StaticRouter location="/resume/"><Resume /></StaticRouter></VisitorRegionProvider>);
-    expect(html).toContain("TechMagic Technologies");
-    expect(html).toContain("B.Tech. in Computer Science and Engineering");
-    expect(html).not.toContain('id="resume-pdf-preview"');
-    expect([...html.matchAll(/href="\/projects\//g)]).toHaveLength(4);
+    expect(html).toContain("Loading resume");
+    expect(html).toContain("Back to home");
+    expect(html).not.toContain("TechMagic Technologies");
+    expect(html).not.toContain("Technical skills");
+    expect(html).not.toContain("Preview PDF");
+    expect([...html.matchAll(/href="\/projects\//g)]).toHaveLength(0);
   });
 
   it("uses distinct social images and descriptive titles for every case study", () => {

@@ -33,7 +33,7 @@ export default function About() {
           </motion.div>
           <motion.div variants={fadeUp} className="space-y-5 text-foreground/82 leading-7 text-base md:text-lg md:leading-relaxed">
             <p>I'm a full-stack developer{location && <span data-nosnippet> based in {location.basedIn}</span>} with a {education.degree} from {education.institution}. I've built and deployed applications using React, Python, and Node.js, including a stock analytics platform for 75 US companies and an expense tracker with AI receipt scanning.</p>
-            <p>My work spans the full stack: designing APIs with FastAPI and Express, working with PostgreSQL and MongoDB, setting up CI/CD with GitHub Actions, and deploying apps to Vercel and Render. At TechMagic Technologies, I also built WordPress and Elementor websites, implemented technical SEO, and managed cPanel deployments. I enjoy building systems that are reliable, explainable, and actually useful.</p>
+            <p>I work on APIs with FastAPI and Express, databases with PostgreSQL and MongoDB, and deployments with GitHub Actions, Vercel, and Render. At TechMagic Technologies, I also built WordPress and Elementor websites, worked on technical SEO, and deployed updates through cPanel.</p>
           </motion.div>
           <motion.div variants={fadeUp} className="mt-10 min-h-60">
             {inView ? <Suspense fallback={<GitHubActivityFallback />}><GitHubActivity /></Suspense> : <GitHubActivityFallback />}

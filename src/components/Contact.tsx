@@ -111,7 +111,7 @@ const Contact = () => {
           <SectionHeader
             label="Contact"
             title="Let's connect"
-            description="Have a project in mind or want to chat? Feel free to reach out — I'm always open to new opportunities and collaborations."
+            description="Have a role or project in mind? Send me a message or reach out directly."
           />
 
           <div className="grid md:grid-cols-5 gap-8">

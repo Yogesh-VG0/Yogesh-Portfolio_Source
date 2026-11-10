@@ -13,4 +13,7 @@ it("resets a long gallery before navigating to a shorter related case study", ()
   expect(screen.getByRole("heading", { name: "ExpenseVision" })).toBeInTheDocument();
   const image = screen.getByRole("button", { name: "Click to enlarge image" }).querySelector("img");
   expect(image).toHaveAttribute("src", "/expensevision_img/landing_page.webp");
+  for (const link of screen.getAllByRole("link", { name: /demo/i })) {
+    expect(link).toHaveAttribute("href", "https://expensevision.tech/demo");
+  }
 });

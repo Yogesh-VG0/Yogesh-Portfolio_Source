@@ -10,6 +10,8 @@ import NotFound from "./pages/NotFound";
 import ProjectDetail from "./pages/ProjectDetail";
 import VisitorRegionProvider from "./components/VisitorRegionProvider";
 import ProjectsIndex from "./pages/ProjectsIndex";
+import RouteScroll from "./components/RouteScroll";
+import { MotionConfig } from "framer-motion";
 const StarsBackground = lazy(() => import("./components/StarsBackground"));
 const ClickSpark = lazy(() => import("./components/ClickSpark"));
 const CursorGlow = lazy(() => import("./components/CursorGlow"));
@@ -24,10 +26,10 @@ const Decorations = () => {
 
 export const AppShell = ({ children }: { children: ReactNode }) => (
   <ThemeProvider attribute="class" defaultTheme="system" storageKey="portfolio-theme" enableSystem disableTransitionOnChange>
-    <VisitorRegionProvider><TooltipProvider>
+    <MotionConfig reducedMotion="user"><VisitorRegionProvider><TooltipProvider>
       <Sonner />
       {children}
-    </TooltipProvider></VisitorRegionProvider>
+    </TooltipProvider></VisitorRegionProvider></MotionConfig>
   </ThemeProvider>
 );
 
@@ -35,6 +37,7 @@ export const SiteRoutes = () => (
   <>
     <Decorations />
     <SeoMetadata />
+    <RouteScroll />
     {/* Keep prerendered routes synchronous: system-theme updates must not interrupt
         hydration while a route chunk downloads. Heavy PDF and effects stay lazy. */}
     <Routes>

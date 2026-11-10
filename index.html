@@ -3,9 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta http-equiv="Content-Security-Policy" content="base-uri 'self'; object-src 'none'" />
     <!--seo:start-->
     <title>Yogesh Vadivel | Full-Stack Developer</title>
-    <meta name="description" content="Yogesh Vadivel is a full-stack developer building React, Next.js, Python and Node.js apps. Explore live projects, technical case studies, experience and resume." />
+    <meta name="description" content="Yogesh Vadivel is a full-stack developer building React, Next.js, Python and Node.js apps. Explore his projects, development experience and resume." />
     <meta name="author" content="Yogesh Vadivel" />
     <meta name="robots" content="index, follow, max-image-preview:large" />
     <link rel="canonical" href="https://yogeshv.me/" />
@@ -37,7 +39,10 @@
           var decoded = l.search.slice(1).split('&').map(function(s) {
             return s.replace(/~and~/g, '&')
           }).join('?');
-          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash);
+          try {
+            var destination = new URL(l.pathname.slice(0, -1) + decoded + l.hash, l.origin);
+            if (destination.origin === l.origin) window.history.replaceState(null, '', destination.pathname + destination.search + destination.hash);
+          } catch (_) { /* Leave malformed legacy links for the normal router. */ }
         }
       }(window.location))
     </script>

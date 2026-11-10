@@ -40,8 +40,6 @@ describe("shared regional profile", () => {
     expect(screen.getByText(label)).toBeInTheDocument();
     expect(screen.getByText(new RegExp(`based in ${city}`)).closest("p")).toHaveTextContent("B.Tech. in Computer Science and Engineering from Manipal Academy of Higher Education, Dubai");
     fireEvent.click(screen.getByRole("link", { name: "Resume" }));
-    await waitFor(() => expect(screen.getByRole("button", { name: "Preview PDF" })).not.toBeDisabled());
-    fireEvent.click(screen.getByRole("button", { name: "Preview PDF" }));
     expect(await screen.findByTestId("preview")).toHaveTextContent(`Resume_${filename}.pdf`);
     expect(screen.getByRole("link", { name: "Download PDF" })).toHaveAttribute("download", `Yogesh_Vadivel_Resume_${filename}.pdf`);
     fireEvent.click(screen.getByRole("link", { name: "Back to home" }));
@@ -66,8 +64,6 @@ describe("shared regional profile", () => {
     renderProfile();
     await waitFor(() => expect(screen.getByText("Open to opportunities · Dubai, UAE")).toBeInTheDocument());
     fireEvent.click(screen.getByRole("link", { name: "Resume" }));
-    await waitFor(() => expect(screen.getByRole("button", { name: "Preview PDF" })).not.toBeDisabled());
-    fireEvent.click(screen.getByRole("button", { name: "Preview PDF" }));
     expect(await screen.findByTestId("preview")).toHaveTextContent("Resume_UAE.pdf");
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });

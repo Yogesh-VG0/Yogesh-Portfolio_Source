@@ -27,11 +27,6 @@ function renderResume(entry = "/resume") {
   return render(<VisitorRegionProvider><MemoryRouter initialEntries={[entry]}><Resume /></MemoryRouter></VisitorRegionProvider>);
 }
 
-async function openPreview() {
-  await waitFor(() => expect(screen.getByRole("button", { name: "Preview PDF" })).not.toBeDisabled());
-  fireEvent.click(screen.getByRole("button", { name: "Preview PDF" }));
-}
-
 describe("country lookup", () => {
   it.each(["AE", "US", "GB", "SG", "DE"])("selects UAE for %s", (country) => {
     expect(regionForCountry(country)).toBe("uae");
@@ -73,7 +68,6 @@ describe("resume page", () => {
     renderResume();
     expect(screen.getByRole("link", { name: "Back to home" })).toHaveAttribute("href", "/");
     await waitFor(() => expect(screen.getByRole("link", { name: "Download PDF" })).toHaveAttribute("download", `Yogesh_Vadivel_Resume_${filename}.pdf`));
-    await openPreview();
     expect(await screen.findByTestId("pdf-preview")).toHaveTextContent(`Resume_${filename}.pdf`);
   });
 
@@ -89,7 +83,6 @@ describe("resume page", () => {
     vi.stubGlobal("fetch", fetchMock);
     renderResume(`/resume?region=${region}`);
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
-    await openPreview();
     expect(await screen.findByTestId("pdf-preview")).toHaveTextContent(`Resume_${filename}.pdf`);
     expect(fetchMock).toHaveBeenCalledTimes(1);
   });
@@ -98,7 +91,6 @@ describe("resume page", () => {
     const fetchMock = vi.fn().mockResolvedValue(response("IN"));
     vi.stubGlobal("fetch", fetchMock);
     renderResume();
-    await openPreview();
     await screen.findByTestId("pdf-preview");
     expect(screen.queryByRole("combobox")).not.toBeInTheDocument();
     expect(screen.queryByText(/Selected for your country|switch below|Version|Automatic/)).not.toBeInTheDocument();
@@ -109,7 +101,6 @@ describe("resume page", () => {
   it("automatically falls back to UAE when the service is unavailable", async () => {
     vi.stubGlobal("fetch", vi.fn().mockResolvedValue(response("IN", false)));
     renderResume();
-    await openPreview();
     expect(await screen.findByTestId("pdf-preview")).toHaveTextContent("Resume_UAE.pdf");
     expect(screen.getByRole("link", { name: "Download PDF" })).toHaveAttribute("download", "Yogesh_Vadivel_Resume_UAE.pdf");
   });

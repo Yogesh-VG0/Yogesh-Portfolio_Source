@@ -25,6 +25,7 @@ import { screenshotSources } from "@/lib/images";
 import { projectDetails, type ProjectSlug } from "@/data/project-details";
 import ArchitectureFlow from "@/components/ArchitectureFlow";
 import ThemeToggle from "@/components/ThemeToggle";
+import Footer from "@/components/Footer";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -42,9 +43,11 @@ const ProjectDetail = () => {
     const dialog = document.querySelector<HTMLElement>('[role="dialog"][aria-label="Image viewer"]');
     const pageContent = document.querySelector<HTMLElement>("main");
     const pageHeader = document.querySelector<HTMLElement>("header");
+    const pageFooter = document.querySelector<HTMLElement>("footer");
     document.body.style.overflow = "hidden";
     if (pageContent) pageContent.inert = true;
     if (pageHeader) pageHeader.inert = true;
+    if (pageFooter) pageFooter.inert = true;
     dialog?.querySelector<HTMLButtonElement>("button")?.focus();
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setLightboxOpen(false);
@@ -65,14 +68,10 @@ const ProjectDetail = () => {
       document.body.style.overflow = previousOverflow;
       if (pageContent) pageContent.inert = false;
       if (pageHeader) pageHeader.inert = false;
+      if (pageFooter) pageFooter.inert = false;
       previousFocus?.focus();
     };
   }, [lightboxOpen, galleryCount]);
-
-  /* Scroll to top on mount */
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, [slug]);
 
   const handleBackToProjects = () => {
     navigate("/projects/");
@@ -95,6 +94,7 @@ const ProjectDetail = () => {
   const gallery = project.gallery || [];
   const currentImg = gallery[galleryIdx] || null;
   const detail = projectDetails[project.slug as ProjectSlug];
+  const demoUrl = "demoUrl" in detail ? detail.demoUrl : project.liveUrl;
   const relatedProjects = projects.filter(item => item.slug !== project.slug);
 
   const prevImage = () => setGalleryIdx((galleryIdx - 1 + gallery.length) % gallery.length);
@@ -122,7 +122,7 @@ const ProjectDetail = () => {
           <div className="flex items-center gap-2 sm:gap-3">
             {project.liveUrl && (
               <a
-                href={project.liveUrl}
+                href={demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-flex min-h-11 items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold"
@@ -175,7 +175,7 @@ const ProjectDetail = () => {
             <p className="text-base sm:text-lg text-foreground/78 max-w-2xl leading-relaxed">
               {detail.descriptor}.
             </p>
-            <p className="mt-4 text-xs leading-6 text-foreground/65">By Yogesh Vadivel · Full-stack development · Case study reviewed <time dateTime="2026-11-10">10 November 2026</time></p>
+            <p className="mt-4 text-xs leading-6 text-foreground/65">Yogesh Vadivel · Full-stack development</p>
           </motion.div>
 
           {/* Image Carousel */}
@@ -281,7 +281,7 @@ const ProjectDetail = () => {
               <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Target size={16} className="text-primary" />
               </div>
-              <h2 className="text-xl font-bold">The Problem</h2>
+              <h2 className="text-xl font-bold">What it solves</h2>
             </div>
             <p className="text-foreground/80 leading-relaxed pl-0 sm:pl-10">{cs.problem}</p>
           </motion.div>
@@ -292,7 +292,7 @@ const ProjectDetail = () => {
               <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Lightbulb size={16} className="text-primary" />
               </div>
-              <h2 className="text-xl font-bold">Approach</h2>
+              <h2 className="text-xl font-bold">How I built it</h2>
             </div>
             <p className="text-foreground/80 leading-relaxed pl-0 sm:pl-10">{cs.approach}</p>
           </motion.div>
@@ -303,7 +303,7 @@ const ProjectDetail = () => {
               <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Layers size={16} className="text-primary" />
               </div>
-              <h2 className="text-xl font-bold">Architecture</h2>
+              <h2 className="text-xl font-bold">How it fits together</h2>
             </div>
             <p className="text-foreground/80 leading-relaxed pl-0 sm:pl-10 mb-5">{cs.architecture}</p>
             <ArchitectureFlow steps={detail.flow} title={project.title} />
@@ -334,7 +334,7 @@ const ProjectDetail = () => {
                 <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                   <Workflow size={16} className="text-primary" />
                 </div>
-                <h2 className="text-xl font-bold">How It Works</h2>
+                <h2 className="text-xl font-bold">How it works</h2>
               </div>
               <div className="space-y-0 pl-0 sm:pl-10">
                 {cs.howItWorks.map((step, idx) => (
@@ -361,7 +361,7 @@ const ProjectDetail = () => {
               <div className="w-8 h-8 rounded-lg bg-primary/10 flex items-center justify-center flex-shrink-0">
                 <Zap size={16} className="text-primary" />
               </div>
-              <h2 className="text-xl font-bold">Key Features</h2>
+              <h2 className="text-xl font-bold">Main features</h2>
             </div>
             <ul className="grid gap-3 pl-0 sm:pl-10">
               {project.highlights.map((h) => (
@@ -379,7 +379,7 @@ const ProjectDetail = () => {
               <div className="w-8 h-8 rounded-lg bg-orange-500/10 flex items-center justify-center flex-shrink-0">
                 <AlertTriangle size={16} className="text-orange-400" />
               </div>
-              <h2 className="text-xl font-bold">Challenges & Solutions</h2>
+              <h2 className="text-xl font-bold">Challenges I worked through</h2>
             </div>
             <ul className="grid gap-3 pl-0 sm:pl-10">
               {cs.challenges.map((c) => (
@@ -393,7 +393,7 @@ const ProjectDetail = () => {
 
           {/* Tech Stack */}
           <motion.div variants={fadeUp} className="mb-10">
-            <h2 className="text-xl font-bold mb-3">Tech Stack</h2>
+            <h2 className="text-xl font-bold mb-3">Tools and technologies</h2>
             <div className="flex flex-wrap gap-2">
               {project.tech.map((t) => (
                 <span
@@ -421,14 +421,14 @@ const ProjectDetail = () => {
           <section className="mb-10 border-t border-border/40 pt-8">
             <h2 className="text-xl font-bold">What I'd improve next</h2>
             <p className="mt-3 text-base leading-8 text-foreground/80">{detail.nextSteps}</p>
-            <a href={`${project.githubUrl}/blob/main/README.md`} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm text-primary">Read the implementation notes<ExternalLink size={14} aria-hidden="true" /></a>
+            <a href={`${project.githubUrl}/blob/main/README.md`} target="_blank" rel="noopener noreferrer" className="mt-3 inline-flex min-h-11 items-center gap-2 text-sm text-primary">Read the project README<ExternalLink size={14} aria-hidden="true" /></a>
           </section>
 
           {/* CTAs */}
           <motion.div variants={fadeUp} className="flex flex-wrap gap-3">
             {project.liveUrl && (
               <motion.a
-                href={"demoUrl" in detail ? detail.demoUrl : project.liveUrl}
+                href={demoUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 whileHover={{ scale: 1.03 }}
@@ -436,7 +436,7 @@ const ProjectDetail = () => {
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-lg shadow-primary/15"
               >
                 <ExternalLink size={14} />
-                Try Live Demo
+                Open demo
               </motion.a>
             )}
             {project.githubUrl && (
@@ -464,15 +464,16 @@ const ProjectDetail = () => {
             </button>
           </motion.div>
           <section className="mt-12 border-t border-border/40 pt-8" aria-labelledby="related-projects">
-            <h2 id="related-projects" className="text-xl font-bold">Explore another project</h2>
+            <h2 id="related-projects" className="text-xl font-bold">More projects</h2>
             <div className="mt-4 grid gap-4 sm:grid-cols-2">{relatedProjects.map(item => <Link key={item.slug} to={`/projects/${item.slug}/`} className="rounded-xl border border-border/40 p-5 transition-colors hover:border-primary/50">
               <h3 className="flex items-center justify-between gap-3 text-base font-semibold">{item.title}<ArrowRight size={16} aria-hidden="true" /></h3>
               <p className="mt-2 text-sm leading-7 text-foreground/75">{projectDetails[item.slug as ProjectSlug].descriptor}.</p>
             </Link>)}</div>
-            <div className="mt-8 flex flex-wrap items-center gap-4"><a href="/#contact" className="inline-flex min-h-12 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">Let's discuss a role or project</a><Link to="/resume/" className="inline-flex min-h-11 items-center text-sm text-primary">View my resume</Link></div>
+            <div className="mt-8 flex flex-wrap items-center gap-4"><Link to="/#contact" className="inline-flex min-h-12 items-center rounded-xl bg-primary px-5 text-sm font-semibold text-primary-foreground">Get in touch</Link><Link to="/resume/" className="inline-flex min-h-11 items-center text-sm text-primary">View my resume</Link></div>
           </section>
         </motion.div>
       </main>
+      <Footer />
 
       {/* Lightbox Modal */}
       <AnimatePresence>

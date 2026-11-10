@@ -3,6 +3,9 @@ import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import ThemeToggle from "./ThemeToggle";
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
+import { Link } from "react-router-dom";
+
+const MotionLink = motion.create(Link);
 
 const navLinks = [
   { label: "About", href: "#about" },
@@ -65,10 +68,18 @@ const Navbar = () => {
 
   useEffect(() => {
     if (!mobileOpen) return;
+    document.querySelector<HTMLAnchorElement>("#mobile-menu a")?.focus();
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
         setMobileOpen(false);
         document.querySelector<HTMLButtonElement>('[aria-controls="mobile-menu"]')?.focus();
+      }
+      if (event.key === "Tab") {
+        const controls = [...document.querySelectorAll<HTMLElement>('#mobile-menu a, nav[aria-label="Main navigation"] a, nav[aria-label="Main navigation"] button')].filter(element => element.getClientRects().length > 0);
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last?.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first?.focus(); }
       }
     };
     window.addEventListener("keydown", closeOnEscape);
@@ -90,9 +101,9 @@ const Navbar = () => {
           >
             <div className="flex min-h-full flex-col items-center justify-center gap-5 px-4 pb-6 pt-20 sm:gap-8" role="navigation" aria-label="Mobile navigation">
               {navLinks.map((link, i) => (
-                <motion.a
+                <MotionLink
                   key={link.href}
-                  href={link.href}
+                  to={`/${link.href}`}
                   onClick={() => setMobileOpen(false)}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -105,14 +116,16 @@ const Navbar = () => {
                   }`}
                 >
                   {link.label}
-                </motion.a>
+                </MotionLink>
               ))}
+              <MotionLink to="/resume/" onClick={() => setMobileOpen(false)} className="inline-flex min-h-11 items-center text-2xl font-semibold text-primary">Resume</MotionLink>
             </div>
           </motion.div>
         )}
       </AnimatePresence>
 
       <nav
+        aria-label="Main navigation"
         className={`fixed top-0 left-0 right-0 z-[95] transition-all duration-300 ${
           scrolled
             ? "bg-background/80 backdrop-blur-xl border-b border-border/40 shadow-sm"
@@ -127,22 +140,23 @@ const Navbar = () => {
       >
         <div className="container mx-auto flex items-center justify-between h-16 px-4 sm:px-6">
           {/* Logo */}
-          <a
-            href="/"
+          <Link
+            to="/"
+            onClick={() => setMobileOpen(false)}
             aria-label="YV. — Yogesh Vadivel home"
             className="inline-flex min-h-11 min-w-11 items-center text-lg font-bold tracking-tight text-foreground hover:text-primary transition-colors focus-visible:outline-primary"
           >
             YV<span className="text-primary">.</span>
-          </a>
+          </Link>
 
           {/* Desktop nav */}
           <div className="hidden md:flex items-center gap-1">
             {navLinks.map((link) => {
               const isActive = activeSection === link.href.slice(1);
               return (
-                <a
+                <Link
                   key={link.href}
-                  href={link.href}
+                  to={`/${link.href}`}
                   aria-current={isActive ? "true" : undefined}
                   className={`relative px-3 py-2 text-sm font-medium rounded-lg transition-colors ${
                     isActive
@@ -158,9 +172,10 @@ const Navbar = () => {
                       transition={{ type: "spring", stiffness: 350, damping: 30 }}
                     />
                   )}
-                </a>
+                </Link>
               );
             })}
+            <Link to="/resume/" className="inline-flex min-h-11 items-center px-3 text-sm font-medium text-primary">Resume</Link>
             <div className="ml-3">
               <ThemeToggle />
             </div>

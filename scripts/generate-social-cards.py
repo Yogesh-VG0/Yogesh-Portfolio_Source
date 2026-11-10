@@ -5,11 +5,11 @@ import textwrap
 
 cards = {
     'home': ('PORTFOLIO', 'Yogesh Vadivel', 'Full-Stack Developer', ['React', 'Next.js', 'Python', 'Node.js']),
-    'projects': ('SELECTED WORK', 'Projects & Case Studies', 'Architecture, implementation, and the tradeoffs behind three live apps.', ['StockPredict AI', 'ExpenseVision', 'Verdict Games']),
+    'projects': ('SELECTED WORK', 'Projects I\'ve built', 'Three web apps. Live demos, source code, and how they work.', ['StockPredict AI', 'ExpenseVision', 'Verdict Games']),
     'resume': ('RESUME', 'Yogesh Vadivel', 'Full-Stack Developer · Experience, skills, and education', ['React', 'Python', 'APIs', 'AI integrations']),
-    'stockpredict-ai': ('TECHNICAL CASE STUDY', 'StockPredict AI', 'Explainable stock forecasts with LightGBM, LSTM, and SHAP.', ['Next.js', 'Python', 'MongoDB', 'GitHub Actions']),
-    'expensevision': ('TECHNICAL CASE STUDY', 'ExpenseVision', 'An installable expense tracker with AI receipt scanning and budgets.', ['Next.js', 'Supabase', 'Receipt OCR', 'PWA']),
-    'verdict-games': ('TECHNICAL CASE STUDY', 'Verdict Games', 'Multi-source game discovery, reviews, and confidence-weighted scores.', ['Next.js', 'PostgreSQL', 'Multi-source data']),
+    'stockpredict-ai': ('PROJECT DETAILS', 'StockPredict AI', 'Explainable stock forecasts with LightGBM, LSTM, and SHAP.', ['Next.js', 'Python', 'MongoDB', 'GitHub Actions']),
+    'expensevision': ('PROJECT DETAILS', 'ExpenseVision', 'An installable expense tracker with AI receipt scanning and budgets.', ['Next.js', 'Supabase', 'Receipt OCR', 'PWA']),
+    'verdict-games': ('PROJECT DETAILS', 'Verdict Games', 'Game discovery, reviews, and scores from multiple sources.', ['Next.js', 'PostgreSQL', 'Multi-source data']),
 }
 root = Path('assets/social-cards')
 root.mkdir(parents=True, exist_ok=True)

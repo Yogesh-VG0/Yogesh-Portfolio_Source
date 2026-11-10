@@ -32,7 +32,7 @@ const Hero = () => {
         </motion.div>
 
         {/* Main heading with glow + SplitText */}
-        <motion.p variants={fadeUp} className="mb-2 text-xl font-medium text-foreground/85 sm:text-2xl">Hi, I'm</motion.p>
+        <p className="mb-2 text-xl font-medium text-foreground/85 sm:text-2xl">Hi, I'm</p>
         <h1 aria-label="Yogesh Vadivel — Full-Stack Developer"
           className="relative text-[clamp(2rem,9vw,2.5rem)] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.2] sm:leading-[1.1] tracking-tight mb-4"
         >
@@ -45,9 +45,9 @@ const Hero = () => {
             </AuroraText>
           </span>
         </h1>
-        <motion.p variants={fadeUp} className="mb-5 text-sm font-medium tracking-wide text-foreground/85 sm:text-base">
+        <p className="mb-5 text-sm font-medium tracking-wide text-foreground/85 sm:text-base">
           Full-Stack Developer<span className="hidden sm:inline"> · React, Next.js &amp; Python</span>
-        </motion.p>
+        </p>
 
         {/* Keep the primary introduction visible in the first HTML paint. */}
         <p
@@ -66,22 +66,22 @@ const Hero = () => {
           >
             <FileDown size={16} aria-hidden="true" />Resume
           </MotionLink>
-          <motion.a
-            href="#contact"
+          <MotionLink
+            to="/#contact"
             whileHover={{ scale: 1.04 }}
             whileTap={tapScale}
             className="order-2 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
           >
             <Mail size={16} aria-hidden="true" />Contact
-          </motion.a>
-          <motion.a
-            href="#projects"
+          </MotionLink>
+          <MotionLink
+            to="/#projects"
             whileHover={{ scale: 1.04 }}
             whileTap={tapScale}
             className="order-3 col-span-2 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-5 py-3 text-foreground/80 font-medium text-sm hover:text-primary transition-colors"
           >
             View Projects<ArrowDown size={16} aria-hidden="true" />
-          </motion.a>
+          </MotionLink>
         </motion.div>
 
       </motion.div>

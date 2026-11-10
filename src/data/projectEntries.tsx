@@ -78,9 +78,9 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/Yogesh-VG0/Stock_Predict_Ai",
     caseStudy: {
       problem:
-        "Individual investors lack access to institutional-grade stock analysis tools combining ML predictions with explainable AI. Existing retail platforms offer charts but no predictive intelligence or transparent reasoning behind forecasts.",
+        "Stock charts show what happened, but a forecast is harder to judge without knowing what went into it. I wanted to put forecasts, their main inputs, and market context in one place so each prediction could be inspected.",
       approach:
-        "Built an end-to-end automated pipeline: daily data ingestion from 10+ sources, LightGBM + LSTM hybrid training across 75 tickers, cross-sectional ranking, SHAP-based prediction decomposition, and Groq-powered plain-English explanations with Gemini fallback. Zero manual intervention required.",
+        "I built a daily pipeline that gathers data from 10+ sources, trains LightGBM and LSTM models for 75 stocks, and stores the forecasts. SHAP shows which inputs influenced each prediction. Groq, with Gemini as a fallback, turns those results into a readable explanation.",
       architecture:
         "The system uses three distinct AI/ML layers working together, each with a different role. The Predictor (LightGBM + LSTM hybrid) is the only component that actually predicts prices, using 113 numeric features. The Sentiment Scorers (FinBERT, RoBERTa, VADER) read news from 10+ sources and produce input features. The Explainer (SHAP + Groq/Gemini) decomposes each prediction and translates it into plain English.",
       architectureCards: [
@@ -124,7 +124,7 @@ export const projects: Project[] = [
     cardDescription:
       "Snap a receipt, let AI read it, track your spending, set budgets with alerts, import bank data, and get personalized AI tips. All in an app you can install on your phone.",
     highlights: [
-      "AI receipt scanner tries 3 providers automatically (Veryfi, Google Gemini, OpenRouter). If one fails, the next picks up to improve availability when a provider fails",
+      "Receipt scanning tries configured providers in order: Veryfi, Google Gemini, then OpenRouter if an earlier provider fails",
       "AI spending coach analyzes your last 90 days and gives you a summary, savings tips, budget warnings, and spending trends",
       "Set monthly budgets per category and get notified at 80% and again when you go over, so you never overspend by surprise",
       "Import bank statements via CSV with automatic column detection, date/amount parsing, and duplicate warnings before import",
@@ -173,7 +173,7 @@ export const projects: Project[] = [
     githubUrl: "https://github.com/Yogesh-VG0/ExpenseVision",
     caseStudy: {
       problem:
-        "Tracking expenses manually is tedious and people forget. Receipts pile up. Most expense apps either can't read receipts well, don't warn you about budgets, or cost money. People need something simple that does the work for them.",
+        "Entering every expense by hand takes time, and receipts are easy to lose. I wanted a way to turn receipt photos into expenses, check the extracted details, and see how spending compares with a budget.",
       approach:
         "Built a full-stack web app with Next.js and Supabase that handles everything: user accounts, expense storage, receipt file uploads, and AI processing. Designed the receipt scanner to try 3 different AI providers in sequence so it works reliably. Made it installable as a phone app so users can access it from their home screen and get push notifications.",
       architecture:

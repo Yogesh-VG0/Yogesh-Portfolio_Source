@@ -5,10 +5,9 @@ import { BrowserRouter, Routes, Route, useLocation } from "react-router-dom";
 import { ThemeProvider } from "next-themes";
 import Index from "./pages/Index";
 import SeoMetadata from "./components/SeoMetadata";
-
-const Resume = lazy(() => import("./pages/Resume"));
-const NotFound = lazy(() => import("./pages/NotFound"));
-const ProjectDetail = lazy(() => import("./pages/ProjectDetail"));
+import Resume from "./pages/Resume";
+import NotFound from "./pages/NotFound";
+import ProjectDetail from "./pages/ProjectDetail";
 const StarsBackground = lazy(() => import("./components/StarsBackground"));
 const ClickSpark = lazy(() => import("./components/ClickSpark"));
 const CursorGlow = lazy(() => import("./components/CursorGlow"));
@@ -34,14 +33,14 @@ export const SiteRoutes = () => (
   <>
     <Decorations />
     <SeoMetadata />
-    <Suspense fallback={<div className="min-h-screen bg-background" />}>
-      <Routes>
-        <Route path="/" element={<Index />} />
-        <Route path="/resume" element={<Resume />} />
-        <Route path="/projects/:slug" element={<ProjectDetail />} />
-        <Route path="*" element={<NotFound />} />
-      </Routes>
-    </Suspense>
+    {/* Keep prerendered routes synchronous: system-theme updates must not interrupt
+        hydration while a route chunk downloads. Heavy PDF and effects stay lazy. */}
+    <Routes>
+      <Route path="/" element={<Index />} />
+      <Route path="/resume" element={<Resume />} />
+      <Route path="/projects/:slug" element={<ProjectDetail />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
   </>
 );
 

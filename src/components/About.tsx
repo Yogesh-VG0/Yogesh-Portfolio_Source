@@ -7,9 +7,10 @@ import { useTheme } from "next-themes";
 import { GitHubCalendar } from "react-github-calendar";
 import type { Activity } from "react-github-calendar";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useVisitorRegion } from "@/hooks/use-visitor-region";
+import { locations } from "@/data/locations";
 
 const highlights = [
-  { icon: <MapPin size={18} />, label: "Dubai, UAE" },
   { icon: <Briefcase size={18} />, label: "Full-Stack Developer" },
   { icon: <Code2 size={18} />, label: "React · Python · Node" },
   { icon: <GraduationCap size={18} />, label: "CS (Manipal University)" },
@@ -27,6 +28,9 @@ const About = () => {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const isMobile = useIsMobile();
+  const { region, status } = useVisitorRegion();
+  const location = status === "loading" ? null : locations[region];
+  const profileHighlights = [{ icon: <MapPin size={18} />, label: location?.label ?? "India & UAE" }, ...highlights];
   const [calendarMounted, setCalendarMounted] = useState(false);
   useEffect(() => { setCalendarMounted(true); }, []);
 
@@ -108,7 +112,7 @@ const About = () => {
 
           {/* Quick stats pills */}
           <motion.div variants={fadeUp} className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-3 mb-8 sm:flex sm:flex-wrap">
-            {highlights.map((h) => (
+            {profileHighlights.map((h) => (
               <motion.span
                 key={h.label}
                 variants={scaleUp}
@@ -123,7 +127,7 @@ const About = () => {
           {/* Bio text */}
           <motion.div variants={fadeUp} className="space-y-5 text-foreground/82 leading-7 text-base md:text-lg md:leading-relaxed">
             <p>
-              I'm a full-stack developer based in Dubai with a background in Computer Science from Manipal University Dubai.
+              I'm a full-stack developer{location ? ` based in ${location.basedIn}` : ""} with a background in Computer Science from Manipal University Dubai.
               I've built and deployed applications using React, Python, and Node.js, including a stock analytics platform
               for 75 US companies and an expense tracker with AI receipt scanning.
             </p>

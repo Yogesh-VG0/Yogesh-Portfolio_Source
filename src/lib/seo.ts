@@ -4,7 +4,7 @@ export const SITE_URL = "https://yogeshv.me";
 export const SITE_NAME = "Yogesh Vadivel";
 const PERSON_ID = `${SITE_URL}/#person`;
 const WEBSITE_ID = `${SITE_URL}/#website`;
-export const HOME_DESCRIPTION = "Yogesh Vadivel is a full-stack developer in Dubai building React, Next.js, Python and Node.js applications. Explore projects, experience and resume.";
+export const HOME_DESCRIPTION = "Yogesh Vadivel is a full-stack developer building React, Next.js, Python and Node.js applications. Explore projects, experience and resume for India and the UAE.";
 
 export const indexablePaths = ["/", "/resume/", ...projects.map((project) => `/projects/${project.slug}/`)];
 
@@ -15,7 +15,7 @@ export function getPageSeo(pathname: string) {
   const isResume = path === "/resume";
   const indexable = isHome || isResume || Boolean(project);
   const canonical = `${SITE_URL}${path === "/" ? "/" : `${path}/`}`;
-  const title = isHome ? "Yogesh Vadivel | Full-Stack Developer in Dubai"
+  const title = isHome ? "Yogesh Vadivel | Full-Stack Developer"
     : isResume ? "Yogesh Vadivel Resume | Full-Stack Developer"
       : project ? `${project.title} | Yogesh Vadivel — Developer Portfolio`
         : "Page not found | Yogesh Vadivel";
@@ -30,7 +30,6 @@ export function getPageSeo(pathname: string) {
     sameAs: ["https://github.com/Yogesh-VG0", "https://www.linkedin.com/in/yogesh-vadivel-a287a6269/"],
     knowsAbout: ["Full-stack web development", "React", "Next.js", "TypeScript", "Python", "Node.js", "WordPress", "Technical SEO"],
     alumniOf: { "@type": "CollegeOrUniversity", name: "Manipal Academy of Higher Education, Dubai" },
-    homeLocation: { "@type": "Place", name: "Dubai, United Arab Emirates" },
   };
   const page = {
     "@type": isHome ? "ProfilePage" : "WebPage", "@id": `${canonical}#webpage`, url: canonical,

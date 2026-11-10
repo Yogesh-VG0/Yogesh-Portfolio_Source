@@ -29,7 +29,7 @@ const Footer = () => {
               rel="noopener noreferrer"
               whileHover={{ scale: 1.1 }}
               whileTap={tapScale}
-              className="w-9 h-9 rounded-lg bg-secondary/60 border border-border/30 flex items-center justify-center text-foreground/70 hover:text-primary hover:border-primary/30 transition-colors"
+              className="w-11 h-11 rounded-lg bg-secondary/60 border border-border/30 flex items-center justify-center text-foreground/70 hover:text-primary hover:border-primary/30 transition-colors"
               aria-label={s.label}
             >
               {s.icon}
@@ -46,7 +46,7 @@ const Footer = () => {
             onClick={scrollToTop}
             whileHover={{ scale: 1.1, y: -2 }}
             whileTap={tapScale}
-            className="w-9 h-9 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors"
+            className="w-11 h-11 rounded-lg bg-primary/10 border border-primary/20 flex items-center justify-center text-primary hover:bg-primary/20 transition-colors"
             aria-label="Back to top"
           >
             <ArrowUp size={16} />

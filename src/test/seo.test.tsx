@@ -29,6 +29,13 @@ describe("search metadata", () => {
     expect(getPageSeo("/resume").canonical).toBe(getPageSeo("/resume/").canonical);
   });
 
+  it("keeps shared search metadata independent of visitor location", () => {
+    const home = getPageSeo("/");
+    expect(home.title).toBe("Yogesh Vadivel | Full-Stack Developer");
+    expect(home.description).toContain("India and the UAE");
+    expect(home.structuredData["@graph"].find(node => node["@type"] === "Person")).not.toHaveProperty("homeLocation");
+  });
+
   it("connects the profile, projects and breadcrumbs to the same person", () => {
     const home = getPageSeo("/").structuredData["@graph"];
     expect(home.find(node => node["@type"] === "ProfilePage")?.mainEntity).toEqual({ "@id": "https://yogeshv.me/#person" });

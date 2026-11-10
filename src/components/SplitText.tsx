@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Fragment } from "react";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 
@@ -21,6 +21,7 @@ const SplitText = ({
   stagger = 0.03,
 }: SplitTextProps) => {
   const words = text.split(" ");
+  const reducedMotion = useReducedMotion();
 
   return (
     <span className={className}>
@@ -37,11 +38,11 @@ const SplitText = ({
                 key={`${wIdx}-${cIdx}`}
                 className="inline-block"
                 aria-hidden="true"
-                initial={{ opacity: 0, y: 20, rotateX: 30 }}
+                initial={reducedMotion ? false : { opacity: 0, y: 20, rotateX: 30 }}
                 animate={{ opacity: 1, y: 0, rotateX: 0 }}
                 transition={{
-                  duration: 0.35,
-                  delay: delay + globalIdx * stagger,
+                  duration: reducedMotion ? 0 : 0.35,
+                  delay: reducedMotion ? 0 : delay + globalIdx * stagger,
                   ease: EASE_OUT_EXPO,
                 }}
               >

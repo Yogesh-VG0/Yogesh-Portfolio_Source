@@ -112,10 +112,11 @@ const ProjectDetail = () => {
         <div className="container mx-auto max-w-5xl flex items-center justify-between h-16 px-4 sm:px-6">
           <button
             onClick={handleBackToProjects}
-            className="inline-flex items-center gap-2 text-sm font-medium text-foreground/72 hover:text-foreground transition-colors"
+            aria-label="Back to Projects"
+            className="inline-flex min-h-11 shrink-0 items-center gap-2 text-sm font-medium text-foreground/72 hover:text-foreground transition-colors"
           >
-            <ArrowLeft size={16} />
-            Back to Projects
+            <ArrowLeft size={16} aria-hidden="true" />
+            <span><span className="hidden sm:inline">Back to </span>Projects</span>
           </button>
           <div className="flex items-center gap-2 sm:gap-3">
             {project.liveUrl && (
@@ -123,7 +124,7 @@ const ProjectDetail = () => {
                 href={project.liveUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold"
+                className="inline-flex min-h-11 items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary text-primary-foreground text-xs font-semibold"
               >
                 <ExternalLink size={12} />
                 <span className="hidden sm:inline">Live Demo</span>
@@ -135,7 +136,7 @@ const ProjectDetail = () => {
                 href={project.githubUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/40 text-xs font-medium text-foreground/80 hover:text-foreground transition-colors"
+                className="inline-flex min-h-11 items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/40 text-xs font-medium text-foreground/80 hover:text-foreground transition-colors"
               >
                 <Github size={12} />
                 Source
@@ -232,7 +233,7 @@ const ProjectDetail = () => {
                     <button
                       key={img.src}
                       onClick={() => setGalleryIdx(idx)}
-                      className={`flex-shrink-0 w-16 h-10 sm:w-20 sm:h-12 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
+                      className={`flex-shrink-0 w-16 h-11 sm:w-20 sm:h-12 rounded-lg overflow-hidden border-2 transition-all duration-200 ${
                         idx === galleryIdx
                           ? "border-primary shadow-md shadow-primary/20"
                           : "border-border/20 opacity-50 hover:opacity-80"
@@ -312,7 +313,7 @@ const ProjectDetail = () => {
                       {card.icon && <span className="text-lg">{card.icon}</span>}
                       <h3 className="text-sm font-bold text-foreground">{card.label}</h3>
                     </div>
-                    <p className="text-xs text-foreground/74 leading-relaxed">{card.detail}</p>
+                    <p className="text-sm text-foreground/74 leading-7 sm:text-xs sm:leading-relaxed">{card.detail}</p>
                   </div>
                 ))}
               </div>
@@ -340,7 +341,7 @@ const ProjectDetail = () => {
                       <span className="text-[10px] font-bold text-primary">{idx + 1}</span>
                     </div>
                     <h3 className="text-sm font-bold text-foreground mb-1">{step.title}</h3>
-                    <p className="text-sm text-foreground/80 leading-relaxed">{step.description}</p>
+                    <p className="text-[15px] leading-7 sm:text-sm sm:leading-relaxed text-foreground/80">{step.description}</p>
                   </div>
                 ))}
               </div>
@@ -357,7 +358,7 @@ const ProjectDetail = () => {
             </div>
             <ul className="grid gap-3 pl-0 sm:pl-10">
               {project.highlights.map((h) => (
-                <li key={h} className="text-sm text-foreground/80 flex items-start gap-2.5">
+                <li key={h} className="text-[15px] leading-7 sm:text-sm sm:leading-relaxed text-foreground/80 flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
                   {h}
                 </li>
@@ -375,7 +376,7 @@ const ProjectDetail = () => {
             </div>
             <ul className="grid gap-3 pl-0 sm:pl-10">
               {cs.challenges.map((c) => (
-                <li key={c} className="text-sm text-foreground/80 flex items-start gap-2.5">
+                <li key={c} className="text-[15px] leading-7 sm:text-sm sm:leading-relaxed text-foreground/80 flex items-start gap-2.5">
                   <span className="w-1.5 h-1.5 rounded-full bg-orange-400 mt-1.5 flex-shrink-0" />
                   {c}
                 </li>
@@ -466,7 +467,7 @@ const ProjectDetail = () => {
           >
             <button
               onClick={() => setLightboxOpen(false)}
-              className="absolute top-4 right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
+              className="absolute top-4 right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
               aria-label="Close"
             >
               <X size={20} />
@@ -476,14 +477,14 @@ const ProjectDetail = () => {
               <>
                 <button
                   onClick={(e) => { e.stopPropagation(); prevImage(); }}
-                  className="absolute left-2 sm:left-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
+                  className="absolute left-2 sm:left-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
                   aria-label="Previous image"
                 >
                   <ChevronLeft size={20} />
                 </button>
                 <button
                   onClick={(e) => { e.stopPropagation(); nextImage(); }}
-                  className="absolute right-2 sm:right-4 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
+                  className="absolute right-2 sm:right-4 w-11 h-11 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center text-white transition-colors z-10"
                   aria-label="Next image"
                 >
                   <ChevronRight size={20} />

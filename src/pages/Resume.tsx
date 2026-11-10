@@ -2,12 +2,12 @@ import { lazy, Suspense } from "react";
 import { Download, ArrowUpRight, Loader2 } from "lucide-react";
 import PageHeader from "@/components/PageHeader";
 import { resumes } from "@/data/resumes";
-import { useResumeRegion } from "@/hooks/use-resume-region";
+import { useVisitorRegion } from "@/hooks/use-visitor-region";
 
 const ResumePreview = lazy(() => import("@/components/ResumePreview"));
 
 const Resume = () => {
-  const { region, status } = useResumeRegion();
+  const { region, status } = useVisitorRegion();
   const resume = resumes[region];
   const loading = status === "loading";
 

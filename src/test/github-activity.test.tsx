@@ -4,6 +4,7 @@ import About from "@/components/About";
 
 const viewport = vi.hoisted(() => ({ mobile: false }));
 vi.mock("@/hooks/use-mobile", () => ({ useIsMobile: () => viewport.mobile }));
+vi.mock("@/hooks/use-visitor-region", () => ({ useVisitorRegion: () => ({ region: "uae", status: "detected" }) }));
 vi.mock("next-themes", () => ({ useTheme: () => ({ resolvedTheme: "light" }) }));
 vi.mock("framer-motion", async () => ({ ...await vi.importActual("framer-motion"), useInView: () => true }));
 

@@ -2,7 +2,8 @@ import { act, cleanup, render, renderHook, screen, waitFor } from "@testing-libr
 import { MemoryRouter } from "react-router-dom";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import Resume from "@/pages/Resume";
-import { useResumeRegion } from "@/hooks/use-resume-region";
+import { useVisitorRegion } from "@/hooks/use-visitor-region";
+import VisitorRegionProvider from "@/components/VisitorRegionProvider";
 import { COUNTRY_TIMEOUT, detectCountry, readCachedCountry, regionForCountry } from "@/lib/resume-location";
 
 vi.mock("@/components/ResumePreview", () => ({
@@ -23,7 +24,7 @@ afterEach(() => {
 });
 
 function renderResume(entry = "/resume") {
-  return render(<MemoryRouter initialEntries={[entry]}><Resume /></MemoryRouter>);
+  return render(<VisitorRegionProvider><MemoryRouter initialEntries={[entry]}><Resume /></MemoryRouter></VisitorRegionProvider>);
 }
 
 describe("country lookup", () => {
@@ -109,7 +110,7 @@ describe("resume page", () => {
     vi.stubGlobal("fetch", vi.fn((_url, { signal }) => new Promise((_resolve, reject) => {
       signal.addEventListener("abort", () => reject(new DOMException("Aborted", "AbortError")));
     })));
-    const { result } = renderHook(() => useResumeRegion());
+    const { result } = renderHook(() => useVisitorRegion(), { wrapper: VisitorRegionProvider });
     await act(async () => { await vi.advanceTimersByTimeAsync(COUNTRY_TIMEOUT); });
     expect(result.current.status).toBe("fallback");
     expect(result.current.region).toBe("uae");
@@ -120,7 +121,7 @@ describe("resume page", () => {
     vi.stubGlobal("fetch", fetchMock);
     await detectCountry(new AbortController().signal);
     fetchMock.mockClear();
-    const { result } = renderHook(() => useResumeRegion());
+    const { result } = renderHook(() => useVisitorRegion(), { wrapper: VisitorRegionProvider });
     expect(result.current.region).toBe("india");
     expect(result.current.status).toBe("detected");
     expect(fetchMock).not.toHaveBeenCalled();

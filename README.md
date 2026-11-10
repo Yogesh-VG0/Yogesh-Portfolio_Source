@@ -32,7 +32,7 @@ The skills section presents 28 selected technologies in six compact groups. Test
 
 ## Search visibility
 
-The homepage targets **Yogesh Vadivel**, **Yogesh Vadivel portfolio**, and **full-stack developer in Dubai** through its visible name, role, relevant content, title, and description. Project pages explain the actual React, Next.js, Python, Node.js, and AI work. Keywords are used naturally; there is no keyword stuffing or fabricated credential/location markup.
+The homepage targets **Yogesh Vadivel**, **Yogesh Vadivel portfolio**, and relevant full-stack development work through its visible name, role, content, title, and description. Static search metadata covers India and the UAE without assigning a different home address to the same person. Project pages explain the actual React, Next.js, Python, Node.js, and AI work. Keywords are used naturally; there is no keyword stuffing or fabricated credential/location markup.
 
 `src/lib/seo.ts` defines the page metadata and structured data. The build emits complete HTML for the homepage, resume, and all three project pages, so direct GitHub Pages requests can return HTTP 200 without a JavaScript redirect. React hydrates this HTML for interactivity. Legacy SPA redirects are retained, while missing pages receive `noindex` metadata.
 
@@ -42,7 +42,7 @@ After publishing, verify the `yogeshv.me` property in [Google Search Console](ht
 
 ## Mobile readability and GitHub activity
 
-Phones use a static, readable hero heading, a short introduction, and a two-column action layout. Mobile sections use one layer of horizontal padding. Body copy, project summaries, experience entries, and skill labels use larger text and more line spacing. Project cards present the first two highlights, four metrics and six technologies on phones; their case-study pages retain the complete details.
+Phones use a readable hero heading with the same animated gradient and staggered name entrance as desktop, a short introduction, and a two-column action layout. The name stays on one line on narrow phones; reduced-motion preferences disable the name animation. Mobile sections use one layer of horizontal padding. Body copy, project summaries, experience entries, and skill labels use larger text and more line spacing. Project cards present the first two highlights, four metrics and six technologies on phones; their case-study pages retain the complete details.
 
 GitHub activity uses the same unfiltered full-year dataset on every screen size. The native chart viewport scrolls horizontally, starts at the latest activity, and has a swipe hint on mobile. The yearly total stays outside that viewport and wraps within the card. The small-screen color legend is hidden to keep the footer uncluttered; desktop legend SVGs are decorative to assistive technology. Day details open on click/tap and close during scrolling. A direct GitHub profile link remains available if the activity API fails.
 
@@ -58,7 +58,9 @@ python scripts/optimize-images.py
 
 Normal builds need only Node.js; Python is not required to deploy the already-generated image files.
 
-## Resume selection
+## Regional profile and resume selection
+
+One country detection is shared across the availability badge, About location and introduction, and `/resume` page. India visitors see Madurai, Tamil Nadu, India and the Indian resume; other visitors see Dubai, UAE and the UAE resume. Education and past employment locations remain factual and unchanged. While lookup is pending, the profile uses neutral India & UAE wording and does not claim the visitor's region has already been detected.
 
 The `/resume` page automatically selects:
 
@@ -74,7 +76,7 @@ Selection is fully automatic. The page has no version selector or country-select
 
 ### Location and privacy
 
-The static site calls the [GeoJS country endpoint](https://www.geojs.io/docs/v1/endpoints/country/) only when automatic selection is needed on the resume page. It has a four-second timeout. The browser stores only the country code and lookup timestamp in session storage, expiring after 30 minutes. Storage being disabled does not prevent selection or downloads.
+The static site calls the [GeoJS country endpoint](https://www.geojs.io/docs/v1/endpoints/country/) once when the application mounts, unless a valid session cache is available. All sections and client-side routes use the same result, including when storage is blocked or lookup fails. It has a four-second timeout. The browser stores only the country code and lookup timestamp in session storage, expiring after 30 minutes. Storage being disabled does not prevent selection or downloads.
 
 This is an IP lookup: GeoJS receives the visitor's IP as part of the request, but this app does not store it or request GPS permission. VPNs, proxies, blockers, and service availability can affect detection. Country is not inferred from browser language or timezone.
 
@@ -114,7 +116,8 @@ src/
     projects.ts               Project list
     socials.tsx               Contact and profile links
   hooks/
-    use-resume-region.ts      Automatic selection and request lifecycle
+    use-country-detection.ts  Automatic selection and request lifecycle
+    use-visitor-region.ts     Shared regional state for all pages
   lib/
     resume-location.ts        Country lookup, validation, and cache
     motion.ts                 Shared animation presets

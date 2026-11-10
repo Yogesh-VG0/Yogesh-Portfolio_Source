@@ -8,6 +8,7 @@ import SeoMetadata from "./components/SeoMetadata";
 import Resume from "./pages/Resume";
 import NotFound from "./pages/NotFound";
 import ProjectDetail from "./pages/ProjectDetail";
+import VisitorRegionProvider from "./components/VisitorRegionProvider";
 const StarsBackground = lazy(() => import("./components/StarsBackground"));
 const ClickSpark = lazy(() => import("./components/ClickSpark"));
 const CursorGlow = lazy(() => import("./components/CursorGlow"));
@@ -22,10 +23,10 @@ const Decorations = () => {
 
 export const AppShell = ({ children }: { children: ReactNode }) => (
   <ThemeProvider attribute="class" defaultTheme="system" storageKey="portfolio-theme" enableSystem disableTransitionOnChange>
-    <TooltipProvider>
+    <VisitorRegionProvider><TooltipProvider>
       <Sonner />
       {children}
-    </TooltipProvider>
+    </TooltipProvider></VisitorRegionProvider>
   </ThemeProvider>
 );
 

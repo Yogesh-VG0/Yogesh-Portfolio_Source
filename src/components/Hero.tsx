@@ -6,11 +6,15 @@ import { AuroraText } from "./AuroraText";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { Link } from "react-router-dom";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useVisitorRegion } from "@/hooks/use-visitor-region";
+import { locations } from "@/data/locations";
 
 const MotionLink = motion.create(Link);
 
 const Hero = () => {
-  const isMobile = useIsMobile();
+  const isMobile = useIsMobile(640);
+  const { region, status } = useVisitorRegion();
+  const location = status === "loading" ? "India & UAE" : locations[region].label;
   return (
     <section className="relative isolate min-h-svh flex items-center justify-center section-padding pt-24 overflow-hidden">
       <motion.div
@@ -21,12 +25,12 @@ const Hero = () => {
       >
         {/* Status badge */}
         <motion.div variants={fadeUp} className="mb-6">
-          <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-border/60 bg-card/40 backdrop-blur-md text-xs font-mono text-foreground/72">
-            <span className="relative flex h-2 w-2">
+          <span className="inline-flex max-w-full items-center gap-2 px-4 py-2 rounded-full border border-border/60 bg-card/40 backdrop-blur-md text-xs leading-5 text-foreground/72 sm:font-mono">
+            <span className="relative flex h-2 w-2 shrink-0" aria-hidden="true">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500" />
             </span>
-            Open to opportunities · Dubai, UAE
+            <span>Open to opportunities · {location}</span>
           </span>
         </motion.div>
 
@@ -39,13 +43,10 @@ const Hero = () => {
             <span className="w-[60%] h-[80%] bg-primary/10 dark:bg-primary/[0.07] rounded-full blur-[60px] sm:blur-[80px]" />
           </span>
           <span className="relative" aria-hidden="true">
-            <span className="block sm:hidden"><span className="mb-2 block text-xl font-medium tracking-normal">Hi, I'm</span><span className="block text-primary">Yogesh Vadivel</span></span>
-            <span className="hidden sm:inline">
-            Hi, I'm{" "}
-            <AuroraText colors={["#0070F3", "#38bdf8", "#7928CA", "#0070F3"]} speed={1}>
+            <span className="mb-2 block text-xl font-medium tracking-normal sm:mb-0 sm:inline sm:text-[length:inherit] sm:font-extrabold sm:tracking-tight">Hi, I'm{" "}</span>
+            <AuroraText className="whitespace-nowrap" colors={["#0070F3", "#38bdf8", "#7928CA", "#0070F3"]} speed={1}>
               <SplitText text="Yogesh Vadivel" delay={0} stagger={0.02} />
             </AuroraText>
-            </span>
           </span>
         </h1>
         <motion.p variants={fadeUp} className="mb-5 text-sm font-medium tracking-wide text-foreground/85 sm:text-base">

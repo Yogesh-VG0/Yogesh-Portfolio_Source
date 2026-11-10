@@ -78,7 +78,7 @@ const Contact = () => {
   };
 
   const inputCls = (field: keyof FormErrors) =>
-    `w-full px-4 py-3 rounded-xl bg-card/50 backdrop-blur-sm border text-foreground text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 transition-all duration-200 ${
+    `w-full px-4 py-3 rounded-xl bg-card/50 backdrop-blur-sm border text-foreground text-base sm:text-sm placeholder:text-muted-foreground/60 focus:outline-none focus:ring-2 transition-all duration-200 ${
       touched[field] && errors[field]
         ? "border-red-500/60 focus:ring-red-500/30"
         : "border-border/40 focus:ring-primary/30 focus:border-primary/40"

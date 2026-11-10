@@ -3,7 +3,7 @@ import { COUNTRY_TIMEOUT, detectCountry, readCachedCountry, regionForCountry } f
 
 type Detection = { country: string | null; status: "loading" | "detected" | "fallback" };
 
-export function useResumeRegion() {
+export function useCountryDetection() {
   const [detection, setDetection] = useState<Detection>({ country: null, status: "loading" });
 
   useEffect(() => {

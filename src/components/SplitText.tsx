@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Fragment } from "react";
 import { EASE_OUT_EXPO } from "@/lib/motion";
 
 interface SplitTextProps {
@@ -22,9 +23,11 @@ const SplitText = ({
   const words = text.split(" ");
 
   return (
-    <span className={className} aria-label={text}>
+    <span className={className}>
+      <span className="sr-only">{text}</span>
       {words.map((word, wIdx) => (
-        <span key={wIdx} className="inline-block whitespace-nowrap">
+        <Fragment key={wIdx}>
+        <span className="inline-block whitespace-nowrap" aria-hidden="true">
           {word.split("").map((char, cIdx) => {
             const globalIdx = words
               .slice(0, wIdx)
@@ -46,10 +49,9 @@ const SplitText = ({
               </motion.span>
             );
           })}
-          {wIdx < words.length - 1 && (
-            <span className="inline-block">&nbsp;</span>
-          )}
         </span>
+        {wIdx < words.length - 1 && " "}
+        </Fragment>
       ))}
     </span>
   );

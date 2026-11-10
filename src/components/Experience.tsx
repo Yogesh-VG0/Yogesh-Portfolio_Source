@@ -1,23 +1,9 @@
 import { motion, useInView } from "framer-motion";
 import { useRef } from "react";
-import { Calendar } from "lucide-react";
-import { fadeUp, staggerContainer, slideInLeft } from "@/lib/motion";
+import { Calendar, MapPin } from "lucide-react";
+import { staggerContainer, slideInLeft } from "@/lib/motion";
+import { experiences } from "@/data/experience";
 import SectionHeader from "./SectionHeader";
-
-const experiences = [
-  {
-    role: "Full-Stack Developer Intern",
-    company: "SmallCap.Ai",
-    location: "Remote, Dubai",
-    period: "2024",
-    points: [
-      "Built production dashboards used by admin and end-user teams for real-time data monitoring",
-      "Integrated REST APIs connecting React frontend to Node.js backend services",
-      "Improved page load performance and UI responsiveness across key user flows",
-      "Collaborated in agile sprints with cross-functional teams in a remote environment",
-    ],
-  },
-];
 
 const Experience = () => {
   const ref = useRef(null);
@@ -35,12 +21,9 @@ const Experience = () => {
           <SectionHeader label="Experience" title="Where I've worked" />
 
           {/* Timeline */}
-          <div className="relative">
-            {/* Vertical line */}
-            <div className="absolute left-5 top-0 bottom-0 w-px bg-border/60 hidden sm:block" />
-
-            {experiences.map((exp, i) => (
-              <motion.div
+          <ol className="relative before:absolute before:left-5 before:inset-y-0 before:w-px before:bg-border/60 before:hidden sm:before:block">
+            {experiences.map((exp) => (
+              <motion.li
                 key={exp.company}
                 variants={slideInLeft}
                 className="relative sm:pl-14 mb-8 last:mb-0"
@@ -50,30 +33,32 @@ const Experience = () => {
                   <div className="w-2 h-2 rounded-full bg-primary" />
                 </div>
 
-                <div className="glass-card-hover rounded-2xl p-6 md:p-8">
-                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 mb-4">
+                <article className="rounded-2xl border border-border/50 bg-card/40 p-5 sm:p-6 md:p-8">
+                  <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-3 mb-5">
                     <div>
-                      <h3 className="text-lg md:text-xl font-bold text-foreground">{exp.role}</h3>
-                      <p className="text-sm text-primary font-mono">{exp.company} · {exp.location}</p>
+                      <h3 className="text-lg md:text-xl font-bold leading-snug text-foreground">{exp.role}</h3>
+                      <p className="mt-1 text-sm text-primary font-medium">{exp.company}</p>
+                      <p className="mt-2 flex items-center gap-1.5 text-xs text-foreground/65"><MapPin size={12} aria-hidden="true" />{exp.location}</p>
                     </div>
-                    <span className="inline-flex items-center gap-1.5 text-xs font-mono text-foreground/72 bg-secondary/60 px-3 py-1 rounded-full border border-border/30 self-start">
-                      <Calendar size={12} />
+                    <span className="inline-flex shrink-0 items-center gap-1.5 text-xs font-mono text-foreground/72 bg-secondary/60 px-3 py-1.5 rounded-full border border-border/30 self-start">
+                      <Calendar size={12} aria-hidden="true" />
                       {exp.period}
                     </span>
                   </div>
 
                   <ul className="space-y-2.5">
                     {exp.points.map((point) => (
-                      <li key={point} className="text-sm text-foreground/80 flex items-start gap-2.5">
+                      <li key={point} className="text-sm leading-relaxed text-foreground/80 flex items-start gap-2.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
                         {point}
                       </li>
                     ))}
                   </ul>
-                </div>
-              </motion.div>
+                  <p className="mt-5 border-t border-border/40 pt-4 text-xs leading-relaxed text-foreground/65">{exp.skills.join(" · ")}</p>
+                </article>
+              </motion.li>
             ))}
-          </div>
+          </ol>
         </motion.div>
       </div>
     </section>

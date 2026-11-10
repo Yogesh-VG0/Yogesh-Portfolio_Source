@@ -1,269 +1,133 @@
-# 🚀 Yogesh Vadivel - Portfolio
+# Yogesh Vadivel — Portfolio
 
-<div align="center">
+Source for [yogeshv.me](https://yogeshv.me), built with React 18, TypeScript, Vite, Tailwind CSS, and Framer Motion. Hosted on GitHub Pages with a custom domain.
 
-![Portfolio Banner](https://img.shields.io/badge/Portfolio-Live-brightgreen?style=for-the-badge&logo=react&logoColor=white)
-![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)
-![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+## Local development
 
-[![Live Site](https://img.shields.io/badge/🌐-Live_Site-FF6B6B?style=for-the-badge)](https://yogeshv.me)
-[![GitHub stars](https://img.shields.io/github/stars/Yogesh-VG0/Yogesh-Portfolio_Source?style=for-the-badge&logo=github)](https://github.com/Yogesh-VG0/Yogesh-Portfolio_Source)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+Requires Node.js 20.19+ or 22.12+ and npm.
 
-</div>
-
-A stunning, modern personal portfolio website showcasing advanced web development capabilities with cutting-edge animations, responsive design, and exceptional user experience.
-
-## ✨ Key Features
-
-### 🎨 **Visual Excellence**
-- **🌟 Aurora Background** - Beautiful animated gradient blobs in light mode, twinkling stars in dark mode
-- **💫 Split Text Animation** - Character-by-character entrance effect for hero heading
-- **⚡ Click Spark Effects** - Interactive particle effects on every click
-- **🔢 Count Up Animations** - Numbers animate from 0 to target values on scroll
-- **🎯 Spotlight Cursor Effects** - Dynamic glow that follows cursor on project cards
-- **🌙 Theme System** - Smooth dark/light mode transitions with OLED black support
-
-### 🛠️ **Technical Features**
-- **📱 Fully Responsive** - Optimized for mobile, tablet, and desktop
-- **⚡ Performance Optimized** - Lazy loading, code splitting, and efficient animations
-- **🎭 Interactive Elements** - 3D tilt cards, hover effects, and micro-interactions
-- **📊 GitHub Integration** - Live contribution graph with interactive tooltips
-- **📧 Contact System** - Working contact form with EmailJS integration
-- **🔍 SEO Optimized** - Meta tags, sitemap, and robots.txt
-- **🎯 Accessibility** - ARIA labels, semantic HTML, keyboard navigation
-
-### 📱 **Responsive Design**
-- **Mobile-First Approach** - Designed for small screens, scaled up beautifully
-- **Touch-Friendly** - Optimized touch targets and gestures
-- **Adaptive Layouts** - Smart repositioning for different screen sizes
-- **Performance** - Optimized images and animations for mobile networks
-
-## 🛠️ Tech Stack
-
-### 🎯 **Frontend Framework**
-- **React 18** - Modern hooks-based architecture
-- **TypeScript** - Type-safe development
-- **Vite** - Lightning-fast build tool
-
-### 🎨 **Styling & UI**
-- **Tailwind CSS** - Utility-first CSS framework
-- **shadcn/ui** - Beautiful, accessible component library
-- **Framer Motion** - Production-ready motion library
-- **next-themes** - Perfect dark mode implementation
-
-### ⚡ **Animations & Effects**
-- **Framer Motion** - Smooth, performant animations
-- **Canvas API** - Custom background animations
-- **CSS Animations** - Hardware-accelerated effects
-- **React GitHub Calendar** - Interactive contribution graph
-
-### 🔧 **Development Tools**
-- **ESLint** - Code quality and consistency
-- **Vitest** - Modern testing framework
-- **PostCSS** - CSS processing and optimization
-- **GitHub Pages** - Static hosting
-
-### 📧 **Services**
-- **EmailJS** - Contact form functionality
-- **GitHub API** - Real-time data fetching
-
-## 📁 Project Architecture
-
-```
-📦 src/
-├── 🎨 components/          # Reusable UI components
-│   ├── 🎭 ui/             # shadcn/ui base components
-│   ├── 🌟 Hero.tsx        # Hero section with animations
-│   ├── 👤 About.tsx       # About section with GitHub graph
-│   ├── 💼 Skills.tsx      # Skills showcase with categories
-│   ├── 🚀 Projects.tsx    # Project cards with effects
-│   ├── 💼 Experience.tsx  # Work experience timeline
-│   ├── 🎓 Education.tsx   # Education & certifications
-│   ├── 📧 Contact.tsx     # Contact form with validation
-│   ├── 🌟 StarsBackground.tsx    # Dual-mode background
-│   ├── ✨ SplitText.tsx   # Text animation component
-│   ├── ⚡ ClickSpark.tsx  # Click effect component
-│   ├── 🔢 CountUp.tsx     # Number animation
-│   └── 🎯 ThemeToggle.tsx # Theme switcher
-├── 📊 data/               # Static data and content
-│   ├── 📁 projects.ts    # Project metadata
-│   ├── 📁 skills.ts      # Skills categories
-│   ├── 📁 socials.tsx    # Social links
-│   └── 📁 projectEntries.tsx  # Detailed project data
-├── 🪝 hooks/              # Custom React hooks
-│   ├── 📱 use-mobile.ts  # Mobile detection
-│   └── 🎯 use-theme.ts   # Theme utilities
-├── 🔧 lib/                # Utility functions
-│   ├── 🎭 motion.ts      # Animation presets
-│   └── 🔧 utils.ts       # Helper functions
-├── 📄 pages/              # Route components
-│   ├── 🏠 Index.tsx       # Home page
-│   ├── 📄 Resume.tsx     # Resume page
-│   ├── 🚀 ProjectDetail.tsx  # Project details
-│   └── 🚫 NotFound.tsx   # 404 page
-├── 🎨 index.css           # Global styles & theme variables
-├── ⚙️ main.tsx            # App entry point
-└── 📱 vite-env.d.ts      # Vite type definitions
+```sh
+npm ci
+npm run dev
 ```
 
-## 🌐 Deployment
+Vite serves the site at `http://localhost:8080`. Contact form configuration is documented in `.env.example`.
 
-### 🚀 Quick Deploy
+## Checks and production build
 
-```bash
-# Build and deploy to GitHub Pages
+```sh
+npm run lint
+npm run test
+npm run build
+npm run preview
+```
+
+`build` runs TypeScript checks, bundles the app, prerenders all public routes, generates the sitemap, and verifies HTML, structured data, canonical URLs, images, and internal links. `npm run typecheck` is also available separately. Preview serves the production output, normally at `http://localhost:4173`.
+
+## Appearance and navigation
+
+The initial theme follows the visitor's operating-system preference and reacts to system changes. Choosing the sun/moon toggle saves an explicit override in `portfolio-theme`; the old generic `theme` storage key is ignored so a legacy dark default cannot override the new system default. Theme controls use the resolved light/dark mode, including when the preference is `system`.
+
+The skills section presents 28 selected technologies in six compact groups. Testing tools sit alongside DevOps tools; there is no separate strip. The resume uses a single 64px site header with an explicit Back to home link, YV branding, title, PDF actions and theme toggle. On small screens, PDF actions become labeled icon buttons and decorative branding is hidden to keep Back to home visible. Decorative cursor trails, backgrounds and click effects are disabled on the resume route so they cannot overlap the document.
+
+## Search visibility
+
+The homepage targets **Yogesh Vadivel**, **Yogesh Vadivel portfolio**, and **full-stack developer in Dubai** through its visible name, role, relevant content, title, and description. Project pages explain the actual React, Next.js, Python, Node.js, and AI work. Keywords are used naturally; there is no keyword stuffing or fabricated credential/location markup.
+
+`src/lib/seo.ts` defines the page metadata and structured data. The build emits complete HTML for the homepage, resume, and all three project pages, so direct GitHub Pages requests can return HTTP 200 without a JavaScript redirect. React hydrates this HTML for interactivity. Legacy SPA redirects are retained, while missing pages receive `noindex` metadata.
+
+Each public page has its own title, description, trailing-slash canonical URL, absolute social image URL, and JSON-LD. The homepage connects `ProfilePage`, `Person`, and `WebSite` entities to the existing GitHub and LinkedIn profile links. Projects include authorship and breadcrumbs. The sitemap is generated from the same route list during every build; `robots.txt` permits crawling.
+
+After publishing, verify the `yogeshv.me` property in [Google Search Console](https://search.google.com/search-console), submit `https://yogeshv.me/sitemap.xml`, and inspect the homepage and project URLs. Request indexing after significant updates. Property verification requires the owner's Google account or DNS access; this repository does not contain a verification token. Maintain the same portfolio URL in GitHub and LinkedIn profiles and monitor name-related search queries in Search Console. Search engines decide rankings and when to recrawl; these changes do not guarantee a particular position.
+
+## Responsive images
+
+Project screenshots are served as WebP files at 640, 1280, and 1920 pixels, with browser-selected `srcset` sizes. Original PNGs live in `assets/source-screenshots/` and are excluded from the published `public/` directory. The social image uses a compressed JPEG; its original is `assets/og-image.png`.
+
+To regenerate image assets after replacing a source image, install Pillow in your Python environment and run:
+
+```sh
+python scripts/optimize-images.py
+```
+
+Normal builds need only Node.js; Python is not required to deploy the already-generated image files.
+
+## Resume selection
+
+The `/resume` page automatically selects:
+
+| Visitor's IP country | Resume |
+| --- | --- |
+| India (`IN`) | Indian resume |
+| Any other country | UAE resume |
+| Lookup unavailable, invalid, or timed out | UAE resume |
+
+The preview, Open PDF link, and download always use the same selected file. During automatic detection, downloads wait until selection finishes so an Indian visitor cannot accidentally download the fallback version while the lookup is pending.
+
+Selection is fully automatic. The page has no version selector or country-selection messages. Legacy `region` query parameters are ignored, so `/resume` always selects by the visitor's IP country.
+
+### Location and privacy
+
+The static site calls the [GeoJS country endpoint](https://www.geojs.io/docs/v1/endpoints/country/) only when automatic selection is needed on the resume page. It has a four-second timeout. The browser stores only the country code and lookup timestamp in session storage, expiring after 30 minutes. Storage being disabled does not prevent selection or downloads.
+
+This is an IP lookup: GeoJS receives the visitor's IP as part of the request, but this app does not store it or request GPS permission. VPNs, proxies, blockers, and service availability can affect detection. Country is not inferred from browser language or timezone.
+
+If the hosting stack later supports server or edge functions, a same-origin country endpoint using the hosting provider's geolocation would remove the external browser lookup. GitHub Pages itself cannot run this server logic.
+
+### Updating resumes
+
+Replace the PDFs in `public/resumes/`, retaining their names:
+
+```text
+public/resumes/
+  Yogesh_Vadivel_Resume_India.pdf
+  Yogesh_Vadivel_Resume_UAE.pdf
+```
+
+Both are the supplied November 2026 versions, copied without modifying their contents. The obsolete `public/Yogesh_Vadivel_Resume.pdf` has been removed. Resume paths and download names have one source of truth in `src/data/resumes.ts`.
+
+The existing GemBox viewer remains available on desktop and mobile, loaded separately after automatic resume selection. Direct Open PDF and Download PDF links remain available if previewing fails. The viewer is a large, lazy-loaded dependency; Vite may report its chunk size during builds.
+
+## Source organization
+
+```text
+public/
+  resumes/                    Current regional PDFs
+  *_img/                      Responsive WebP project screenshots
+  CNAME, 404.html              GitHub Pages domain and SPA routing
+src/
+  entry-server.tsx            Build-time HTML rendering
+  components/                 Portfolio sections and shared UI
+    ResumePreview.tsx         Embedded PDF viewer
+    ui/                       Used notification and tooltip components
+  data/
+    experience.ts             Roles, dates, locations, and achievements
+    resumes.ts                Regional resume metadata
+    skills.ts                 Skill groups
+    projectEntries.tsx        Project details
+    projects.ts               Project list
+    socials.tsx               Contact and profile links
+  hooks/
+    use-resume-region.ts      Automatic selection and request lifecycle
+  lib/
+    resume-location.ts        Country lookup, validation, and cache
+    motion.ts                 Shared animation presets
+    seo.ts                    Page metadata and structured data
+    images.ts                 Responsive screenshot sources
+  pages/                      Home, resume, project detail, and not-found routes
+  test/                       Tests and browser API setup
+scripts/                      Prerendering, artifact checks and image conversion
+assets/                       Original images, excluded from the deployment
+```
+
+Unused starter UI templates and their unused form dependencies have been removed. Temporary review files, screenshots, generated builds, and TypeScript build metadata are ignored by Git.
+
+## Deployment
+
+```sh
 npm run deploy
 ```
 
-### 📦 Build Process
+The existing deployment command builds and publishes `dist/` to the `main` branch of `Yogesh-VG0/Yogesh-VG0.github.io`. This is separate from the source repository. `public/CNAME`, `public/404.html`, and the SPA redirect receiver in `index.html` must remain so custom-domain routes and query parameters work on direct visits.
 
-1. **Development Build** - `npm run build:dev`
-2. **Production Build** - `npm run build`
-3. **Preview Locally** - `npm run preview`
-4. **Deploy to Pages** - `npm run deploy`
-
-The deployment process:
-- Builds the project with Vite
-- Optimizes assets and code splitting
-- Pushes to `Yogesh-VG0.github.io` repository
-- Automatically updates the live site
-
-## ⚡ Performance & Optimization
-
-### 🎯 **Performance Metrics**
-- **Lighthouse Score**: 95+ (Performance, Accessibility, Best Practices, SEO)
-- **Bundle Size**: < 500KB (gzipped)
-- **First Contentful Paint**: < 1.5s
-- **Largest Contentful Paint**: < 2.5s
-
-### � **Optimizations**
-- **Code Splitting** - Lazy loaded components and routes
-- **Image Optimization** - WebP format, lazy loading, proper sizing
-- **CSS Optimization** - Purge unused styles, minification
-- **Tree Shaking** - Remove unused JavaScript
-- **Caching Strategy** - Static asset caching with service worker
-- **Critical CSS** - Inline critical styles, defer non-critical
-
-### 📱 **Mobile Optimizations**
-- **Touch Targets** - Minimum 44px touch areas
-- **Viewport Meta** - Proper mobile viewport configuration
-- **Responsive Images** - Srcset and sizes attributes
-- **Reduced Motion** - Respect user's motion preferences
-
-## 🌍 Browser Support
-
-| Browser | Version | Support |
-|---------|---------|---------|
-| Chrome  | 90+     | ✅ Full |
-| Firefox | 88+     | ✅ Full |
-| Safari  | 14+     | ✅ Full |
-| Edge    | 90+     | ✅ Full |
-| iOS     | 14+     | ✅ Full |
-| Android | 10+     | ✅ Full |
-
-## 📧 Contact & Configuration
-
-### 🔄 **EmailJS Setup**
-
-1. **Create Account** - Sign up at [EmailJS](https://www.emailjs.com/)
-2. **Email Service** - Configure your email provider (Gmail, Outlook, etc.)
-3. **Create Template** - Design your email template
-4. **Update Credentials** in `src/components/Contact.tsx`:
-
-```typescript
-const EMAILJS_SERVICE_ID = "your_service_id";
-const EMAILJS_TEMPLATE_ID = "your_template_id";
-const EMAILJS_PUBLIC_KEY = "your_public_key";
-```
-
-### 🎨 **Theme Customization**
-
-Colors and themes are defined in `src/index.css`:
-
-```css
-:root {
-  --background: 220 20% 97%;    /* Light mode background */
-  --foreground: 222 40% 8%;     /* Light mode text */
-  --primary: 217 91% 55%;       /* Primary brand color */
-}
-
-.dark {
-  --background: 0 0% 0%;        /* Dark mode background */
-  --foreground: 210 20% 93%;    /* Dark mode text */
-  --primary: 217 91% 60%;      /* Dark mode primary */
-}
-```
-
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these steps:
-
-1. **Fork** the repository
-2. **Create** a feature branch: `git checkout -b feature/amazing-feature`
-3. **Commit** your changes: `git commit -m 'Add amazing feature'`
-4. **Push** to the branch: `git push origin feature/amazing-feature`
-5. **Open** a Pull Request
-
-### 📋 **Development Guidelines**
-- Follow the existing code style and conventions
-- Use TypeScript for all new code
-- Add appropriate comments for complex logic
-- Test on multiple screen sizes
-- Ensure accessibility standards are met
-
-## 🐛 Troubleshooting
-
-### 🔧 **Common Issues**
-
-**Build Errors**
-```bash
-# Clear cache and reinstall
-rm -rf node_modules package-lock.json
-npm install
-```
-
-**Animation Performance**
-- Check browser's performance tab
-- Reduce animation complexity on lower-end devices
-- Use `will-change` property sparingly
-
-**Mobile Issues**
-- Test in Chrome DevTools device mode
-- Check touch target sizes
-- Verify viewport meta tag
-
-## 📄 License
-
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
-
-## 🌟 Show Your Support
-
-If you find this portfolio helpful or inspiring:
-
-- ⭐ **Star** the repository
-- 🔄 **Fork** and customize it
-- 📢 **Share** it with others
-- 💬 **Provide feedback** for improvements
-
-## 📬 Get in Touch
-
-<div align="center">
-
-[![Email](https://img.shields.io/badge/📧_Email-yogeshvadivel456@gmail.com-red?style=for-the-badge)](mailto:yogeshvadivel456@gmail.com)
-[![LinkedIn](https://img.shields.io/badge/💼_LinkedIn-Connect-blue?style=for-the-badge&logo=linkedin)](https://www.linkedin.com/in/yogesh-vadivel-a287a6269/)
-[![GitHub](https://img.shields.io/badge/🚀_GitHub-Follow-black?style=for-the-badge&logo=github)](https://github.com/Yogesh-VG0)
-[![Portfolio](https://img.shields.io/badge/🌐_Portfolio-Visit-FF6B6B?style=for-the-badge)](https://yogeshv.me)
-
-</div>
-
----
-
-<div align="center">
-
-**Made with ❤️ and ☕ by [Yogesh Vadivel](https://yogeshv.me)**
-
-*Built with modern web technologies to showcase the art of frontend development*
-
-</div>
+Before publishing, run lint, tests, and the production build. Smoke-test the homepage, automatic resume selection, PDF actions, a project detail page, and the mobile layout. The contact form sends email through EmailJS and should be tested with intentional messages only.

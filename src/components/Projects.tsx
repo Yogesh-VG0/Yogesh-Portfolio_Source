@@ -14,6 +14,7 @@ import { projects, type Project } from "@/data/projects";
 import SectionHeader from "./SectionHeader";
 import { Link } from "react-router-dom";
 import CountUp from "./CountUp";
+import { screenshotSources } from "@/lib/images";
 
 /* ------------------------------------------------------------------ */
 /*  Unified project card                                               */
@@ -156,6 +157,7 @@ const ProjectCard = ({
             <motion.img
               key={galleryIdx}
               src={currentImage.src}
+              {...screenshotSources(currentImage.src, "(max-width: 640px) calc(100vw - 64px), (max-width: 1024px) 80vw, 960px")}
               alt={currentImage.alt}
               loading="lazy"
               className="absolute inset-0 w-full h-full object-cover"
@@ -268,7 +270,7 @@ const ProjectCard = ({
           </motion.a>
         )}
         {project.caseStudy && (
-          <Link to={`/projects/${project.slug}`}>
+          <Link to={`/projects/${project.slug}/`}>
             <motion.span
               whileHover={{ scale: 1.03, y: -1 }}
               whileTap={tapScale}

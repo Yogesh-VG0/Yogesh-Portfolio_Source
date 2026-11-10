@@ -63,6 +63,18 @@ const Navbar = () => {
     return () => { document.body.style.overflow = ""; };
   }, [mobileOpen]);
 
+  useEffect(() => {
+    if (!mobileOpen) return;
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setMobileOpen(false);
+        document.querySelector<HTMLButtonElement>('[aria-controls="mobile-menu"]')?.focus();
+      }
+    };
+    window.addEventListener("keydown", closeOnEscape);
+    return () => window.removeEventListener("keydown", closeOnEscape);
+  }, [mobileOpen]);
+
   return (
     <>
       {/* Mobile menu — full-screen overlay, rendered OUTSIDE nav so z-index works */}
@@ -73,10 +85,10 @@ const Navbar = () => {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="fixed inset-0 z-[90] bg-background backdrop-blur-2xl md:hidden"
+            className="fixed inset-0 z-[90] overflow-y-auto bg-background backdrop-blur-2xl md:hidden"
             id="mobile-menu"
           >
-            <div className="flex flex-col items-center justify-center gap-8 h-full" role="navigation">
+            <div className="flex min-h-full flex-col items-center justify-center gap-5 px-4 pb-6 pt-20 sm:gap-8" role="navigation" aria-label="Mobile navigation">
               {navLinks.map((link, i) => (
                 <motion.a
                   key={link.href}
@@ -158,7 +170,7 @@ const Navbar = () => {
             <ThemeToggle />
             <button
               onClick={() => setMobileOpen(!mobileOpen)}
-              className="w-10 h-10 flex items-center justify-center rounded-lg text-foreground hover:bg-secondary/80 transition-colors"
+              className="w-11 h-11 flex items-center justify-center rounded-lg text-foreground hover:bg-secondary/80 transition-colors"
               aria-label={mobileOpen ? "Close menu" : "Open menu"}
               aria-expanded={mobileOpen}
               aria-controls="mobile-menu"

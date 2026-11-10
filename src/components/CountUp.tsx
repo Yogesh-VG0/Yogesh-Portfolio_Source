@@ -29,7 +29,7 @@ const CountUp = ({
   useEffect(() => {
     if (!inView) return;
 
-    let start = 0;
+    const start = 0;
     const startTime = performance.now();
     const durationMs = duration * 1000;
 

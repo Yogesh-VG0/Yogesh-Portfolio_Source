@@ -59,6 +59,14 @@ const skillIcons: Record<string, React.ReactNode> = {
   "GitHub Actions": <Workflow size={15} />,
   "Vercel": <Cloud size={15} />,
   "Render": <Cloud size={15} />,
+  "WordPress": <Globe size={15} />,
+  "Elementor": <Layout size={15} />,
+  "Redis": <Database size={15} />,
+  "Supabase": <Database size={15} />,
+  "cPanel": <Server size={15} />,
+  "Technical SEO": <Search size={15} />,
+  "Vitest": <Code2 size={15} />,
+  "Playwright": <Code2 size={15} />,
 };
 
 const categoryMeta: Record<string, {
@@ -265,7 +273,7 @@ const Skills = () => {
             variants={fadeUp}
             className="text-center mt-10 text-sm text-foreground/60 font-mono"
           >
-            {skillGroups.reduce((acc, g) => acc + g.skills.length, 0)}+ technologies & counting
+            Selected technologies across the stack
           </motion.p>
         </motion.div>
       </div>

@@ -33,9 +33,9 @@ const Education = () => {
                   <GraduationCap size={20} className="text-primary" />
                 </div>
                 <div>
-                  <h3 className="text-lg font-bold text-foreground">Bachelor's in Computer Science</h3>
+                  <h3 className="text-lg font-bold text-foreground">B.Tech. in Computer Science and Engineering</h3>
                   <p className="text-sm text-foreground/78 mt-1">Manipal Academy of Higher Education, Dubai</p>
-                  <p className="text-xs font-mono text-foreground/62 mt-0.5">2021 – 2025</p>
+                  <p className="text-xs font-mono text-foreground/62 mt-0.5">Sep 2021 – Nov 2025</p>
                 </div>
               </div>
             </motion.div>

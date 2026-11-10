@@ -21,6 +21,7 @@ import {
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { projects } from "@/data/projects";
 import { useScrollDirection } from "@/hooks/use-scroll-direction";
+import { screenshotSources } from "@/lib/images";
 
 const ProjectDetail = () => {
   const { slug } = useParams<{ slug: string }>();
@@ -29,20 +30,46 @@ const ProjectDetail = () => {
   const [galleryIdx, setGalleryIdx] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const headerVisible = useScrollDirection(10);
+  const galleryCount = project?.gallery?.length ?? 0;
+
+  useEffect(() => {
+    if (!lightboxOpen) return;
+    const previousFocus = document.activeElement as HTMLElement | null;
+    const previousOverflow = document.body.style.overflow;
+    const dialog = document.querySelector<HTMLElement>('[role="dialog"][aria-label="Image viewer"]');
+    const pageContent = document.querySelector<HTMLElement>("main");
+    const pageHeader = document.querySelector<HTMLElement>("header");
+    document.body.style.overflow = "hidden";
+    if (pageContent) pageContent.inert = true;
+    if (pageHeader) pageHeader.inert = true;
+    dialog?.querySelector<HTMLButtonElement>("button")?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setLightboxOpen(false);
+      if (event.key === "ArrowRight" && galleryCount) setGalleryIdx(index => (index + 1) % galleryCount);
+      if (event.key === "ArrowLeft" && galleryCount) setGalleryIdx(index => (index - 1 + galleryCount) % galleryCount);
+      if (event.key === "Tab") {
+        const controls = dialog?.querySelectorAll<HTMLButtonElement>("button");
+        if (!controls?.length) return;
+        const first = controls[0];
+        const last = controls[controls.length - 1];
+        if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
+        else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
+      }
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      document.body.style.overflow = previousOverflow;
+      if (pageContent) pageContent.inert = false;
+      if (pageHeader) pageHeader.inert = false;
+      previousFocus?.focus();
+    };
+  }, [lightboxOpen, galleryCount]);
 
   /* Scroll to top on mount */
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [slug]);
-
-  useEffect(() => {
-    if (project) {
-      document.title = `${project.title} | Yogesh Vadivel`;
-    }
-    return () => {
-      document.title = "Yogesh Vadivel | Full-Stack Developer";
-    };
-  }, [project]);
 
   const handleBackToProjects = () => {
     navigate("/");
@@ -159,6 +186,7 @@ const ProjectDetail = () => {
                     <motion.img
                       key={galleryIdx}
                       src={gallery[galleryIdx].src}
+                      {...screenshotSources(gallery[galleryIdx].src, "(max-width: 768px) calc(100vw - 32px), 960px")}
                       alt={gallery[galleryIdx].alt}
                       className="absolute inset-0 w-full h-full object-cover"
                       initial={{ opacity: 0 }}
@@ -174,14 +202,14 @@ const ProjectDetail = () => {
                   <>
                     <button
                       onClick={prevImage}
-                      className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100 z-[2]"
+                      className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm flex items-center justify-center text-white transition-all sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100 z-[2]"
                       aria-label="Previous image"
                     >
                       <ChevronLeft size={18} />
                     </button>
                     <button
                       onClick={nextImage}
-                      className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-9 h-9 sm:w-10 sm:h-10 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm flex items-center justify-center text-white transition-all opacity-0 group-hover:opacity-100 z-[2]"
+                      className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-black/60 hover:bg-black/80 backdrop-blur-sm flex items-center justify-center text-white transition-all sm:opacity-0 sm:group-hover:opacity-100 focus-visible:opacity-100 z-[2]"
                       aria-label="Next image"
                     >
                       <ChevronRight size={18} />
@@ -211,7 +239,7 @@ const ProjectDetail = () => {
                       }`}
                       aria-label={img.alt}
                     >
-                      <img src={img.src} alt={img.alt} className="w-full h-full object-cover" loading="lazy" />
+                      <img src={img.src} {...screenshotSources(img.src, "96px")} alt={img.alt} className="w-full h-full object-cover" loading="lazy" />
                     </button>
                   ))}
                 </div>

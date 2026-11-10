@@ -4,10 +4,13 @@ import Typewriter from "./Typewriter";
 import SplitText from "./SplitText";
 import { AuroraText } from "./AuroraText";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
+import { Link } from "react-router-dom";
+
+const MotionLink = motion.create(Link);
 
 const Hero = () => {
   return (
-    <section className="relative isolate min-h-screen flex items-center justify-center section-padding pt-24 overflow-hidden">
+    <section className="relative isolate min-h-svh flex items-center justify-center section-padding pt-24 overflow-hidden">
       <motion.div
         className="container mx-auto max-w-4xl text-center relative z-10 px-4"
         variants={staggerContainer(0.12)}
@@ -27,18 +30,22 @@ const Hero = () => {
 
         {/* Main heading with glow + SplitText */}
         <h1
-          className="relative text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-6"
+          className="relative text-[clamp(1.875rem,8.5vw,2.25rem)] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-4"
         >
+          <span className="sr-only">Yogesh Vadivel</span>
           <span className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
             <span className="w-[60%] h-[80%] bg-primary/10 dark:bg-primary/[0.07] rounded-full blur-[60px] sm:blur-[80px]" />
           </span>
-          <span className="relative">
-            <SplitText text="Hi, I'm " delay={0} stagger={0.02} />
+          <span className="relative" aria-hidden="true">
+            Hi, I'm{" "}
             <AuroraText colors={["#0070F3", "#38bdf8", "#7928CA", "#0070F3"]} speed={1}>
               <SplitText text="Yogesh Vadivel" delay={0} stagger={0.02} />
             </AuroraText>
           </span>
         </h1>
+        <motion.p variants={fadeUp} className="mb-5 text-sm font-medium tracking-wide text-foreground/85 sm:text-base">
+          Full-Stack Developer · React, Next.js &amp; Python
+        </motion.p>
 
         {/* Subtitle with typewriter */}
         <motion.p
@@ -94,15 +101,15 @@ const Hero = () => {
             <Linkedin size={16} />
             LinkedIn
           </motion.a>
-          <motion.a
-            href="/resume"
+          <MotionLink
+            to="/resume/"
             whileHover={{ scale: 1.04 }}
             whileTap={tapScale}
             className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
           >
             <FileDown size={16} />
             Resume
-          </motion.a>
+          </MotionLink>
         </motion.div>
 
       </motion.div>

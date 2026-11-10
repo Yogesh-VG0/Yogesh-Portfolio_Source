@@ -13,7 +13,7 @@
     --card-foreground: 222 47% 4%;
     --popover: 0 0% 100%;
     --popover-foreground: 222 47% 4%;
-    --primary: 217 91% 55%;
+    --primary: 217 91% 45%;
     --primary-foreground: 0 0% 100%;
     --secondary: 220 16% 90%;
     --secondary-foreground: 222 35% 8%;
@@ -39,7 +39,7 @@
     --popover: 0 0% 4%;
     --popover-foreground: 0 0% 98%;
     --primary: 217 91% 60%;
-    --primary-foreground: 0 0% 100%;
+    --primary-foreground: 222 47% 4%;
     --secondary: 0 0% 7%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 8%;
@@ -69,6 +69,8 @@
     scroll-behavior: smooth;
     overflow-x: hidden;
   }
+
+  section[id] { scroll-margin-top: 5rem; }
 
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }

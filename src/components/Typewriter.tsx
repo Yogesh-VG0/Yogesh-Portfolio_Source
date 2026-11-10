@@ -13,10 +13,10 @@ const Typewriter = ({
   deletingSpeed = 45,
   delayBetweenWords = 2200,
 }: TypewriterProps) => {
-  const [display, setDisplay] = useState("");
+  const [display, setDisplay] = useState(words[0] ?? "");
   const phase = useRef<"typing" | "pausing" | "deleting">("typing");
   const wordIdx = useRef(0);
-  const charIdx = useRef(0);
+  const charIdx = useRef(words[0]?.length ?? 0);
   const raf = useRef(0);
   const lastTick = useRef(0);
   const pauseUntil = useRef(0);
@@ -28,6 +28,7 @@ const Typewriter = ({
   );
 
   useEffect(() => {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const step = (now: number) => {
       const word = words[wordIdx.current];
 
@@ -77,10 +78,12 @@ const Typewriter = ({
   }, [words, typingSpeed, deletingSpeed, delayBetweenWords, jitter]);
 
   return (
-    <span className="inline-flex items-baseline" aria-label={words[wordIdx.current]}>
+    <span className="inline-flex min-w-[19ch] items-baseline justify-start">
+      <span className="sr-only">{words[0]}</span>
       <span aria-hidden="true">{display}</span>
       <span
         className="ml-0.5 inline-block w-[2.5px] h-[1.15em] bg-primary rounded-full animate-caret-blink"
+        aria-hidden="true"
       />
     </span>
   );

@@ -1,0 +1,21 @@
+# Yogesh Vadivel
+
+> Personal portfolio of Yogesh Vadivel, a full-stack developer based in Dubai, United Arab Emirates.
+
+Yogesh builds web applications with React, Next.js, TypeScript, Python and Node.js, and has experience with WordPress, Elementor and technical SEO. This website contains his projects, professional experience, education, contact links and resume.
+
+## Portfolio
+
+- [Yogesh Vadivel](https://yogeshv.me/): About, skills, experience, education and contact details.
+- [Resume](https://yogeshv.me/resume/): Resume automatically selected by visitor country.
+
+## Projects
+
+- [StockPredict AI](https://yogeshv.me/projects/stockpredict-ai/): Stock analytics, forecasts and AI explanations.
+- [ExpenseVision](https://yogeshv.me/projects/expensevision/): Expense tracking, receipt scanning and budgets.
+- [Verdict Games](https://yogeshv.me/projects/verdict-games/): Game discovery, reviews and price tracking.
+
+## Profiles
+
+- [GitHub](https://github.com/Yogesh-VG0)
+- [LinkedIn](https://www.linkedin.com/in/yogesh-vadivel-a287a6269/)

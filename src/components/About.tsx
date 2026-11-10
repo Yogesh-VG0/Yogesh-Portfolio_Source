@@ -35,6 +35,8 @@ const About = () => {
   const { resolvedTheme } = useTheme();
   const isDark = resolvedTheme === "dark";
   const isMobile = useIsMobile();
+  const [calendarMounted, setCalendarMounted] = useState(false);
+  useEffect(() => { setCalendarMounted(true); }, []);
 
   // Interactive tooltip state
   const [selectedActivity, setSelectedActivity] = useState<{ date: string; count: number; x: number; y: number } | null>(null);
@@ -133,12 +135,13 @@ const About = () => {
           <motion.div variants={fadeUp} className="space-y-4 text-foreground/82 leading-relaxed text-base md:text-lg">
             <p>
               I'm a full-stack developer based in Dubai with a background in Computer Science from Manipal University Dubai.
-              I've built and deployed production applications using React, Python, and Node, including a machine learning
-              pipeline that processes 100+ S&P stocks daily and presents the results through an interactive dashboard.
+              I've built and deployed applications using React, Python, and Node.js, including a stock analytics platform
+              for 75 US companies and an expense tracker with AI receipt scanning.
             </p>
             <p>
               My work spans the full stack: designing APIs with FastAPI and Express, working with PostgreSQL and MongoDB,
-              setting up CI/CD with GitHub Actions, and deploying apps to Vercel and Render.
+              setting up CI/CD with GitHub Actions, and deploying apps to Vercel and Render. At TechMagic Technologies,
+              I also built WordPress and Elementor websites, implemented technical SEO, and managed cPanel deployments.
               I enjoy building systems that are reliable, explainable, and actually useful.
             </p>
           </motion.div>
@@ -155,7 +158,7 @@ const About = () => {
               </div>
               <div className="overflow-x-auto scrollbar-hide sm:flex sm:justify-center">
                 <div className="w-full sm:w-auto">
-                  <GitHubCalendar
+                  {calendarMounted ? <GitHubCalendar
                     username="Yogesh-VG0"
                     blockSize={isMobile ? 10 : 11}
                     blockMargin={isMobile ? 2 : 3}
@@ -177,7 +180,7 @@ const About = () => {
                         ? { dark: ["#111", "#0d3868", "#1a5fb4", "#3b82f6", "#60a5fa"] }
                         : { light: ["#eef2ff", "#c7d2fe", "#93c5fd", "#60a5fa", "#2563eb"] }
                     }
-                  />
+                  /> : <div className="h-40" aria-label="GitHub contribution calendar loading" />}
                 </div>
               </div>
 

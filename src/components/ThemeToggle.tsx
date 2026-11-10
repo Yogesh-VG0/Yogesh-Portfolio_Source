@@ -4,25 +4,25 @@ import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 const ThemeToggle = () => {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => { setMounted(true); }, []);
 
   if (!mounted) {
     return (
-      <button className="w-9 h-9 rounded-lg bg-secondary flex items-center justify-center" aria-hidden>
+      <button className="w-11 h-11 rounded-lg bg-secondary flex items-center justify-center" aria-hidden tabIndex={-1}>
         <Sun size={16} />
       </button>
     );
   }
 
-  const isDark = theme === "dark";
+  const isDark = resolvedTheme === "dark";
 
   return (
     <button
       onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="w-9 h-9 rounded-lg bg-secondary/60 border border-border/30 hover:bg-secondary flex items-center justify-center transition-colors relative overflow-hidden"
+      className="w-11 h-11 rounded-lg bg-secondary/60 border border-border/30 hover:bg-secondary flex items-center justify-center transition-colors relative overflow-hidden"
       aria-label={`Switch to ${isDark ? "light" : "dark"} mode`}
     >
       <AnimatePresence mode="wait" initial={false}>

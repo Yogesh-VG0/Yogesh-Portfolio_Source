@@ -1,106 +1,37 @@
-import { useEffect, useRef, useState } from "react";
-import { motion } from "framer-motion";
-import { Download, ArrowLeft } from "lucide-react";
-import { Link } from "react-router-dom";
-import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
-import { useScrollDirection } from "@/hooks/use-scroll-direction";
-import { GemBoxPdfViewer } from "@gembox/pdfviewer";
-import "@gembox/pdfviewer/dist/es/pdfviewer.css";
+import { lazy, Suspense } from "react";
+import { Download, ArrowUpRight, Loader2 } from "lucide-react";
+import PageHeader from "@/components/PageHeader";
+import { resumes } from "@/data/resumes";
+import { useResumeRegion } from "@/hooks/use-resume-region";
 
-GemBoxPdfViewer.setLicense("FREE-LIMITED-KEY");
-
-const RESUME_PATH = "/Yogesh_Vadivel_Resume.pdf";
+const ResumePreview = lazy(() => import("@/components/ResumePreview"));
 
 const Resume = () => {
-  const headerVisible = useScrollDirection(10);
-  const viewerRef = useRef<HTMLDivElement>(null);
-  const [viewerHeight, setViewerHeight] = useState<number>(0);
-  const initialized = useRef(false);
-
-  useEffect(() => {
-    document.title = "Resume — Yogesh Vadivel";
-    return () => {
-      document.title = "Yogesh Vadivel — Full-Stack Developer";
-    };
-  }, []);
-
-  // Calculate available height after header renders
-  useEffect(() => {
-    function updateHeight() {
-      // 64px = header height (h-16)
-      const h = window.innerHeight - 64;
-      setViewerHeight(h > 200 ? h : window.innerHeight);
-    }
-    updateHeight();
-    window.addEventListener("resize", updateHeight);
-    return () => window.removeEventListener("resize", updateHeight);
-  }, []);
-
-  // Initialize GemBox PDF Viewer once container is mounted AND has real dimensions
-  useEffect(() => {
-    if (!viewerRef.current || viewerHeight === 0 || initialized.current) return;
-
-    // Use requestAnimationFrame to ensure the browser has painted
-    // the container with its final dimensions before GemBox reads them
-    requestAnimationFrame(() => {
-      if (!viewerRef.current || initialized.current) return;
-      initialized.current = true;
-      GemBoxPdfViewer.create({
-        container: viewerRef.current,
-        initialDocument: RESUME_PATH,
-      });
-    });
-  }, [viewerHeight]);
+  const { region, status } = useResumeRegion();
+  const resume = resumes[region];
+  const loading = status === "loading";
 
   return (
-    <div className="min-h-screen text-foreground flex flex-col relative z-[1]">
-      {/* Top bar */}
-      <motion.header
-        variants={staggerContainer(0.1)}
-        initial="hidden"
-        animate="visible"
-        className="sticky top-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border/40"
-        style={{
-          transform: headerVisible ? "translateY(0)" : "translateY(-100%)",
-          transition: "transform 0.3s cubic-bezier(0.4, 0, 0.2, 1)",
-        }}
-      >
-        <div className="container mx-auto max-w-6xl flex items-center justify-between h-16 px-4 sm:px-6">
-          <motion.div variants={fadeUp}>
-            <Link
-              to="/"
-              className="inline-flex items-center gap-2 text-sm font-medium text-foreground/72 hover:text-foreground transition-colors"
-            >
-              <ArrowLeft size={16} />
-              Back to Portfolio
-            </Link>
-          </motion.div>
-
-          <motion.div variants={fadeUp}>
-            <motion.a
-              href={RESUME_PATH}
-              download="Yogesh_Vadivel_Resume.pdf"
-              whileHover={{ scale: 1.04 }}
-              whileTap={tapScale}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-primary text-primary-foreground text-sm font-semibold shadow-lg shadow-primary/15 hover:shadow-primary/25 transition-shadow"
-            >
-              <Download size={15} />
-              Download PDF
-            </motion.a>
-          </motion.div>
-        </div>
-      </motion.header>
-
-      {/* PDF viewer — GemBox renders natively on all devices */}
-      <main className="flex-1 flex flex-col relative z-[50]">
-        <div
-          ref={viewerRef}
-          className="bg-white dark:bg-neutral-900"
-          style={{
-            width: "100%",
-            height: viewerHeight > 0 ? `${viewerHeight}px` : "calc(100vh - 64px)",
-          }}
-        />
+    <div className="relative z-[1] flex h-dvh min-h-[480px] flex-col bg-background text-foreground">
+      <PageHeader title="Resume">
+        <a href={loading ? undefined : resume.path} target="_blank" rel="noopener noreferrer" aria-disabled={loading} aria-label="Open PDF" title="Open PDF in a new tab" className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-lg border border-border/60 px-3 text-sm font-medium transition-colors hover:border-primary/60 ${loading ? "pointer-events-none opacity-50" : ""}`}>
+          <span className="hidden sm:inline">Open PDF</span><ArrowUpRight size={16} aria-hidden="true" />
+        </a>
+        <a href={loading ? undefined : resume.path} download={resume.filename} aria-disabled={loading} aria-label="Download PDF" title="Download PDF" className={`inline-flex min-h-11 min-w-11 items-center justify-center gap-2 rounded-lg bg-primary px-3 text-sm font-semibold text-primary-foreground transition-colors hover:bg-primary/90 ${loading ? "pointer-events-none opacity-50" : ""}`}>
+          <Download size={16} aria-hidden="true" /><span className="hidden sm:inline">Download PDF</span>
+        </a>
+      </PageHeader>
+      <main className="min-h-0 flex-1">
+        {loading ? (
+          <div role="status" className="resume-loading flex h-full items-center justify-center gap-3 text-sm text-foreground/75">
+            <Loader2 size={18} className="animate-spin text-primary" aria-hidden="true" /> Loading resume…
+          </div>
+        ) : (
+          <Suspense fallback={<div role="status" className="flex h-full items-center justify-center text-sm text-foreground/75">Loading preview…</div>}>
+            <ResumePreview path={resume.path} label={resume.label} />
+          </Suspense>
+        )}
+        <noscript><p className="p-6 text-center">Enable JavaScript to load the resume selected for your country.</p></noscript>
       </main>
     </div>
   );

@@ -17,6 +17,7 @@ for (const url of urls) {
   assert.ok(json, `Missing structured data: ${url}`);
   assert.ok(JSON.parse(json)["@graph"].some(node => node["@type"] === "Person"));
   if (url.pathname === "/") {
+    assert.ok(html.split("</head>")[0].includes('<meta name="msvalidate.01" content="EE7B7410111CF4CB9CAF3F656D15AED7"'), "Bing ownership verification must remain in the homepage head");
     const heading = html.match(/<h1\b[^>]*>([\s\S]*?)<\/h1>/)?.[1].replace(/<[^>]*>/g, "");
     assert.equal(heading, "Yogesh Vadivel", "The animated H1 must contain one clean name");
     assert.ok(html.includes('>75</span>'), "Real stock metric must appear in initial HTML");

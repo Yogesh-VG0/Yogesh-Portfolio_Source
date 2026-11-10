@@ -46,9 +46,9 @@ const Experience = () => {
                     </span>
                   </div>
 
-                  <ul className="space-y-2.5">
+                  <ul className="space-y-4 sm:space-y-2.5">
                     {exp.points.map((point) => (
-                      <li key={point} className="text-sm leading-relaxed text-foreground/80 flex items-start gap-2.5">
+                      <li key={point} className="text-[15px] leading-7 sm:text-sm sm:leading-relaxed text-foreground/80 flex items-start gap-2.5">
                         <span className="w-1.5 h-1.5 rounded-full bg-primary mt-1.5 flex-shrink-0" />
                         {point}
                       </li>

@@ -20,10 +20,11 @@ The public homepage at `https://yogeshv.me/` was inspected in a browser. At insp
 
 | Check | Result |
 | --- | --- |
-| Unit/integration tests | 35 passed |
+| Unit/integration tests | 39 passed |
 | TypeScript, lint and production build | Passed |
 | Generated HTML, schema, canonicals, image variants and internal links | Verified for all five pages |
 | Homepage widths | 320, 390, 768, 1024 and 1440 pixels |
+| GitHub activity | Same unfiltered full-year total on phones and desktops; scrollable chart, visible wrapping footer, and profile-link fallback |
 | Resume | Mobile preview and download select the Indian PDF from the test network; no selector; no overflow or console errors |
 | Project routes | All three checked on mobile with no missing images, overflow or hydration errors; 640px image variants served |
 | Lightbox | Opens, focuses Close, locks background interaction, navigates with arrow keys, closes with Escape, restores scrolling |

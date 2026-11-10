@@ -177,7 +177,7 @@ const SkillCard = ({ group, meta, inView, isMobile }: SkillCardProps) => {
       {/* Floating corner glow (always on for mobile, hover-only for desktop) */}
       <div className={`absolute -top-12 -right-12 w-32 h-32 rounded-full blur-3xl transition-opacity duration-700 bg-gradient-to-br ${meta.glowFrom} ${meta.glowTo} pointer-events-none ${isMobile ? "opacity-60" : "opacity-0 group-hover:opacity-60"}`} />
 
-      <div className="relative p-6 h-full flex flex-col min-h-[14rem]">
+      <div className="relative p-5 sm:p-6 h-full flex flex-col sm:min-h-[14rem]">
         {/* Header */}
         <div className="flex items-center gap-3 mb-6 relative z-10">
           <motion.div
@@ -197,7 +197,7 @@ const SkillCard = ({ group, meta, inView, isMobile }: SkillCardProps) => {
 
         {/* Skill chips */}
         <motion.div
-          className="flex flex-wrap gap-2 relative z-10"
+          className="flex flex-wrap gap-2.5 sm:gap-2 relative z-10"
           variants={staggerContainer(0.04)}
           initial="hidden"
           animate={inView ? "visible" : "hidden"}
@@ -212,12 +212,12 @@ const SkillCard = ({ group, meta, inView, isMobile }: SkillCardProps) => {
                 transition: { type: "spring", stiffness: 400, damping: 15 },
               }}
               whileTap={{ scale: 0.95 }}
-              className={`inline-flex items-center gap-1.5 text-xs font-mono px-3 py-2 rounded-lg border cursor-default transition-all duration-300
+              className={`inline-flex items-center gap-2 text-sm font-sans sm:text-xs sm:font-mono px-3 py-2.5 sm:py-2 rounded-lg border cursor-default transition-all duration-300
                 bg-background/40 text-foreground border-border/30
                 hover:border-primary/40 hover:bg-primary/10 hover:shadow-md hover:shadow-primary/5
                 active:scale-95`}
             >
-              <span className={`${meta.color}`}>
+              <span className={`shrink-0 ${meta.color}`} aria-hidden="true">
                 {skillIcons[skill]}
               </span>
               {skill}

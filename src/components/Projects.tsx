@@ -106,7 +106,7 @@ const ProjectCard = ({
 
       {/* Featured ribbon */}
       {isFeatured && (
-        <div className="absolute -top-px -right-px z-10">
+        <div className="absolute -top-px -right-px z-10 hidden sm:block">
           <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-bl-xl rounded-tr-2xl bg-primary/10 border-b border-l border-primary/20 text-xs font-mono text-primary">
             <Star size={11} fill="currentColor" />
             Featured
@@ -200,19 +200,19 @@ const ProjectCard = ({
       )}
 
       {/* Description */}
-      <p className="text-[13px] sm:text-sm md:text-[15px] text-foreground/80 leading-relaxed mb-5">
+      <p className="text-[15px] leading-7 sm:text-sm sm:leading-relaxed md:text-[15px] text-foreground/80 mb-5">
         {cardDescription}
       </p>
 
       {/* Metrics row */}
       {project.metrics && (
-        <div className="flex flex-wrap gap-1.5 sm:gap-3 mb-5 sm:mb-6">
-          {project.metrics.map((m) => {
+        <div className="grid grid-cols-2 gap-2 sm:flex sm:flex-wrap sm:gap-3 mb-6">
+          {project.metrics.map((m, index) => {
             const parsed = parseMetricValue(m.value);
             return (
               <div
                 key={m.label}
-                className="flex items-center gap-1 sm:gap-1.5 text-[11px] sm:text-xs font-mono px-2 sm:px-2.5 py-1 sm:py-1.5 rounded-lg bg-background/50 border border-border/20 text-foreground/74"
+                className={`${index >= 4 ? "hidden sm:flex" : "flex"} flex-wrap items-center gap-1.5 text-xs font-mono px-2.5 py-2 sm:py-1.5 rounded-lg bg-background/50 border border-border/20 text-foreground/74`}
               >
                 <span className="text-primary/70">{m.icon}</span>
                 <span className="font-semibold text-foreground">
@@ -230,11 +230,11 @@ const ProjectCard = ({
       )}
 
       {/* Highlights — truncated to 4 on card */}
-      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2 sm:gap-y-2.5 mb-2">
-        {cardHighlights.slice(0, 4).map((h) => (
+      <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-3 sm:gap-y-2.5 mb-2">
+        {cardHighlights.slice(0, 4).map((h, index) => (
           <li
             key={h}
-            className="text-[12px] sm:text-[13px] leading-relaxed text-foreground/78 flex items-start gap-2"
+            className={`${index >= 2 ? "hidden sm:flex" : "flex"} text-sm leading-7 sm:text-[13px] sm:leading-relaxed text-foreground/78 items-start gap-2`}
           >
             <span className="w-1.5 h-1.5 rounded-full bg-primary/60 mt-[5px] sm:mt-[6px] flex-shrink-0" />
             {h}
@@ -243,11 +243,11 @@ const ProjectCard = ({
       </ul>
 
       {/* Tech chips */}
-      <div className="flex flex-wrap gap-1.5 mt-4 sm:mt-5 mb-5 sm:mb-6">
-        {project.tech.map((t) => (
+      <div className="flex flex-wrap gap-2 mt-5 mb-6">
+        {project.tech.map((t, index) => (
           <span
             key={t}
-            className="text-[10px] sm:text-[11px] font-mono px-2 py-0.5 rounded-md bg-secondary/40 text-foreground/72 border border-border/20"
+            className={`${index >= 6 ? "hidden sm:inline-flex" : "inline-flex"} text-xs sm:text-[11px] px-2.5 py-1.5 sm:py-1 rounded-md bg-secondary/40 text-foreground/72 border border-border/20`}
           >
             {t}
           </span>

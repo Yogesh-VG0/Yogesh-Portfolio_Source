@@ -40,6 +40,12 @@ Each public page has its own title, description, trailing-slash canonical URL, a
 
 After publishing, verify the `yogeshv.me` property in [Google Search Console](https://search.google.com/search-console), submit `https://yogeshv.me/sitemap.xml`, and inspect the homepage and project URLs. Request indexing after significant updates. Property verification requires the owner's Google account or DNS access; this repository does not contain a verification token. Maintain the same portfolio URL in GitHub and LinkedIn profiles and monitor name-related search queries in Search Console. Search engines decide rankings and when to recrawl; these changes do not guarantee a particular position.
 
+## Mobile readability and GitHub activity
+
+Phones use a static, readable hero heading, a short introduction, and a two-column action layout. Mobile sections use one layer of horizontal padding. Body copy, project summaries, experience entries, and skill labels use larger text and more line spacing. Project cards present the first two highlights, four metrics and six technologies on phones; their case-study pages retain the complete details.
+
+GitHub activity uses the same unfiltered full-year dataset on every screen size. The native chart viewport scrolls horizontally, starts at the latest activity, and has a swipe hint on mobile. The yearly total stays outside that viewport and wraps within the card. The small-screen color legend is hidden to keep the footer uncluttered; desktop legend SVGs are decorative to assistive technology. Day details open on click/tap and close during scrolling. A direct GitHub profile link remains available if the activity API fails.
+
 ## Responsive images
 
 Project screenshots are served as WebP files at 640, 1280, and 1920 pixels, with browser-selected `srcset` sizes. Original PNGs live in `assets/source-screenshots/` and are excluded from the published `public/` directory. The social image uses a compressed JPEG; its original is `assets/og-image.png`.

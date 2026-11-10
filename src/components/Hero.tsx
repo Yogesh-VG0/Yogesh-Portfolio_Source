@@ -5,10 +5,12 @@ import SplitText from "./SplitText";
 import { AuroraText } from "./AuroraText";
 import { fadeUp, staggerContainer, tapScale } from "@/lib/motion";
 import { Link } from "react-router-dom";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 const MotionLink = motion.create(Link);
 
 const Hero = () => {
+  const isMobile = useIsMobile();
   return (
     <section className="relative isolate min-h-svh flex items-center justify-center section-padding pt-24 overflow-hidden">
       <motion.div
@@ -30,30 +32,37 @@ const Hero = () => {
 
         {/* Main heading with glow + SplitText */}
         <h1
-          className="relative text-[clamp(1.875rem,8.5vw,2.25rem)] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.1] tracking-tight mb-4"
+          className="relative text-[clamp(2rem,9vw,2.5rem)] sm:text-5xl md:text-6xl lg:text-7xl font-extrabold leading-[1.2] sm:leading-[1.1] tracking-tight mb-4"
         >
           <span className="sr-only">Yogesh Vadivel</span>
           <span className="absolute inset-0 flex items-center justify-center pointer-events-none" aria-hidden="true">
             <span className="w-[60%] h-[80%] bg-primary/10 dark:bg-primary/[0.07] rounded-full blur-[60px] sm:blur-[80px]" />
           </span>
           <span className="relative" aria-hidden="true">
+            <span className="block sm:hidden"><span className="mb-2 block text-xl font-medium tracking-normal">Hi, I'm</span><span className="block text-primary">Yogesh Vadivel</span></span>
+            <span className="hidden sm:inline">
             Hi, I'm{" "}
             <AuroraText colors={["#0070F3", "#38bdf8", "#7928CA", "#0070F3"]} speed={1}>
               <SplitText text="Yogesh Vadivel" delay={0} stagger={0.02} />
             </AuroraText>
+            </span>
           </span>
         </h1>
         <motion.p variants={fadeUp} className="mb-5 text-sm font-medium tracking-wide text-foreground/85 sm:text-base">
-          Full-Stack Developer · React, Next.js &amp; Python
+          Full-Stack Developer<span className="hidden sm:inline"> · React, Next.js &amp; Python</span>
+        </motion.p>
+
+        <motion.p variants={fadeUp} className="mx-auto mb-8 max-w-[30ch] text-base leading-7 text-foreground/80 sm:hidden">
+          I build reliable web apps with React, Next.js, and Python.
         </motion.p>
 
         {/* Subtitle with typewriter */}
         <motion.p
           variants={fadeUp}
-          className="text-lg md:text-xl text-foreground/82 max-w-2xl mx-auto mb-10 leading-relaxed"
+          className="hidden sm:block text-lg md:text-xl text-foreground/82 max-w-2xl mx-auto mb-10 leading-relaxed"
         >
           I build{" "}
-          <Typewriter
+          {!isMobile && <Typewriter
             words={[
               "scalable web apps",
               "modern dashboards",
@@ -63,21 +72,21 @@ const Hero = () => {
             typingSpeed={80}
             deletingSpeed={40}
             delayBetweenWords={2000}
-          />{" "}
+          />}{" "}
           <br className="hidden sm:block" />
           with React, Python, and modern technologies.
         </motion.p>
 
         {/* CTA buttons */}
-        <motion.div variants={fadeUp} className="flex flex-wrap items-center justify-center gap-3">
+        <motion.div variants={fadeUp} className="grid grid-cols-2 items-stretch gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-center">
           <motion.a
             href="#projects"
             whileHover={{ scale: 1.04 }}
             whileTap={tapScale}
-            className="inline-flex items-center gap-2 px-7 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-shadow"
+            className="order-1 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-7 py-3 rounded-xl bg-primary text-primary-foreground font-semibold text-sm shadow-lg shadow-primary/20 hover:shadow-primary/30 transition-shadow"
           >
             View Projects
-            <ArrowDown size={16} className="animate-float" />
+            <ArrowDown size={16} className="hidden sm:block animate-float" />
           </motion.a>
           <motion.a
             href="https://github.com/Yogesh-VG0"
@@ -85,7 +94,7 @@ const Hero = () => {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.04 }}
             whileTap={tapScale}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
+            className="order-3 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
           >
             <Github size={16} />
             GitHub
@@ -96,7 +105,7 @@ const Hero = () => {
             rel="noopener noreferrer"
             whileHover={{ scale: 1.04 }}
             whileTap={tapScale}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
+            className="order-4 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
           >
             <Linkedin size={16} />
             LinkedIn
@@ -105,7 +114,7 @@ const Hero = () => {
             to="/resume/"
             whileHover={{ scale: 1.04 }}
             whileTap={tapScale}
-            className="inline-flex items-center gap-2 px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
+            className="order-2 sm:order-none inline-flex min-h-12 justify-center items-center gap-2 px-3 sm:px-5 py-3 rounded-xl border border-border/60 bg-card/30 backdrop-blur-md text-foreground font-medium text-sm hover:border-primary/40 transition-colors"
           >
             <FileDown size={16} />
             Resume

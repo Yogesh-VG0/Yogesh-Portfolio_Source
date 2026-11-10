@@ -15,14 +15,6 @@ const highlights = [
   { icon: <GraduationCap size={18} />, label: "CS (Manipal University)" },
 ];
 
-/** Keep only the latest N months of contribution data */
-const filterLastMonths = (data: Activity[], months: number): Activity[] => {
-  const today = new Date();
-  const cutoff = new Date(today.getFullYear(), today.getMonth() - months, today.getDate());
-  const cutoffStr = cutoff.toISOString().slice(0, 10);
-  return data.filter((d) => d.date >= cutoffStr);
-};
-
 /** Format a date string like "Mon, Jan 15" */
 const formatDate = (dateStr: string) => {
   const d = new Date(dateStr + "T00:00:00");
@@ -43,27 +35,16 @@ const About = () => {
   const containerRef = useRef<HTMLDivElement>(null);
 
   const handleBlockClick = useCallback((activity: Activity) => {
-    return (e: React.MouseEvent | React.TouchEvent) => {
+    return (e: React.MouseEvent) => {
       e.stopPropagation();
       const rect = containerRef.current?.getBoundingClientRect();
       if (!rect) return;
 
-      let clientX: number, clientY: number;
-      if ("changedTouches" in e && e.changedTouches.length) {
-        clientX = e.changedTouches[0].clientX;
-        clientY = e.changedTouches[0].clientY;
-      } else if ("clientX" in e) {
-        clientX = (e as React.MouseEvent).clientX;
-        clientY = (e as React.MouseEvent).clientY;
-      } else {
-        return;
-      }
-
       setSelectedActivity({
         date: activity.date,
         count: activity.count,
-        x: clientX - rect.left,
-        y: clientY - rect.top,
+        x: e.clientX - rect.left,
+        y: e.clientY - rect.top,
       });
     };
   }, []);
@@ -73,11 +54,19 @@ const About = () => {
     setSelectedActivity(null);
   }, []);
 
-  // On mobile show only ~5 months of data
-  const transformData = useCallback(
-    (data: Activity[]) => (isMobile ? filterLastMonths(data, 6) : data),
-    [isMobile]
-  );
+  const prepareCalendar = useCallback((calendar: HTMLElement | null) => {
+    if (!calendar) return;
+    const scroller = calendar.querySelector<HTMLElement>(".react-activity-calendar__scroll-container");
+    if (scroller) {
+      scroller.tabIndex = 0;
+      scroller.setAttribute("role", "region");
+      scroller.setAttribute("aria-label", "GitHub contribution calendar, scroll horizontally to explore the full year");
+      scroller.scrollLeft = scroller.scrollWidth;
+    }
+    const graph = calendar.querySelector(".react-activity-calendar__calendar");
+    graph?.setAttribute("role", "img");
+    graph?.setAttribute("aria-label", "Daily GitHub contributions over the last year");
+  }, []);
 
   useEffect(() => {
     if (!selectedActivity) return;
@@ -118,21 +107,21 @@ const About = () => {
           <SectionHeader label="About" title="A bit about me" />
 
           {/* Quick stats pills */}
-          <motion.div variants={fadeUp} className="flex flex-wrap gap-3 mb-8">
+          <motion.div variants={fadeUp} className="grid grid-cols-1 min-[380px]:grid-cols-2 gap-3 mb-8 sm:flex sm:flex-wrap">
             {highlights.map((h) => (
               <motion.span
                 key={h.label}
                 variants={scaleUp}
-                className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-border/50 bg-card/40 backdrop-blur-sm text-sm text-foreground/76"
+                className="inline-flex min-w-0 items-center gap-2 px-3 py-3 rounded-xl sm:rounded-full border border-border/50 bg-card/40 backdrop-blur-sm text-[13px] leading-relaxed sm:text-sm text-foreground/76"
               >
-                <span className="text-primary">{h.icon}</span>
+                <span className="shrink-0 text-primary" aria-hidden="true">{h.icon}</span>
                 {h.label}
               </motion.span>
             ))}
           </motion.div>
 
           {/* Bio text */}
-          <motion.div variants={fadeUp} className="space-y-4 text-foreground/82 leading-relaxed text-base md:text-lg">
+          <motion.div variants={fadeUp} className="space-y-5 text-foreground/82 leading-7 text-base md:text-lg md:leading-relaxed">
             <p>
               I'm a full-stack developer based in Dubai with a background in Computer Science from Manipal University Dubai.
               I've built and deployed applications using React, Python, and Node.js, including a stock analytics platform
@@ -153,22 +142,26 @@ const About = () => {
               className="relative rounded-2xl border border-border/30 bg-card/30 backdrop-blur-sm p-4 sm:p-5"
               onClick={handleContainerClick}
             >
-              <div className="mb-3">
-                <h3 className="text-sm font-semibold">GitHub activity</h3>
+              <div className="mb-4 flex flex-wrap items-center justify-between gap-2">
+                <h3 className="text-base font-semibold">GitHub activity</h3>
+                <a href="https://github.com/Yogesh-VG0" target="_blank" rel="noopener noreferrer" className="text-sm text-primary underline-offset-4 hover:underline">View on GitHub</a>
               </div>
-              <div className="overflow-x-auto scrollbar-hide sm:flex sm:justify-center">
-                <div className="w-full sm:w-auto">
+              <p className="mb-3 text-xs leading-relaxed text-foreground/65 lg:hidden">Swipe the chart to explore the full year.</p>
+              <div className="github-calendar min-w-0" onScrollCapture={() => setSelectedActivity(null)}>
                   {calendarMounted ? <GitHubCalendar
+                    ref={prepareCalendar}
                     username="Yogesh-VG0"
-                    blockSize={isMobile ? 10 : 11}
-                    blockMargin={isMobile ? 2 : 3}
-                    fontSize={11}
+                    errorMessage="GitHub activity is unavailable right now. You can still view it on GitHub."
+                    blockSize={11}
+                    blockMargin={3}
+                    fontSize={12}
+                    style={{ width: "100%" }}
+                    showColorLegend={!isMobile}
+                    renderColorLegend={(block) => cloneElement(block, { "aria-hidden": true })}
                     colorScheme={isDark ? "dark" : "light"}
-                    transformData={transformData}
                     renderBlock={(block, activity) =>
                       cloneElement(block, {
                         onClick: handleBlockClick(activity as unknown as Activity),
-                        onTouchEnd: handleBlockClick(activity as unknown as Activity),
                         style: {
                           ...block.props.style,
                           cursor: "pointer",
@@ -181,21 +174,17 @@ const About = () => {
                         : { light: ["#eef2ff", "#c7d2fe", "#93c5fd", "#60a5fa", "#2563eb"] }
                     }
                   /> : <div className="h-40" aria-label="GitHub contribution calendar loading" />}
-                </div>
               </div>
 
               {/* Interactive tooltip — rendered outside overflow container to avoid clipping */}
               {selectedActivity && (
                 <div
+                  role="tooltip"
                   className="absolute z-20 px-3 py-2 rounded-lg text-xs font-mono shadow-lg border pointer-events-none
-                    bg-card border-border/50 text-foreground"
+                    w-60 max-w-[calc(100%-1rem)] leading-relaxed bg-card border-border/50 text-foreground"
                   style={{
-                    left: Math.min(
-                      Math.max(8, selectedActivity.x),
-                      (containerRef.current?.clientWidth ?? 300) - 160
-                    ),
-                    top: Math.max(12, selectedActivity.y - 50),
-                    minWidth: 140,
+                    left: Math.max(8, Math.min(selectedActivity.x - 120, (containerRef.current?.clientWidth ?? 300) - 248)),
+                    top: Math.max(12, selectedActivity.y - 64),
                   }}
                 >
                   <span className="font-bold text-primary">{selectedActivity.count}</span>

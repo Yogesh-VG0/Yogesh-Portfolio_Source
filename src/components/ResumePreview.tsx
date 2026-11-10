@@ -13,17 +13,26 @@ export default function ResumePreview({ path, label }: { path: string; label: st
 
   useEffect(() => {
     let active = true;
+    const controller = new AbortController();
     setStatus("loading");
     // Serialize changes so rapid region switches cannot show an older PDF.
     const frame = requestAnimationFrame(() => {
       queueRef.current = queueRef.current.catch(() => {}).then(async () => {
         if (!active || !containerRef.current) return;
+        // Fetch before mounting: the viewer's automatic zoom can otherwise run
+        // against an empty document while a PDF is still downloading.
+        const response = await fetch(path, { signal: controller.signal });
+        if (!response.ok) throw new Error("Resume download failed");
+        const document = await response.arrayBuffer();
+        if (!active || !containerRef.current) return;
         if (!viewerRef.current) {
-          viewerRef.current = GemBoxPdfViewer.create({ container: containerRef.current });
+          viewerRef.current = GemBoxPdfViewer.create({ container: containerRef.current, initialDocument: document });
+          await viewerRef.current;
+        } else {
+          const viewer = await viewerRef.current;
+          if (!active) return;
+          await viewer.open(document);
         }
-        const viewer = await viewerRef.current;
-        if (!active) return;
-        await viewer.open(path);
         if (active) setStatus("ready");
       }).catch(() => {
         if (active) setStatus("error");
@@ -31,6 +40,7 @@ export default function ResumePreview({ path, label }: { path: string; label: st
     });
     return () => {
       active = false;
+      controller.abort();
       cancelAnimationFrame(frame);
     };
   }, [path]);
